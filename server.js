@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { config } from "./src/config.js";
 import { checkoutRouter } from "./src/routes/checkout.js";
 import { webhookRouter } from "./src/routes/webhook.js";
+import { cors } from "./src/cors.js";
 
 const stripe = new Stripe(config.stripe.secretKey);
 const app = express();
@@ -14,7 +15,8 @@ app.disable("x-powered-by");
 app.use("/api", webhookRouter(stripe));
 
 app.use(express.json({ limit: "64kb" }));
-app.use("/api", checkoutRouter(stripe));
+// CORS applies only to the browser-facing API, never the webhook above.
+app.use("/api", cors, checkoutRouter(stripe));
 
 app.get("/healthz", (_req, res) => res.json({ ok: true }));
 

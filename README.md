@@ -86,6 +86,36 @@ Edit `src/catalog.js`. Amounts are in the **smallest currency unit** —
 Fill in every `[BRACKETED]` field in `legal/`, then serve and link them.
 They are drafts, not legal advice — have them reviewed.
 
+## Connecting the storefront artifact
+
+`public/store-bridge.js` connects the published "Five Houses of Japan" artifact
+cart to this server. It is **off by default**:
+
+```js
+var STORE_ENDPOINT = "";   // empty = the page stays a demo, untouched
+```
+
+Set it to your deployed server (no trailing slash) and re-publish the artifact:
+
+```js
+var STORE_ENDPOINT = "https://store.yourdomain.com";
+```
+
+While it is empty, nothing runs: the cart still says "Place demo order" and
+"Nothing was charged". Once set, the review step relabels itself to "Pay by
+card", and clicking it POSTs the cart to `/api/checkout` and forwards the
+customer to Stripe.
+
+It reads the cart from `localStorage["fivehouses.cart"]`, which the artifact
+already writes on every change, so it needs no access to React internals. Cart
+ids (`"toyota:3"`) are the same ids used in `src/catalog.js` — that is why the
+two cannot drift apart.
+
+**Set `ALLOWED_ORIGINS`** to the artifact's origin before going live. The
+browser will not let a page call this API cross-origin without it, and an
+allowlist means only your storefront can create Checkout Sessions on your
+Stripe account.
+
 ## Testing
 
 ```bash
@@ -104,6 +134,8 @@ requires 3D Secure.
 - [ ] Swap `sk_test_…` for `sk_live_…` and use the **live** webhook secret
 - [ ] Serve over HTTPS and set `PUBLIC_BASE_URL` to the real domain
 - [ ] Set real prices and SKUs in `src/catalog.js`
+- [ ] Set `ALLOWED_ORIGINS` to your storefront origin, not `*`
+- [ ] Check `CURRENCY` against `src/money.js` — JPY is zero-decimal
 - [ ] Complete every legal page and link them from the footer and checkout
 - [ ] Confirm your reseller agreement covers online sale of these brands
 - [ ] Move orders from `data/orders.jsonl` to a real database
@@ -116,13 +148,16 @@ requires 3D Secure.
 ```
 server.js                    Express app. Webhook mounts BEFORE express.json()
 src/config.js                Env loading + fail-fast validation
-src/catalog.js               Server-side price authority
+src/catalog.js               Server-side price authority (25 products)
+src/money.js                 Zero-decimal currency handling (JPY!)
+src/cors.js                  Cross-origin access for the storefront
 src/orders.js                Order log + webhook idempotency
 src/email.js                 Resend or SMTP
 src/templates/orderEmail.js  Email rendering (pure, testable)
 src/routes/checkout.js       Creates Checkout Sessions
 src/routes/webhook.js        Verifies signature, records order, emails you
 public/                      Minimal reference storefront
+public/store-bridge.js       Artifact cart -> this server (off by default)
 legal/                       Policy templates to complete
 ```
 

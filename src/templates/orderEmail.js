@@ -1,3 +1,5 @@
+import { formatMoney } from "../money.js";
+
 // Builds the order notification. Plain data in, {subject, html, text} out —
 // no I/O here, so it is trivially testable.
 
@@ -7,17 +9,7 @@ function escapeHtml(value) {
   })[c]);
 }
 
-export function formatMoney(amountMinor, currency) {
-  const major = (Number(amountMinor) || 0) / 100;
-  try {
-    return new Intl.NumberFormat("en-GB", {
-      style: "currency",
-      currency: String(currency || "GBP").toUpperCase(),
-    }).format(major);
-  } catch {
-    return `${major.toFixed(2)} ${String(currency).toUpperCase()}`;
-  }
-}
+export { formatMoney } from "../money.js";
 
 function addressLines(addr) {
   if (!addr) return [];

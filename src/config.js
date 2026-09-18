@@ -45,6 +45,12 @@ export const config = {
   port: Number(process.env.PORT || 3000),
   baseUrl: (process.env.PUBLIC_BASE_URL || "http://localhost:3000").replace(/\/$/, ""),
   currency: (process.env.CURRENCY || "gbp").toLowerCase(),
+  // Comma-separated list of origins allowed to call /api/*.
+  // "*" is convenient locally and too loose for production.
+  allowedOrigins: (process.env.ALLOWED_ORIGINS || "*")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean),
   stripe: {
     secretKey: process.env.STRIPE_SECRET_KEY,
     webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
