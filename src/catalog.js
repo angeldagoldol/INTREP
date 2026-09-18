@@ -3,47 +3,53 @@
 // This is the single most important security boundary in the whole app.
 // The browser sends only a product id and a quantity. It never sends a price.
 // If you ever let the client supply an amount, a customer can open devtools
-// and buy a Land Cruiser for 1 yen — this is the classic e-commerce hole.
+// and buy a Land Cruiser for one centavo — the classic e-commerce hole.
 //
 // Ids match the storefront artifact's own product ids ("<company>:<index>")
-// so the two can never drift apart.
+// so the two price lists cannot drift apart.
 //
-// Amounts are in Stripe's smallest currency unit. JPY is ZERO-DECIMAL, so
-// 2000000 is JPY 2,000,000 — not 20,000. Read src/money.js before changing
-// currency, or every charge will be out by a factor of 100.
+// ===========================================================================
+// !! THESE PRICES ARE PLACEHOLDERS. REPLACE THEM BEFORE SELLING. !!
 //
-// These are the artifact's listed Japanese prices. Replace them with YOUR
-// agreed reseller prices, and set CURRENCY to what you actually charge in.
+// They are the artifact's Japanese list prices converted at a flat reference
+// rate of JPY 1 = PHP 0.38. That rate is a guess frozen in time, it ignores
+// duty, VAT, freight and your margin, and it will be wrong by the time you
+// read this. Put YOUR agreed reseller prices here.
+// ===========================================================================
+//
+// Amounts are in Stripe's smallest currency unit. PHP HAS centavos, so these
+// are centavos: 22420 is PHP 224.20. (JPY, by contrast, is zero-decimal —
+// see src/money.js if you ever switch currency.)
 
 /** @typedef {{id:string, name:string, brand:string, amount:number, sku:string, active:boolean}} Product */
 
 /** @type {Product[]} */
 const PRODUCTS = [
-  { id: "toyota:0", name: "Corolla", brand: "Toyota", amount: 2000000, sku: "TOY-COROLLA", active: true },
-  { id: "toyota:1", name: "RAV4", brand: "Toyota", amount: 3300000, sku: "TOY-RAV4", active: true },
-  { id: "toyota:2", name: "Prius", brand: "Toyota", amount: 2750000, sku: "TOY-PRIUS", active: true },
-  { id: "toyota:3", name: "Land Cruiser", brand: "Toyota", amount: 5200000, sku: "TOY-LAND-CRUISER", active: true },
-  { id: "toyota:4", name: "bZ4X", brand: "Toyota", amount: 5000000, sku: "TOY-BZ4X", active: true },
-  { id: "toyota:5", name: "Mirai", brand: "Toyota", amount: 7260000, sku: "TOY-MIRAI", active: true },
-  { id: "honda:0", name: "N-BOX", brand: "Honda", amount: 1650000, sku: "HON-N-BOX", active: true },
-  { id: "honda:1", name: "Civic", brand: "Honda", amount: 3450000, sku: "HON-CIVIC", active: true },
-  { id: "honda:2", name: "Vezel", brand: "Honda", amount: 2650000, sku: "HON-VEZEL", active: true },
-  { id: "honda:3", name: "Super Cub", brand: "Honda", amount: 495000, sku: "HON-SUPER-CUB", active: true },
-  { id: "sony:0", name: "PlayStation 5", brand: "Sony", amount: 79980, sku: "SON-PLAYSTATION-5", active: true },
-  { id: "sony:1", name: "PlayStation 5 Pro", brand: "Sony", amount: 119980, sku: "SON-PLAYSTATION-5-PRO", active: true },
-  { id: "sony:2", name: "DualSense wireless controller", brand: "Sony", amount: 11480, sku: "SON-DUALSENSE-WIRELESS", active: true },
-  { id: "sony:3", name: "WH-1000X headphones", brand: "Sony", amount: 59400, sku: "SON-WH-1000X-HEADPHONE", active: true },
-  { id: "sony:4", name: "Alpha \u03b17 series", brand: "Sony", amount: 330000, sku: "SON-ALPHA-7-SERIES", active: true },
-  { id: "sony:6", name: "BRAVIA", brand: "Sony", amount: 150000, sku: "SON-BRAVIA", active: true },
-  { id: "fastretailing:0", name: "HEATTECH", brand: "Uniqlo", amount: 590, sku: "FAS-HEATTECH", active: true },
-  { id: "fastretailing:1", name: "Ultra Light Down", brand: "Uniqlo", amount: 5990, sku: "FAS-ULTRA-LIGHT-DOWN", active: true },
-  { id: "fastretailing:2", name: "UT", brand: "Uniqlo", amount: 1500, sku: "FAS-UT", active: true },
-  { id: "fastretailing:3", name: "Fleece", brand: "Uniqlo", amount: 3990, sku: "FAS-FLEECE", active: true },
-  { id: "fastretailing:4", name: "Round Mini Shoulder Bag", brand: "Uniqlo", amount: 1500, sku: "FAS-ROUND-MINI-SHOULDE", active: true },
-  { id: "nissan:0", name: "Sakura", brand: "Nissan", amount: 2600000, sku: "NIS-SAKURA", active: true },
-  { id: "nissan:1", name: "Note e-POWER", brand: "Nissan", amount: 2330000, sku: "NIS-NOTE-E-POWER", active: true },
-  { id: "nissan:2", name: "Serena", brand: "Nissan", amount: 2830000, sku: "NIS-SERENA", active: true },
-  { id: "nissan:3", name: "X-Trail", brand: "Nissan", amount: 3840000, sku: "NIS-X-TRAIL", active: true },
+  { id: "toyota:0", name: "Corolla", brand: "Toyota", amount: 76000000, sku: "TOY-COROLLA", active: true },  // ~PHP 760,000.00  (from JPY 2,000,000)
+  { id: "toyota:1", name: "RAV4", brand: "Toyota", amount: 125400000, sku: "TOY-RAV4", active: true },  // ~PHP 1,254,000.00  (from JPY 3,300,000)
+  { id: "toyota:2", name: "Prius", brand: "Toyota", amount: 104500000, sku: "TOY-PRIUS", active: true },  // ~PHP 1,045,000.00  (from JPY 2,750,000)
+  { id: "toyota:3", name: "Land Cruiser", brand: "Toyota", amount: 197600000, sku: "TOY-LAND-CRUISER", active: true },  // ~PHP 1,976,000.00  (from JPY 5,200,000)
+  { id: "toyota:4", name: "bZ4X", brand: "Toyota", amount: 190000000, sku: "TOY-BZ4X", active: true },  // ~PHP 1,900,000.00  (from JPY 5,000,000)
+  { id: "toyota:5", name: "Mirai", brand: "Toyota", amount: 275880000, sku: "TOY-MIRAI", active: true },  // ~PHP 2,758,800.00  (from JPY 7,260,000)
+  { id: "honda:0", name: "N-BOX", brand: "Honda", amount: 62700000, sku: "HON-N-BOX", active: true },  // ~PHP 627,000.00  (from JPY 1,650,000)
+  { id: "honda:1", name: "Civic", brand: "Honda", amount: 131100000, sku: "HON-CIVIC", active: true },  // ~PHP 1,311,000.00  (from JPY 3,450,000)
+  { id: "honda:2", name: "Vezel", brand: "Honda", amount: 100700000, sku: "HON-VEZEL", active: true },  // ~PHP 1,007,000.00  (from JPY 2,650,000)
+  { id: "honda:3", name: "Super Cub", brand: "Honda", amount: 18810000, sku: "HON-SUPER-CUB", active: true },  // ~PHP 188,100.00  (from JPY 495,000)
+  { id: "sony:0", name: "PlayStation 5", brand: "Sony", amount: 3039240, sku: "SON-PLAYSTATION-5", active: true },  // ~PHP 30,392.40  (from JPY 79,980)
+  { id: "sony:1", name: "PlayStation 5 Pro", brand: "Sony", amount: 4559240, sku: "SON-PLAYSTATION-5-PRO", active: true },  // ~PHP 45,592.40  (from JPY 119,980)
+  { id: "sony:2", name: "DualSense wireless controller", brand: "Sony", amount: 436240, sku: "SON-DUALSENSE-WIRELESS", active: true },  // ~PHP 4,362.40  (from JPY 11,480)
+  { id: "sony:3", name: "WH-1000X headphones", brand: "Sony", amount: 2257200, sku: "SON-WH-1000X-HEADPHONE", active: true },  // ~PHP 22,572.00  (from JPY 59,400)
+  { id: "sony:4", name: "Alpha \u03b17 series", brand: "Sony", amount: 12540000, sku: "SON-ALPHA-7-SERIES", active: true },  // ~PHP 125,400.00  (from JPY 330,000)
+  { id: "sony:6", name: "BRAVIA", brand: "Sony", amount: 5700000, sku: "SON-BRAVIA", active: true },  // ~PHP 57,000.00  (from JPY 150,000)
+  { id: "fastretailing:0", name: "HEATTECH", brand: "Uniqlo", amount: 22420, sku: "FAS-HEATTECH", active: true },  // ~PHP 224.20  (from JPY 590)
+  { id: "fastretailing:1", name: "Ultra Light Down", brand: "Uniqlo", amount: 227620, sku: "FAS-ULTRA-LIGHT-DOWN", active: true },  // ~PHP 2,276.20  (from JPY 5,990)
+  { id: "fastretailing:2", name: "UT", brand: "Uniqlo", amount: 57000, sku: "FAS-UT", active: true },  // ~PHP 570.00  (from JPY 1,500)
+  { id: "fastretailing:3", name: "Fleece", brand: "Uniqlo", amount: 151620, sku: "FAS-FLEECE", active: true },  // ~PHP 1,516.20  (from JPY 3,990)
+  { id: "fastretailing:4", name: "Round Mini Shoulder Bag", brand: "Uniqlo", amount: 57000, sku: "FAS-ROUND-MINI-SHOULDE", active: true },  // ~PHP 570.00  (from JPY 1,500)
+  { id: "nissan:0", name: "Sakura", brand: "Nissan", amount: 98800000, sku: "NIS-SAKURA", active: true },  // ~PHP 988,000.00  (from JPY 2,600,000)
+  { id: "nissan:1", name: "Note e-POWER", brand: "Nissan", amount: 88540000, sku: "NIS-NOTE-E-POWER", active: true },  // ~PHP 885,400.00  (from JPY 2,330,000)
+  { id: "nissan:2", name: "Serena", brand: "Nissan", amount: 107540000, sku: "NIS-SERENA", active: true },  // ~PHP 1,075,400.00  (from JPY 2,830,000)
+  { id: "nissan:3", name: "X-Trail", brand: "Nissan", amount: 145920000, sku: "NIS-X-TRAIL", active: true },  // ~PHP 1,459,200.00  (from JPY 3,840,000)
 ];
 
 const BY_ID = new Map(PRODUCTS.map((p) => [p.id, p]));

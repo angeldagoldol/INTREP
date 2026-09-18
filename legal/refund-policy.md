@@ -1,41 +1,47 @@
 # Refund and Returns Policy
 
-Last updated: [DATE].
+**dagoldol**, operated by [LEGAL BUSINESS NAME]. Last updated: [DATE].
 
-## Your right to cancel
-If you are a consumer, you may cancel within **[RETURN WINDOW] days** of
-receiving the goods, for any reason, without giving one.
+## Faulty, damaged or misdescribed items
+Under the **Consumer Act of the Philippines (RA 7394)** you are entitled to a
+repair, replacement or refund if an item is defective, not as described, or
+unfit for its purpose. Tell us within **[7] days** of delivery. Return shipping
+is on us.
 
-> In the UK and EU the statutory minimum for distance sales is 14 days from
-> delivery. You may offer longer; you may not offer less.
+Keep the packaging and send photographs where you can — it speeds up the claim
+with the manufacturer.
 
-## How to cancel
-Email [SUPPORT EMAIL] with your order reference. You may use the statutory
-model cancellation form, but you do not have to.
+## Change of mind
+Philippine law does not require a change-of-mind return for online purchases,
+but we offer one anyway: **[RETURN WINDOW] days** from delivery, provided the
+item is unused, complete and in its original packaging.
 
-## Returning the goods
-Send them to [RETURN ADDRESS] within 14 days of telling us. Items should be
-unused and in their original packaging where possible. [State who pays return
-postage — you must say so clearly, or you bear the cost.]
+[State clearly who pays return shipping for a change-of-mind return — if you
+do not say, expect to be asked to cover it.]
+
+## Buyers in the EU and UK
+If you are a consumer in the EU or UK you have a **statutory 14-day right** to
+cancel from the day you receive the goods, without giving a reason. That right
+applies in addition to everything above, and we refund within 14 days of
+receiving the goods back or of proof you sent them.
+
+## How to start a return
+Email [SUPPORT EMAIL] with your order reference and what is wrong. We will
+confirm the return address before you ship anything back — items sent without
+confirmation can go missing.
 
 ## Your refund
-We refund within **14 days** of receiving the goods back, or of proof you sent
-them — whichever is sooner. Refunds go to the original payment method. We
-refund standard outbound delivery too; if you chose an upgraded service, we
-refund the standard rate.
+Refunds go to the original payment method within **[7–14] days** of us
+receiving the item. Card refunds can take a further few days to appear,
+depending on your bank.
 
-We may reduce the refund to reflect handling beyond what is needed to check the
-item, as you would in a shop.
-
-## Faulty or misdescribed items
-If an item is faulty, not as described, or unfit for purpose, you are entitled
-to a repair, replacement or refund depending on when you tell us. Return
-postage is on us. This is in addition to the cancellation right above.
+## Warranty
+Products carry the manufacturer's warranty. We will help you claim under it.
+This does not replace your rights under RA 7394.
 
 ## Exceptions
-The cancellation right does not apply to [sealed audio/video or software
-unsealed after delivery, personalised goods, perishables — list only what
-genuinely applies to your range].
+No change-of-mind return on [sealed software or media once opened,
+personalised items, items damaged by misuse — list only what applies].
 
 ## Contact
 [SUPPORT EMAIL] · [SUPPORT PHONE]

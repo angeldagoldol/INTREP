@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Store — Checkout Reference</title>
+<title>dagoldol — Checkout Reference</title>
 <meta name="color-scheme" content="light dark">
 <style>
   :root{
@@ -49,8 +49,9 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>Checkout reference</h1>
-  <p class="sub">Prices come from the server. The browser only ever sends product ids and quantities.</p>
+  <h1>dagoldol</h1>
+  <p class="sub">Authorised reseller &middot; ships from the Philippines worldwide.
+     Prices come from the server; the browser only ever sends product ids and quantities.</p>
 
   <p class="banner" id="mode">Loading products…</p>
 
@@ -67,11 +68,15 @@
     <p><a href="/legal/terms.md">Terms</a> ·
        <a href="/legal/privacy-policy.md">Privacy</a> ·
        <a href="/legal/refund-policy.md">Refunds</a></p>
-    <p>All product names, logos and brands are property of their respective owners.
-       Product names are used for identification only.</p>
+    <p>All product names, logos and brands are the property of their respective
+       owners and are used for identification only. dagoldol is an authorised
+       reseller and is not affiliated with these manufacturers otherwise.</p>
+    <p>&copy; <span id="yr"></span> dagoldol. Registered in the Philippines.
+       <span id="regno"></span></p>
   </footer>
 </div>
 
+<script>document.getElementById("yr").textContent = new Date().getFullYear();</script>
 <script type="module">
 const fmt = (minor, cur) =>
   new Intl.NumberFormat("en-GB", { style:"currency", currency:cur.toUpperCase() }).format(minor/100);

@@ -23,7 +23,9 @@ app.get("/healthz", (_req, res) => res.json({ ok: true }));
 app.use(express.static("public", { extensions: ["html"] }));
 
 app.listen(config.port, () => {
-  console.log(`\n  Store running at ${config.baseUrl}`);
+  console.log(`\n  ${config.brand.name} — store running at ${config.baseUrl}`);
+  console.log(`  Currency:        ${config.currency.toUpperCase()}`);
+  console.log(`  Ships to:        ${config.shipTo.join(", ")}`);
   console.log(`  Orders notify:   ${config.email.notify}`);
   console.log(`  Stripe mode:     ${config.stripe.secretKey.startsWith("sk_live") ? "LIVE — real money" : "test"}`);
   console.log(`\n  Local webhooks:  npm run stripe:listen\n`);

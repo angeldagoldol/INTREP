@@ -1,50 +1,53 @@
 # Privacy Policy
 
-**[LEGAL BUSINESS NAME]** ("we") operates this store. Last updated: [DATE].
+**[LEGAL BUSINESS NAME]**, trading as **dagoldol** ("we"), operates this store.
+Last updated: [DATE].
+
+We process personal data in accordance with the **Data Privacy Act of 2012
+(RA 10173)** and its implementing rules.
 
 ## Who is responsible
-[LEGAL BUSINESS NAME], company number [COMPANY NUMBER], registered at
-[REGISTERED ADDRESS]. Questions: [SUPPORT EMAIL].
+[LEGAL BUSINESS NAME], [DTI / SEC REG NO], TIN [TIN], of [BUSINESS ADDRESS].
+Data Protection Officer: [NAME], [SUPPORT EMAIL], [SUPPORT PHONE].
 
 ## What we collect
-When you place an order we collect, via our payment processor:
-- your name, email address and phone number;
+When you order, we collect through our payment processor:
+- your name, email address and mobile number;
 - your shipping and billing address;
 - the items, quantities and amount paid.
 
 **We never see or store your card details.** Payment is handled entirely by
-Stripe on Stripe's own pages. We receive only a confirmation and the last four
+Stripe on Stripe's own pages. We receive a confirmation and the last four
 digits of the card.
 
-## Why, and on what legal basis
-| Purpose | Basis |
+## Why, and on what basis
+| Purpose | Basis under RA 10173 |
 |---|---|
-| Taking payment and shipping your order | Performance of a contract |
-| Keeping sales and tax records | Legal obligation |
+| Taking payment and shipping your order | Necessary for a contract with you |
+| Issuing BIR receipts, keeping tax records | Legal obligation |
 | Answering support requests | Legitimate interests |
 
 ## Who we share it with
-- **Stripe** — payment processing. See stripe.com/privacy.
-- **[SHIPPING CARRIER]** — delivery.
-- **[EMAIL PROVIDER]** — order notifications sent to us.
+- **Stripe** — payment processing (stripe.com/privacy).
+- **[COURIER — e.g. J&T, LBC, Ninja Van, DHL]** — delivery.
+- **[EMAIL PROVIDER]** — sending us your order notification.
 
 We do not sell your data or share it for advertising.
 
+## Transfers outside the Philippines
+Stripe and our email provider process data abroad. We use providers that apply
+protections consistent with RA 10173.
+
 ## How long we keep it
-Order and tax records: [7] years, as required by law. Support correspondence:
-[2] years.
+Order and tax records: **10 years**, per BIR retention rules. Support
+correspondence: [2] years.
 
 ## Cookies and tracking
-[Describe what you actually set. If the store sets only a session cookie
-required for checkout, say so — strictly necessary cookies do not need consent.
-If you add analytics or advertising, you must add a consent banner that blocks
-them until the visitor agrees.]
-
-## Third-party content
-[If you load fonts, maps or embeds from another provider, name them here — that
-provider receives the visitor's IP address. Self-hosting avoids this.]
+[Describe what you actually set. A cookie strictly necessary for checkout needs
+no consent. If you add analytics or advertising, add a consent banner that
+blocks them until the visitor agrees.]
 
 ## Your rights
-You can request a copy of your data, correction, deletion, restriction, or
-portability, and you can object to processing. Contact [SUPPORT EMAIL]. You may
-also complain to [SUPERVISORY AUTHORITY — e.g. the ICO in the UK].
+Under RA 10173 you may be informed, object, access, correct, erase or block,
+claim damages, and request data portability. Contact [SUPPORT EMAIL]. You may
+also complain to the **National Privacy Commission** (privacy.gov.ph).

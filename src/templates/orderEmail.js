@@ -1,4 +1,5 @@
 import { formatMoney } from "../money.js";
+import { config } from "../config.js";
 
 // Builds the order notification. Plain data in, {subject, html, text} out —
 // no I/O here, so it is trivially testable.
@@ -24,7 +25,7 @@ export function buildOrderEmail(order) {
   } = order;
 
   const mode = livemode ? "" : "[TEST] ";
-  const subject = `${mode}New order ${orderId} — ${formatMoney(amountTotal, currency)}`;
+  const subject = `${mode}${config.brand.name}: new order ${orderId} — ${formatMoney(amountTotal, currency)}`;
 
   const itemsNote = order.itemsError
     ? "Line items could not be retrieved from Stripe — open the order in the Stripe Dashboard."
@@ -93,7 +94,7 @@ export function buildOrderEmail(order) {
     <p style="margin:0 0 16px">${[shipping?.name, ...ship].filter(Boolean).map(escapeHtml).join("<br>")}</p>` : ""}
 
     <p style="margin:20px 0 0;padding-top:16px;border-top:1px solid #e4e2dc;color:#5b5951;font-size:12px">
-      Sent automatically when Stripe confirmed payment.
+      ${escapeHtml(config.brand.name)} &middot; sent automatically when Stripe confirmed payment.
     </p>
   </div>
 </body></html>`;

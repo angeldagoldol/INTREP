@@ -1,4 +1,6 @@
-# INTREP Store — Stripe checkout with order notifications
+# dagoldol — store
+
+Authorised reseller. Based in the Philippines, shipping worldwide.
 
 A small, dependency-light Node server that takes real card payments through
 Stripe Checkout and emails you the moment an order is paid.
@@ -14,6 +16,34 @@ Browser ──POST /api/checkout──▶ Server ──▶ Stripe Checkout (host
                                                   │
               order email ◀── Server ◀──POST /api/stripe/webhook (signed)
 ```
+
+
+## Read this before choosing a payment provider
+
+Your main market is the Philippines, and that changes the answer.
+
+**Stripe works in PH** — available since 2021, accepts PHP and USD, and local
+onboarding is still subject to regional rollout, so check you can actually get
+an account before building on it.
+
+**But Stripe does not reliably support GCash, Maya or QR Ph**, and that is
+where Philippine volume is: GCash has roughly 76 million users, Maya about 47
+million. Card penetration is comparatively low. A PH store that only takes
+cards will lose a large share of its customers at checkout.
+
+Practical split:
+
+| Market | Provider | Why |
+|---|---|---|
+| International (US, EU, JP, SG) | **Stripe** — this repo | Cards, already built and tested |
+| Philippines | **PayMongo** or **HitPay** | GCash, Maya, QR Ph, InstaPay, over-the-counter, PHP payouts |
+
+`src/routes/checkout.js` is the only file that talks to Stripe, so adding a
+second provider beside it is a contained change rather than a rewrite. The
+webhook, order log, email and catalog are all provider-agnostic already.
+
+I have NOT built the PayMongo path — say the word and it can go in next to
+the Stripe one.
 
 ## Why it is built this way
 
@@ -138,6 +168,9 @@ requires 3D Secure.
 - [ ] Check `CURRENCY` against `src/money.js` — JPY is zero-decimal
 - [ ] Complete every legal page and link them from the footer and checkout
 - [ ] Confirm your reseller agreement covers online sale of these brands
+- [ ] Add a GCash/Maya route for PH customers (PayMongo or HitPay)
+- [ ] Register the business with DTI (or SEC) and get your BIR receipts in order
+- [ ] Replace the placeholder PHP prices — they are a flat JPY conversion
 - [ ] Move orders from `data/orders.jsonl` to a real database
 - [ ] Keep `.env` out of git (already in `.gitignore`)
 - [ ] Configure tax — Stripe Tax, or your own rates
@@ -148,7 +181,7 @@ requires 3D Secure.
 ```
 server.js                    Express app. Webhook mounts BEFORE express.json()
 src/config.js                Env loading + fail-fast validation
-src/catalog.js               Server-side price authority (25 products)
+src/catalog.js               Server-side price authority (25 products, PHP)
 src/money.js                 Zero-decimal currency handling (JPY!)
 src/cors.js                  Cross-origin access for the storefront
 src/orders.js                Order log + webhook idempotency
@@ -158,7 +191,8 @@ src/routes/checkout.js       Creates Checkout Sessions
 src/routes/webhook.js        Verifies signature, records order, emails you
 public/                      Minimal reference storefront
 public/store-bridge.js       Artifact cart -> this server (off by default)
-legal/                       Policy templates to complete
+legal/                       Policy templates to complete (Philippine law)
+storefront/index.html        The published storefront, branded, bridge included
 ```
 
 ## Security notes

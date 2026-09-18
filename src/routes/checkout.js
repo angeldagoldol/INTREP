@@ -27,7 +27,7 @@ export function checkoutRouter(stripe) {
         success_url: `${config.baseUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${config.baseUrl}/cancel.html`,
         // Collect what you need to actually ship the goods.
-        shipping_address_collection: { allowed_countries: ["GB", "US", "JP", "DE", "FR", "PH"] },
+        shipping_address_collection: { allowed_countries: config.shipTo },
         phone_number_collection: { enabled: true },
         // Lets Stripe email the customer their receipt.
         customer_creation: "always",

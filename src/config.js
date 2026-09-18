@@ -43,6 +43,16 @@ if (missing.length) {
 
 export const config = {
   port: Number(process.env.PORT || 3000),
+  // Shown in the storefront, the order emails and the legal pages.
+  brand: {
+    name: process.env.BRAND_NAME || "dagoldol",
+    legalName: process.env.LEGAL_BUSINESS_NAME || "",
+    supportEmail: process.env.SUPPORT_EMAIL || process.env.NOTIFY_EMAIL || "",
+  },
+  // Where you will actually ship. PH first: it is the main market.
+  shipTo: (process.env.SHIP_TO_COUNTRIES ||
+    "PH,US,GB,JP,SG,MY,TH,ID,VN,AU,CA,AE,DE,FR,NL,ES,IT")
+    .split(",").map((c) => c.trim().toUpperCase()).filter(Boolean),
   baseUrl: (process.env.PUBLIC_BASE_URL || "http://localhost:3000").replace(/\/$/, ""),
   currency: (process.env.CURRENCY || "gbp").toLowerCase(),
   // Comma-separated list of origins allowed to call /api/*.

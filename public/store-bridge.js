@@ -6,9 +6,11 @@
    Set STORE_ENDPOINT below to your deployed store server, with no trailing
    slash, e.g. "https://store.yourdomain.com".
 
-   While it is empty the page behaves EXACTLY as it does today: a demo cart
-   that charges nothing. Nothing below runs. That is deliberate — a page must
-   never claim to take payment while pointing at nothing.
+   While it is empty the CART behaves EXACTLY as it does today: a demo that
+   charges nothing. That is deliberate — a page must never claim to take
+   payment while pointing at nothing.
+
+   The dagoldol branding below is NOT gated: it applies either way.
 
    The server is the price authority. This script sends only product ids and
    quantities; every amount is looked up server-side. Editing prices here, or
@@ -18,8 +20,63 @@
   "use strict";
 
   var STORE_ENDPOINT = "";           // <-- your server, e.g. "https://store.example.com"
+  var BRAND = "dagoldol";
+  var TAGLINE = "Authorised reseller \u00b7 ships from the Philippines worldwide";
 
-  if (!STORE_ENDPOINT) return;       // demo mode: leave the page untouched
+  /* -- 1. Branding. Runs always, with or without a checkout endpoint. ------ */
+  function brandFooter() {
+    var inner = document.querySelector(".footer-inner");
+    if (!inner || inner.dataset.branded === "1") return;
+    inner.dataset.branded = "1";
+
+    var line = document.createElement("p");
+    line.style.cssText = "margin:0;width:100%;order:99";
+    var strong = document.createElement("strong");
+    strong.textContent = BRAND;
+    line.appendChild(strong);
+    line.appendChild(document.createTextNode(" \u00b7 " + TAGLINE));
+    inner.appendChild(line);
+
+    // .site-dock is position:fixed at the bottom of the viewport, so extra
+    // footer lines land underneath it. Clear it, allowing for the safe area
+    // on phones with a home indicator.
+    var footer = inner.closest("footer") || inner.parentElement;
+    if (footer) {
+      footer.style.paddingBottom =
+        "calc(env(safe-area-inset-bottom, 0px) + 5.5rem)";
+    }
+
+    var small = document.createElement("p");
+    small.style.cssText = "margin:0;width:100%;order:100;font-size:var(--text-xs)";
+    small.textContent =
+      "\u00a9 " + new Date().getFullYear() + " " + BRAND +
+      ". Product names and logos are the property of their respective owners " +
+      "and are used for identification only.";
+    inner.appendChild(small);
+  }
+
+  function brandWordmark() {
+    var wm = document.querySelector(".wordmark");
+    if (!wm || wm.dataset.branded === "1") return;
+    wm.dataset.branded = "1";
+    var by = document.createElement("span");
+    by.className = "wordmark-by";
+    by.style.cssText =
+      "margin-left:var(--space-2);padding-left:var(--space-2);" +
+      "border-left:1px solid var(--border);color:var(--text-muted);" +
+      "font-weight:var(--weight-body);font-size:var(--text-sm)";
+    by.textContent = BRAND;
+    wm.appendChild(by);
+  }
+
+  function applyBranding() { brandFooter(); brandWordmark(); }
+  applyBranding();
+  new MutationObserver(applyBranding).observe(document.documentElement, {
+    childList: true, subtree: true,
+  });
+
+  /* -- 2. Checkout bridge. Only with an endpoint configured. --------------- */
+  if (!STORE_ENDPOINT) return;       // demo mode: cart stays exactly as it is
 
   var CART_KEY = "fivehouses.cart";
   var busy = false;
