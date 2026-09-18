@@ -1,0 +1,19 @@
+{
+  "name": "intrep-store",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Stripe checkout with order-notification email for the Five Houses storefront",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "stripe": "^18.5.0",
+    "nodemailer": "^7.0.6",
+    "resend": "^6.1.2"
+  }
+}
