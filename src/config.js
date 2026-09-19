@@ -38,7 +38,14 @@ const isSet = (k) => Boolean(process.env[k]) && !process.env[k].includes("replac
 const hasStripe = isSet("STRIPE_SECRET_KEY") && isSet("STRIPE_WEBHOOK_SECRET");
 const hasPayMongo = isSet("PAYMONGO_SECRET_KEY");
 
-if (!hasStripe && !hasPayMongo) {
+// The server must never boot without a way to take money. Tooling that takes
+// none — the email check — is a different question, and blocking it behind a
+// payment key only teaches people to paste a fake one in to get past it.
+// scripts/build-legal.mjs deliberately does NOT set this: a legal page has to
+// name who takes the payment, so it needs a real provider configured.
+const TOOLING = process.env.CONFIG_TOOLING === "1";
+
+if (!hasStripe && !hasPayMongo && !TOOLING) {
   console.error(
     "\nNo payment provider configured.\n" +
       "  Stripe   — set STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET\n" +
