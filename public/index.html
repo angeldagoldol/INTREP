@@ -47,7 +47,11 @@
   #payopts{display:flex;gap:16px;flex-wrap:wrap}
   #payopts label{display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer}
   #payopts input{width:20px;height:20px;accent-color:var(--accent)}
-  .hint{color:var(--muted);font-size:12px;margin:8px 0 0}
+  .hint{color:var(--muted);font-size:13px;margin:8px 0 0}
+  #enq input,#enq textarea{width:100%;padding:10px;font:inherit;min-height:44px;
+    border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)}
+  #enq textarea{min-height:76px;resize:vertical}
+  #enq label{font-size:14px;color:var(--muted)}
   footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--border);
     color:var(--muted);font-size:13px}
   footer a{color:inherit}
@@ -62,6 +66,7 @@
   <p class="banner" id="mode">Loading products…</p>
 
   <form id="shop">
+    <h2 style="font-size:16px;margin:0 0 10px">Buy online</h2>
     <ul id="items"></ul>
     <fieldset id="pay" hidden>
       <legend>Payment</legend>
@@ -72,6 +77,31 @@
       <button type="submit" id="buy" disabled>Checkout</button>
     </div>
     <p class="err" id="err" hidden></p>
+  </form>
+
+  <form id="enq" hidden>
+    <h2 style="font-size:16px;margin:32px 0 6px">Vehicles — enquiry only</h2>
+    <p class="hint" style="margin:0 0 12px">
+      Vehicles are not sold through online checkout. Tell us what you are after
+      and we will come back to you with availability, the final price including
+      registration and delivery, and payment options.
+    </p>
+    <ul id="enqitems"></ul>
+    <fieldset>
+      <legend>Your details</legend>
+      <div style="display:grid;gap:12px">
+        <label>Name<br><input type="text" id="e-name" required maxlength="120" autocomplete="name"></label>
+        <label>Email<br><input type="email" id="e-email" required maxlength="200" autocomplete="email"></label>
+        <label>Mobile (optional)<br><input type="tel" id="e-phone" maxlength="40" autocomplete="tel"></label>
+        <label>Message (optional)<br><textarea id="e-msg" rows="3" maxlength="2000"></textarea></label>
+      </div>
+    </fieldset>
+    <div class="total">
+      <strong>Indicative: <span id="enqtotal">—</span></strong>
+      <button type="submit" id="enqbtn" disabled>Send enquiry</button>
+    </div>
+    <p class="err" id="enqerr" hidden></p>
+    <p class="hint" id="enqok" hidden></p>
   </form>
 
   <footer>
@@ -142,6 +172,29 @@ try {
     ? "Test mode. GCash and Maya open a simulated wallet page. Test cards: 4343 4343 4343 4345 (PayMongo), 4242 4242 4242 4242 (Stripe)."
     : "Stripe test mode uses card 4242 4242 4242 4242, any future expiry, any CVC.";
 
+  const payableProducts = products.filter(p => p.mode !== "enquiry");
+  const enquiryProducts  = products.filter(p => p.mode === "enquiry");
+  products = payableProducts;           // the buy form only ever sees payable rows
+
+  if (enquiryProducts.length) {
+    document.getElementById("enqitems").innerHTML = enquiryProducts.map(p => `
+      <li>
+        <label class="name" for="e-${p.id}">${p.name}<span class="brand">${p.brand} · indicative ${fmt(p.amount, currency)}</span></label>
+        <input type="number" id="e-${p.id}" data-enq="${p.id}" value="0" min="0" max="5" step="1"
+               inputmode="numeric" aria-label="How many ${p.name}">
+      </li>`).join("");
+    document.getElementById("enq").hidden = false;
+
+    const enqTotalEl = document.getElementById("enqtotal");
+    const enqBtn = document.getElementById("enqbtn");
+    document.getElementById("enqitems").addEventListener("input", () => {
+      const total = enquiryProducts.reduce((sum, p) =>
+        sum + Number(document.getElementById(`e-${p.id}`).value || 0) * p.amount, 0);
+      enqTotalEl.textContent = total ? fmt(total, currency) : "—";
+      enqBtn.disabled = total <= 0;
+    });
+  }
+
   itemsEl.innerHTML = products.map(p => `
     <li>
       <label class="name" for="q-${p.id}">${p.name}<span class="brand">${p.brand} · ${p.sku}</span></label>
@@ -155,6 +208,44 @@ try {
 } catch (e) {
   modeEl.textContent = `Could not load products: ${e.message}. Is the server running?`;
 }
+
+document.getElementById("enq").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const errEl2 = document.getElementById("enqerr");
+  const okEl   = document.getElementById("enqok");
+  const btn    = document.getElementById("enqbtn");
+  errEl2.hidden = true; okEl.hidden = true;
+  btn.disabled = true; btn.textContent = "Sending…";
+
+  const items = [...document.querySelectorAll("[data-enq]")]
+    .map(el => ({ id: el.dataset.enq, quantity: Number(el.value || 0) }))
+    .filter(r => r.quantity > 0);
+
+  try {
+    const res = await fetch("/api/enquiry", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name:  document.getElementById("e-name").value,
+        email: document.getElementById("e-email").value,
+        phone: document.getElementById("e-phone").value,
+        message: document.getElementById("e-msg").value,
+        items,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`);
+    okEl.textContent = `Thank you — your enquiry is with us (${data.ref}). We will be in touch by email.`;
+    okEl.hidden = false;
+    document.getElementById("enq").reset();
+    document.getElementById("enqtotal").textContent = "—";
+  } catch (e) {
+    errEl2.textContent = e.message;
+    errEl2.hidden = false;
+  } finally {
+    btn.disabled = false; btn.textContent = "Send enquiry";
+  }
+});
 
 document.getElementById("shop").addEventListener("submit", async (ev) => {
   ev.preventDefault();

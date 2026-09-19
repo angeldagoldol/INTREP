@@ -69,6 +69,117 @@
     wm.appendChild(by);
   }
 
+  function renderEnquiry() {
+    var actions = document.querySelector(".drawer-actions");
+    if (!actions || !enquiryIds.length) return;
+
+    var split = splitCart();
+    var existing = document.getElementById("fh-enquiry");
+    if (!split.enquiry.length) {           // nothing enquiry-only in the cart
+      if (existing) existing.remove();
+      return;
+    }
+    if (existing) return;                  // already rendered for this view
+
+    var names = split.enquiry.map(function (r) {
+      var p = catalogue[r.id];
+      return (p ? p.name : r.id) + (r.quantity > 1 ? " \u00d7 " + r.quantity : "");
+    }).join(", ");
+
+    var total = split.enquiry.reduce(function (sum, r) {
+      var p = catalogue[r.id];
+      return sum + (p ? p.amount * r.quantity : 0);
+    }, 0);
+
+    var box = document.createElement("div");
+    box.id = "fh-enquiry";
+    box.style.cssText =
+      "width:100%;margin-bottom:var(--space-3);padding:var(--space-3);" +
+      "border:var(--border-hairline) solid var(--border);border-radius:var(--radius-md);" +
+      "background:var(--surface-sunken)";
+    box.innerHTML =
+      '<p style="margin:0 0 var(--space-2);font-size:var(--text-sm)">' +
+        "<strong>Vehicles are enquiry only.</strong> " + names +
+        " cannot be bought through online checkout. Leave your details and we will " +
+        "come back with availability, the final price including registration and " +
+        "delivery, and how to pay.</p>" +
+      '<p style="margin:0 0 var(--space-3);font-size:var(--text-xs);color:var(--text-faint)">' +
+        "Indicative " + money(total) + "</p>" +
+      '<div style="display:grid;gap:var(--space-2)">' +
+        '<input id="fh-e-name"  type="text"  placeholder="Your name" maxlength="120" autocomplete="name">' +
+        '<input id="fh-e-email" type="email" placeholder="Email" maxlength="200" autocomplete="email">' +
+        '<input id="fh-e-phone" type="tel"   placeholder="Mobile (optional)" maxlength="40" autocomplete="tel">' +
+        '<textarea id="fh-e-msg" rows="2" placeholder="Anything else? (optional)" maxlength="2000"></textarea>' +
+      "</div>" +
+      '<p id="fh-e-msgout" style="margin:var(--space-2) 0 0;font-size:var(--text-sm)" hidden></p>' +
+      '<button id="fh-e-send" type="button" class="btn btn-primary" ' +
+        'style="width:100%;margin-top:var(--space-3)">Send enquiry</button>';
+
+    Array.prototype.forEach.call(box.querySelectorAll("input,textarea"), function (el) {
+      el.style.cssText =
+        "width:100%;min-height:44px;padding:var(--space-2);font:inherit;" +
+        "font-size:var(--text-sm);border:var(--border-hairline) solid var(--border);" +
+        "border-radius:var(--radius-sm);background:var(--surface);color:var(--text)";
+    });
+
+    box.querySelector("#fh-e-send").addEventListener("click", function () {
+      sendEnquiry(split.enquiry, box);
+    });
+
+    actions.parentNode.insertBefore(box, actions);
+
+    // Only offer payment if something in the cart can actually be paid for.
+    var payBtn = reviewCta();
+    if (payBtn) {
+      if (split.payable.length) {
+        payBtn.textContent = "Pay for the other " + split.payable.length +
+          (split.payable.length === 1 ? " item" : " items");
+      } else {
+        payBtn.style.display = "none";
+      }
+    }
+  }
+
+  function sendEnquiry(items, box) {
+    var out = box.querySelector("#fh-e-msgout");
+    var btn = box.querySelector("#fh-e-send");
+    var body = {
+      name:  box.querySelector("#fh-e-name").value,
+      email: box.querySelector("#fh-e-email").value,
+      phone: box.querySelector("#fh-e-phone").value,
+      message: box.querySelector("#fh-e-msg").value,
+      items: items,
+    };
+    btn.disabled = true;
+    btn.textContent = "Sending\u2026";
+    out.hidden = true;
+
+    fetch(STORE_ENDPOINT + "/api/enquiry", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+      .then(function (r) { return r.json().then(function (d) {
+        if (!r.ok) throw new Error(d.error || "Server returned " + r.status);
+        return d;
+      }); })
+      .then(function (d) {
+        out.textContent = "Thank you \u2014 your enquiry is with us (" + d.ref +
+          "). We will be in touch by email.";
+        out.style.color = "";
+        out.hidden = false;
+        box.querySelector("[style*=grid]").style.display = "none";
+        btn.style.display = "none";
+      })
+      .catch(function (err) {
+        out.textContent = err.message;
+        out.style.color = "var(--danger)";
+        out.hidden = false;
+        btn.disabled = false;
+        btn.textContent = "Send enquiry";
+      });
+  }
+
   function applyBranding() { brandFooter(); brandWordmark(); }
   applyBranding();
   new MutationObserver(applyBranding).observe(document.documentElement, {
@@ -81,13 +192,24 @@
   var CART_KEY = "fivehouses.cart";
   var busy = false;
   var providers = null;          // filled from /api/products
+  var enquiryIds = [];           // products that cannot be bought online
+  var catalogue = {};            // id -> product, for names and prices
+  var currency = "php";
   var chosen = null;             // provider id the shopper picked
 
   // Ask the server which providers it can actually process, so the page never
   // offers a wallet that is not configured.
   fetch(STORE_ENDPOINT + "/api/products")
     .then(function (r) { return r.json(); })
-    .then(function (d) { providers = d.providers || {}; renderPicker(); })
+    .then(function (d) {
+      providers = d.providers || {};
+      enquiryIds = d.enquiry || [];
+      catalogue = {};
+      (d.products || []).forEach(function (p) { catalogue[p.id] = p; });
+      currency = d.currency || "php";
+      renderPicker();
+      renderEnquiry();
+    })
     .catch(function () { providers = {}; });
 
   var WALLETS = { gcash: "GCash", paymaya: "Maya", grab_pay: "GrabPay", qrph: "QR Ph", card: "card" };
@@ -161,6 +283,25 @@
     }
   }
 
+  function splitCart() {
+    var cart = readCart();
+    var enquiry = [], payable = [];
+    cart.forEach(function (row) {
+      (enquiryIds.indexOf(row.id) !== -1 ? enquiry : payable).push(row);
+    });
+    return { enquiry: enquiry, payable: payable };
+  }
+
+  function money(centavos) {
+    try {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency", currency: currency.toUpperCase(),
+      }).format(centavos / 100);
+    } catch (e) {
+      return centavos / 100 + " " + currency.toUpperCase();
+    }
+  }
+
   // The review step is rendered fresh each time the drawer opens, so find the
   // live nodes on demand rather than caching references.
   function reviewCta() {
@@ -192,6 +333,7 @@
         "are never handled by this site.";
     }
     renderPicker();
+    renderEnquiry();
   }
 
   new MutationObserver(relabel).observe(document.documentElement, {
@@ -210,9 +352,9 @@
       ev.stopPropagation();
       if (busy) return;
 
-      var cart = readCart();
+      var cart = splitCart().payable;      // vehicles go through the form
       if (!cart.length) {
-        setNotice("Your cart is empty.", true);
+        setNotice("Nothing in your cart can be bought online.", true);
         return;
       }
 

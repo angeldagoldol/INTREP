@@ -68,6 +68,33 @@ taken from PayMongo's own Node SDK and are verified. The Checkout Session
 **Run one test-mode order before trusting it.** If a field name is wrong the
 API returns a 400 naming it, and `src/paymongo.js` logs the detail verbatim.
 
+### Vehicles are enquiry-only
+
+`src/catalog.js` gives every product a `mode`:
+
+| mode | Products | Path |
+|---|---|---|
+| `checkout` | 11 — Sony, Uniqlo | Paid online |
+| `enquiry` | 14 — Toyota, Honda, Nissan | Enquiry form |
+
+A PHP 1.9M Land Cruiser is roughly twenty times a GCash wallet limit, and
+nobody buys a car through a payment button. Vehicles collect a lead instead.
+
+The rule is enforced at the price authority, not in the UI: `buildLineItems()`
+throws on an `enquiry` product, so no crafted request can put a car through
+checkout. `/api/products` publishes the split so both front-ends render the
+right control.
+
+`POST /api/enquiry` takes `{name, email, phone, message, items}`, prices the
+items from the catalog, saves the lead to `data/enquiries.jsonl` **before**
+emailing, and replies with a reference. It is public and its job is to email
+you, so it is rate limited to 5 per 10 minutes per client — applied *after*
+validation, so a customer mistyping their address does not burn the quota.
+Behind a proxy set `TRUST_PROXY=1` or the limiter sees the load balancer.
+
+In the cart: vehicles only → the pay button is hidden and the form shown;
+mixed cart → both, as "Send enquiry" and "Pay for the other N items".
+
 ### Currency
 
 The storefront and this server both show and charge **Philippine pesos**, and
@@ -210,7 +237,8 @@ requires 3D Secure.
 - [ ] Run one PayMongo test order to confirm the Checkout Session fields
 - [ ] Register the business with DTI (or SEC) and get your BIR receipts in order
 - [ ] Replace the placeholder PHP prices — they are a flat JPY conversion
-- [ ] Move orders from `data/orders.jsonl` to a real database
+- [ ] Move orders and enquiries from `data/*.jsonl` to a real database
+- [ ] Set `TRUST_PROXY=1` if deploying behind a load balancer
 - [ ] Keep `.env` out of git (already in `.gitignore`)
 - [ ] Configure tax — Stripe Tax, or your own rates
 - [ ] Decide shipping countries in `src/routes/checkout.js`
