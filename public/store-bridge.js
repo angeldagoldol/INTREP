@@ -55,6 +55,33 @@
     inner.appendChild(small);
   }
 
+  /* Policy links. Gated on STORE_ENDPOINT for the same reason checkout is:
+     while it is empty there is no server hosting the pages, and a footer link
+     to a 404 is worse than no link. Build them with `npm run legal:build`. */
+  function brandLegal() {
+    if (!STORE_ENDPOINT) return;
+    var inner = document.querySelector(".footer-inner");
+    if (!inner || inner.dataset.legal === "1") return;
+    inner.dataset.legal = "1";
+
+    var row = document.createElement("p");
+    row.style.cssText = "margin:0;width:100%;order:101;font-size:var(--text-xs);" +
+      "display:flex;gap:1rem;flex-wrap:wrap";
+
+    [["Terms", "terms"], ["Refunds & returns", "refund-policy"], ["Privacy", "privacy-policy"]]
+      .forEach(function (pair) {
+        var a = document.createElement("a");
+        a.href = STORE_ENDPOINT + "/legal/" + pair[1] + ".html";
+        a.textContent = pair[0];
+        a.rel = "noopener";
+        // 24px minimum target, per WCAG 2.2 SC 2.5.8, without changing the
+        // footer's own type scale.
+        a.style.cssText = "color:inherit;display:inline-flex;align-items:center;min-height:24px";
+        row.appendChild(a);
+      });
+    inner.appendChild(row);
+  }
+
   function brandWordmark() {
     var wm = document.querySelector(".wordmark");
     if (!wm || wm.dataset.branded === "1") return;
@@ -180,7 +207,7 @@
       });
   }
 
-  function applyBranding() { brandFooter(); brandWordmark(); }
+  function applyBranding() { brandFooter(); brandLegal(); brandWordmark(); }
   applyBranding();
   new MutationObserver(applyBranding).observe(document.documentElement, {
     childList: true, subtree: true,
