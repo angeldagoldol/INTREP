@@ -68,14 +68,21 @@ taken from PayMongo's own Node SDK and are verified. The Checkout Session
 **Run one test-mode order before trusting it.** If a field name is wrong the
 API returns a 400 naming it, and `src/paymongo.js` logs the detail verbatim.
 
-### !! Displayed currency does not match charged currency yet !!
+### Currency
 
-The storefront artifact still shows the **Japanese yen** prices baked into its
-bundle (¥79,980 for a PS5), while this server charges **PHP**
-(₱30,392.40). A customer would see one number and be charged another.
+The storefront and this server both show and charge **Philippine pesos**, and
+the numbers are generated from the same source: `src/catalog.js` is the price
+authority, and the artifact's displayed prices were derived from it, so the
+subtotal a customer reads is the amount they are charged, to the centavo.
 
-Fix before going live — either set your real PHP prices in the artifact, or
-switch `CURRENCY` and the catalog to the currency the page displays.
+Only the product prices moved to PHP. Company financials stay in yen, because
+they are facts about Japanese companies — Honda's ¥1.1tn buyback, Nissan's
+¥671bn loss, the ¥1,900 fleece of 1998. The page has two formatters and only
+the product one was changed.
+
+If you re-price, change `src/catalog.js` and regenerate the artifact's prices
+from it. Do not edit the two independently, or they will drift apart and
+customers will be charged something other than what they read.
 
 ## Why it is built this way
 
@@ -201,7 +208,6 @@ requires 3D Secure.
 - [ ] Complete every legal page and link them from the footer and checkout
 - [ ] Confirm your reseller agreement covers online sale of these brands
 - [ ] Run one PayMongo test order to confirm the Checkout Session fields
-- [ ] Make the artifact's displayed prices match the charged currency
 - [ ] Register the business with DTI (or SEC) and get your BIR receipts in order
 - [ ] Replace the placeholder PHP prices — they are a flat JPY conversion
 - [ ] Move orders from `data/orders.jsonl` to a real database
