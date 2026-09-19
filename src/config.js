@@ -76,6 +76,31 @@ export const config = {
     // Guards the metrics dashboard. Business numbers are not public.
     token: process.env.ADMIN_TOKEN || "",
   },
+  // Identity facts for the legal pages. They are NOT committed: this repo is
+  // public, and a home address and TIN in git history cannot be taken back.
+  // scripts/build-legal.mjs refuses to render a page while any of them is
+  // blank, so a policy that says "TIN [TIN]" can never reach a customer.
+  legal: {
+    // "dti" for a sole proprietorship, "sec" for a corporation or partnership.
+    regType: (process.env.BUSINESS_REG_TYPE || "").trim().toLowerCase(),
+    regNo: (process.env.BUSINESS_REG_NO || "").trim(),
+    tin: (process.env.BUSINESS_TIN || "").trim(),
+    address: (process.env.BUSINESS_ADDRESS || "").trim(),
+    // Where returns come back to. Usually, but not always, the same place.
+    returnAddress: (process.env.RETURN_ADDRESS || process.env.BUSINESS_ADDRESS || "").trim(),
+    supportPhone: (process.env.SUPPORT_PHONE || "").trim(),
+    // Under RA 10173 the DPO is a named person, not a role address.
+    dpoName: (process.env.DPO_NAME || "").trim(),
+    // Where disputes are heard. Normally the city you are registered in.
+    jurisdictionCity: (process.env.JURISDICTION_CITY || "").trim(),
+    couriers: (process.env.COURIERS || "")
+      .split(",").map((c) => c.trim()).filter(Boolean),
+    // One window for every market. PH law requires none; the EU and UK
+    // require 14, so 14 is one policy instead of two.
+    returnWindowDays: Number(process.env.RETURN_WINDOW_DAYS || 14),
+    deliveryPh: process.env.DELIVERY_ESTIMATE_PH || "3–7 working days",
+    deliveryIntl: process.env.DELIVERY_ESTIMATE_INTL || "7–21 working days",
+  },
   report: {
     // Which day a sale belongs to. Manila by default: the main market is PH,
     // and on UTC every sale before 8am local would land on the day before.

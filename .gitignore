@@ -11,3 +11,7 @@ data/processed-events.json
 # Your stock levels are business data, not source.
 data/stock.json
 .DS_Store
+
+# Rendered legal pages carry your registered address and TIN. Build them with
+# `npm run legal:build`; never commit the output.
+public/legal/

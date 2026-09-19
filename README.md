@@ -330,6 +330,32 @@ browser will not let a page call this API cross-origin without it, and an
 allowlist means only your storefront can create Checkout Sessions on your
 Stripe account.
 
+## Legal pages
+
+Three policies — Terms, Refunds and Returns, Privacy — written for a
+Philippine seller shipping worldwide. They are **templates**: your identity
+facts live in `.env` and never in git, because this repository is public and
+an address or TIN in its history cannot be taken back.
+
+```bash
+npm run legal:build      # -> public/legal/*.html, served at /legal/terms etc.
+```
+
+**The build refuses to run while a required fact is blank**, and names each
+one. A page that reads `TIN {{TIN}}` is worse than no page: it tells a
+customer, and the DTI, that nobody checked.
+
+Everything the pages say about the store itself — who takes the money, which
+countries you ship to, the VAT rate, the return window — is read from your
+config, so a policy cannot drift from what the code actually does.
+
+Once built, the storefront footer links them automatically (whenever
+`STORE_ENDPOINT` is set in `public/store-bridge.js`).
+
+**If you are not registered yet, that is the blocker, not the wording.**
+RA 11967 requires an online merchant to be identifiable; the BIR requires a
+receipt for every sale. See `legal/README.md`.
+
 ## Stock, sales and funds
 
 A dashboard at `/admin.html`, behind a bearer token. Set one first:
@@ -408,10 +434,11 @@ than drawing a flat line at zero.
 - [ ] Set real prices and SKUs in `src/catalog.js`
 - [ ] Set `ALLOWED_ORIGINS` to your storefront origin, not `*`
 - [ ] Check `CURRENCY` against `src/money.js` — JPY is zero-decimal
-- [ ] Complete every legal page and link them from the footer and checkout
+- [ ] Register with DTI (or SEC), then BIR — nothing below works without it
+- [ ] Fill the legal facts in `.env` and run `npm run legal:build`
+- [ ] Have a Philippine lawyer review the built pages
 - [ ] Confirm your reseller agreement covers online sale of these brands
 - [ ] Run one PayMongo test order to confirm the Checkout Session fields
-- [ ] Register the business with DTI (or SEC) and get your BIR receipts in order
 - [ ] Replace the placeholder PHP prices — they are a flat JPY conversion
 - [ ] Move orders and enquiries from `data/*.jsonl` to a real database
 - [ ] Set `ADMIN_TOKEN` to a random secret and set your opening stock levels
@@ -437,10 +464,12 @@ src/templates/orderEmail.js  Email rendering (pure, testable)
 src/routes/checkout.js       Creates Checkout Sessions
 src/routes/webhook.js        Verifies signature, records order, emails you
 src/routes/metrics.js        Dashboard API, bearer-token gated, no CORS
+scripts/build-legal.mjs      Renders legal/*.md -> public/legal/*.html
 public/                      Minimal reference storefront
 public/store-bridge.js       Artifact cart -> this server (off by default)
 public/admin.html            Stock / sales / funds dashboard
-legal/                       Policy templates to complete (Philippine law)
+legal/                       Policy TEMPLATES; facts come from .env
+public/legal/                Rendered policies — GITIGNORED, holds your address
 storefront/index.html        The published storefront, branded, bridge included
 scripts/                     prices export / apply / verify / breakdown
 prices.example.csv           Committed template (no costs)
@@ -460,3 +489,5 @@ prices.csv                   Your working file — GITIGNORED, holds costs
   than serving anything if no token is set.
 - The dashboard page itself is public; only the data behind it is gated. It
   carries `noindex`.
+- The legal pages are rendered from `.env`, never committed. They carry your
+  registered address and TIN, and this repository is public.
