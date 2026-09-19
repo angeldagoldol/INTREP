@@ -482,6 +482,21 @@ Then set:
 
 Point your PayMongo webhook at `https://YOUR-API/api/paymongo/webhook`.
 
+### Your own product photos
+
+The storefront ships with Wikimedia Commons photos as placeholders. To use
+your own, drop a JPEG into `storefront/products/` **with the same filename**
+and rebuild — see `storefront/products/README.md` for the full list of 28 and
+what each one shows.
+
+The build works out which are yours by hash and **removes the stock
+photographer's credit from those**. That is not cosmetic: the page prints each
+photo's author and CC licence underneath it, and leaving that under your own
+photograph credits a stranger for your work and claims a Creative Commons
+licence over it. Replace a file and its credit becomes `Photo: dagoldol`; put
+the stock file back and the original attribution returns. Nothing to maintain
+by hand.
+
 ### 2. The storefront
 
 Vercel → Add New → Project → import this repo. It reads `vercel.json` and runs
