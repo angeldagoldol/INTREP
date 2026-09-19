@@ -1,0 +1,26 @@
+id,sku,name,brand,mode,cost_php,markup_pct,srp_php,price_php
+toyota:0,TOY-COROLLA,Corolla,Toyota,enquiry,,6,1213000.00,1213000.00
+toyota:1,TOY-RAV4,RAV4,Toyota,enquiry,,6,2183000.00,2183000.00
+toyota:2,TOY-PRIUS,Prius,Toyota,enquiry,,6,2650000.00,2650000.00
+toyota:3,TOY-LAND-CRUISER,Land Cruiser,Toyota,enquiry,,6,5758000.00,5757999.99
+toyota:4,TOY-BZ4X,bZ4X,Toyota,enquiry,,6,3190000.00,3190000.00
+toyota:5,TOY-MIRAI,Mirai,Toyota,enquiry,,6,4850000.00,4849999.99
+honda:0,HON-N-BOX,N-BOX,Honda,enquiry,,6,950000.00,949999.99
+honda:1,HON-CIVIC,Civic,Honda,enquiry,,6,1600000.00,1599999.99
+honda:2,HON-VEZEL,Vezel,Honda,enquiry,,6,1550000.00,1550000.00
+honda:3,HON-SUPER-CUB,Super Cub,Honda,enquiry,,10,169000.00,168999.99
+sony:0,SON-PLAYSTATION-5,PlayStation 5,Sony,checkout,,8,40032.00,40031.99
+sony:1,SON-PLAYSTATION-5-PRO,PlayStation 5 Pro,Sony,checkout,,8,56990.00,56989.99
+sony:2,SON-DUALSENSE-WIRELESS,DualSense wireless controller,Sony,checkout,,15,3990.00,3989.99
+sony:3,SON-WH-1000X-HEADPHONE,WH-1000X headphones,Sony,checkout,,14,16999.00,16999.00
+sony:4,SON-ALPHA-7-SERIES,Alpha α7 series,Sony,checkout,,12,144999.00,144999.00
+sony:6,SON-BRAVIA,BRAVIA,Sony,checkout,,13,54999.00,54999.00
+fastretailing:0,FAS-HEATTECH,HEATTECH,Uniqlo,checkout,,70,590.00,589.99
+fastretailing:1,FAS-ULTRA-LIGHT-DOWN,Ultra Light Down,Uniqlo,checkout,,70,3990.00,3989.99
+fastretailing:2,FAS-UT,UT,Uniqlo,checkout,,70,790.00,789.99
+fastretailing:3,FAS-FLEECE,Fleece,Uniqlo,checkout,,70,1490.00,1489.99
+fastretailing:4,FAS-ROUND-MINI-SHOULDE,Round Mini Shoulder Bag,Uniqlo,checkout,,70,990.00,990.00
+nissan:0,NIS-SAKURA,Sakura,Nissan,enquiry,,6,1250000.00,1249999.99
+nissan:1,NIS-NOTE-E-POWER,Note e-POWER,Nissan,enquiry,,6,1350000.00,1350000.00
+nissan:2,NIS-SERENA,Serena,Nissan,enquiry,,6,2150000.00,2149999.99
+nissan:3,NIS-X-TRAIL,X-Trail,Nissan,enquiry,,6,2290000.00,2289999.99

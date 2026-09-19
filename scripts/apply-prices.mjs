@@ -7,6 +7,7 @@
 // The two files must never be edited independently: if they drift, customers
 // are charged a number other than the one they read.
 import { readFileSync, writeFileSync } from "node:fs";
+import { priceFromCost } from "../src/pricing.js";
 
 const [, , csvPath, ...flags] = process.argv;
 const DRY = flags.includes("--dry-run");
@@ -48,18 +49,59 @@ const col = (n) => {
   }
   return i;
 };
-const iId = col("id"), iPrice = col("price_php");
+const iId = col("id");
 const iName = header.indexOf("name");
+
+// Two ways to price. Forward (cost + markup -> VAT -> shelf price) wins when
+// both columns are present; otherwise price_php is taken as given.
+const iCost = header.indexOf("cost_php");
+const iMarkup = header.indexOf("markup_pct");
+const iSrp = header.indexOf("srp_php");
+const FORWARD = iCost !== -1 && iMarkup !== -1;
+const iPrice = FORWARD ? header.indexOf("price_php") : col("price_php");
+if (FORWARD) console.log("  pricing forward from cost_php + markup_pct\n");
 
 const wanted = new Map();
 const problems = [];
 for (const [n, r] of rows.entries()) {
   const id = r[iId]?.trim();
-  const raw = (r[iPrice] ?? "").trim().replace(/[₱,\s]/g, "");
   const line = n + 2;
   if (!id) { problems.push(`line ${line}: missing id`); continue; }
-  if (raw === "") { problems.push(`line ${line}: ${id} has no price`); continue; }
-  const pesos = Number(raw);
+
+  const num = (i) => Number((r[i] ?? "").trim().replace(/[₱,%\s]/g, ""));
+  let pesos, derived = null;
+
+  if (FORWARD) {
+    const cost = num(iCost), markup = num(iMarkup);
+    if (!Number.isFinite(cost) || cost <= 0) { problems.push(`line ${line}: ${id} cost_php "${r[iCost]}" is not a positive number`); continue; }
+    if (!Number.isFinite(markup) || markup < 0) { problems.push(`line ${line}: ${id} markup_pct "${r[iMarkup]}" is not a non-negative number`); continue; }
+    const srpForCap = iSrp !== -1 ? num(iSrp) : 0;
+    try {
+      derived = priceFromCost({
+        costInclVat: Math.round(cost * 100),
+        markupPct: markup,
+        capAt: Number.isFinite(srpForCap) && srpForCap > 0 ? Math.round(srpForCap * 100) : 0,
+      });
+    } catch (e) { problems.push(`line ${line}: ${id} ${e.message}`); continue; }
+    pesos = derived.price / 100;
+
+    // The whole point of the guard: never price above the market.
+    if (iSrp !== -1) {
+      const srp = num(iSrp);
+      if (Number.isFinite(srp) && srp > 0 && derived.price > Math.round(srp * 100)) {
+        problems.push(
+          `line ${line}: ${id} computes to ₱${pesos.toLocaleString("en-US", { minimumFractionDigits: 2 })} ` +
+          `which is ABOVE its market SRP of ₱${srp.toLocaleString("en-US", { minimumFractionDigits: 2 })} — ` +
+          `lower the markup or renegotiate the cost`
+        );
+        continue;
+      }
+    }
+  } else {
+    const raw = (r[iPrice] ?? "").trim().replace(/[₱,\s]/g, "");
+    if (raw === "") { problems.push(`line ${line}: ${id} has no price`); continue; }
+    pesos = Number(raw);
+  }
   if (!Number.isFinite(pesos) || pesos <= 0) { problems.push(`line ${line}: ${id} price "${r[iPrice]}" is not a positive number`); continue; }
   const centavos = Math.round(pesos * 100);
   // Compare with a tolerance: 4362.4 * 100 is 436239.99999999994 in binary
@@ -68,7 +110,7 @@ for (const [n, r] of rows.entries()) {
     problems.push(`line ${line}: ${id} price ${pesos} has sub-centavo precision; rounded to ${centavos / 100}`);
   }
   if (wanted.has(id)) { problems.push(`line ${line}: ${id} appears twice`); continue; }
-  wanted.set(id, { centavos, name: iName >= 0 ? r[iName]?.trim() : undefined });
+  wanted.set(id, { centavos, name: iName >= 0 ? r[iName]?.trim() : undefined, derived });
 }
 
 let catalog = readFileSync(CATALOG, "utf8");
@@ -153,6 +195,22 @@ if (DRY) {
   writeFileSync(BUNDLE, bundle);
   console.log(`Applied: ${changes.length} catalog changes, ${bundleChanges} bundle price updates` +
     (renotated ? `, ${renotated} reformatted to plain decimals` : ""));
+}
+
+if (FORWARD) {
+  console.log("\n  cost -> markup -> VAT -> shelf price");
+  for (const [id, v] of wanted) {
+    if (!v.derived) continue;
+    const d = v.derived;
+    console.log(
+      `    ${id.padEnd(18)} cost ₱${(d.costIncl / 100).toLocaleString("en-US", { minimumFractionDigits: 2 }).padStart(13)}` +
+      `  +${String(d.markupPct).padStart(5)}%  ->  ₱${(d.price / 100).toLocaleString("en-US", { minimumFractionDigits: 2 }).padStart(13)}` +
+      `   (margin ${d.marginPct.toFixed(1)}%` +
+      (Math.abs(d.effectiveMarkupPct - d.requestedMarkupPct) > 0.05
+        ? `, markup ${d.effectiveMarkupPct.toFixed(2)}% after rounding)` : ")")
+    );
+  }
+  console.log();
 }
 
 for (const c of changes.slice(0, 40)) {

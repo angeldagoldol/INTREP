@@ -68,6 +68,52 @@ taken from PayMongo's own Node SDK and are verified. The Checkout Session
 **Run one test-mode order before trusting it.** If a field name is wrong the
 API returns a 400 naming it, and `src/paymongo.js` logs the detail verbatim.
 
+### Pricing from cost (cost -> markup -> VAT)
+
+`prices.csv` can price forward instead of taking `price_php` as given. Fill in
+`cost_php` (what you pay the supplier, VAT inclusive) and `markup_pct`, and the
+shelf price is computed:
+
+```
+cost_incl  --/1.12-->  cost_net  --x(1+markup)-->  sell_net  --x1.12-->  shelf
+```
+
+VAT comes off the cost before margin is applied — otherwise you earn margin on
+the government's tax — and goes back on once, at the end.
+
+**`cost_php` is your wholesale cost and this repository is public, so
+`prices.csv` is gitignored.** `prices.example.csv` is the committed template,
+with the cost column blank. `npm run prices:export` preserves any costs already
+in your local file rather than wiping them.
+
+**Markup is not margin**, and the two are routinely confused:
+
+```
+cost 100, sell 140   ->  markup 40%   ( profit / cost )
+                         margin 28.6% ( profit / selling price )
+```
+
+The CSV takes markup; every report shows the resulting margin beside it.
+
+**The SRP guard.** Put the market price in `srp_php` and a markup that computes
+above it is refused outright:
+
+```
+line 12: sony:0 computes to ₱46,333.00 which is ABOVE its market SRP of
+₱40,032.00 — lower the markup or renegotiate the cost
+```
+
+Only a sub-peso rounding overshoot is absorbed silently. Anything larger
+surfaces, because quietly clamping a 25% markup down to 8% would hand back a
+price that looks right while earning a third of what was asked for.
+
+Shelf prices snap to whole pesos, so the chain cannot leave you selling a car
+at ₱5,757,999.99.
+
+```bash
+npm run prices:breakdown    # price, net of VAT, VAT, cost, profit, margin
+```
+
 ### VAT
 
 Catalog prices are **VAT-inclusive shelf prices**, which is what Philippine
@@ -303,7 +349,8 @@ requires 3D Secure.
 server.js                    Express app. Webhook mounts BEFORE express.json()
 src/config.js                Env loading + fail-fast validation
 src/catalog.js               Server-side price authority (25 products, PHP)
-src/money.js                 Zero-decimal currency handling (JPY!)
+src/money.js                 Zero-decimal currency handling + VAT split
+src/pricing.js               cost -> markup -> VAT forward pricing (JPY!)
 src/cors.js                  Cross-origin access for the storefront
 src/orders.js                Order log + webhook idempotency
 src/email.js                 Resend or SMTP
@@ -315,7 +362,8 @@ public/store-bridge.js       Artifact cart -> this server (off by default)
 legal/                       Policy templates to complete (Philippine law)
 storefront/index.html        The published storefront, branded, bridge included
 scripts/                     prices export / apply / verify / breakdown
-prices.csv                   Editable price list (pesos)
+prices.example.csv           Committed template (no costs)
+prices.csv                   Your working file — GITIGNORED, holds costs
 ```
 
 ## Security notes
