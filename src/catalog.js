@@ -53,8 +53,8 @@ const PRODUCTS = [
   { id: "sony:6", name: "BRAVIA", brand: "Sony", amount: 5499900, sku: "SON-BRAVIA", active: true, mode: "checkout" },  // ~PHP 57,000.00  (from JPY 150,000)
   { id: "fastretailing:0", name: "HEATTECH", brand: "Uniqlo", amount: 59000, sku: "FAS-HEATTECH", active: true, mode: "checkout" },  // ~PHP 224.20  (from JPY 590)
   { id: "fastretailing:1", name: "Ultra Light Down", brand: "Uniqlo", amount: 399000, sku: "FAS-ULTRA-LIGHT-DOWN", active: true, mode: "checkout" },  // ~PHP 2,276.20  (from JPY 5,990)
-  { id: "fastretailing:2", name: "UT", brand: "Uniqlo", amount: 79000, sku: "FAS-UT", active: true, mode: "checkout" },  // ~PHP 570.00  (from JPY 1,500)
-  { id: "fastretailing:3", name: "Fleece", brand: "Uniqlo", amount: 149000, sku: "FAS-FLEECE", active: true, mode: "checkout" },  // ~PHP 1,516.20  (from JPY 3,990)
+  { id: "fastretailing:2", name: "UT", brand: "Uniqlo", amount: 79000, sku: "FAS-UT", active: false, mode: "checkout" },  // parallel import not viable — UT: lands at PHP 711.95 net vs PHP 790 market  // ~PHP 570.00  (from JPY 1,500)
+  { id: "fastretailing:3", name: "Fleece", brand: "Uniqlo", amount: 149000, sku: "FAS-FLEECE", active: false, mode: "checkout" },  // parallel import not viable — Fleece: lands at PHP 1,848.26 net vs PHP 1,490 market  // ~PHP 1,516.20  (from JPY 3,990)
   { id: "fastretailing:4", name: "Round Mini Shoulder Bag", brand: "Uniqlo", amount: 99000, sku: "FAS-ROUND-MINI-SHOULDE", active: true, mode: "checkout" },  // ~PHP 570.00  (from JPY 1,500)
   { id: "nissan:0", name: "Sakura", brand: "Nissan", amount: 125000000, sku: "NIS-SAKURA", active: true, mode: "enquiry" },  // ~PHP 988,000.00  (from JPY 2,600,000)
   { id: "nissan:1", name: "Note e-POWER", brand: "Nissan", amount: 135000000, sku: "NIS-NOTE-E-POWER", active: true, mode: "enquiry" },  // ~PHP 885,400.00  (from JPY 2,330,000)
@@ -72,6 +72,11 @@ export function getProduct(id) {
 export function listProducts() {
   return PRODUCTS.filter((p) => p.active);
 }
+
+// Two Uniqlo lines are deactivated above. Uniqlo runs its own stores in the
+// Philippines and prices below what a parallel import can land at, so those
+// two would lose money on every sale. npm run prices:apply refuses them if
+// active is flipped back without the landed cost changing.
 
 /** Products that can actually be paid for online. */
 export function listPayable() {

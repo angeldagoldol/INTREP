@@ -8,6 +8,7 @@
 // are charged a number other than the one they read.
 import { readFileSync, writeFileSync } from "node:fs";
 import { priceFromCost } from "../src/pricing.js";
+import { landedCost, marginAtPrice } from "../src/landedCost.js";
 
 const [, , csvPath, ...flags] = process.argv;
 const DRY = flags.includes("--dry-run");
@@ -54,12 +55,25 @@ const iName = header.indexOf("name");
 
 // Two ways to price. Forward (cost + markup -> VAT -> shelf price) wins when
 // both columns are present; otherwise price_php is taken as given.
+// Parallel imports: cost is COMPUTED from the source-market price plus the
+// freight, duty and VAT of getting it here — not typed in as a wholesale
+// figure that does not exist.
+const iJpy = header.indexOf("jp_price_jpy");
+const iFreight = header.indexOf("freight_php");
+const iDuty = header.indexOf("duty_pct");
+const iFx = header.indexOf("fx_rate");
+const LANDED = iJpy !== -1 && iFreight !== -1;
+
 const iCost = header.indexOf("cost_php");
 const iMarkup = header.indexOf("markup_pct");
 const iSrp = header.indexOf("srp_php");
-const FORWARD = iCost !== -1 && iMarkup !== -1;
+const FORWARD = (iCost !== -1 || LANDED) && iMarkup !== -1;
 const iPrice = FORWARD ? header.indexOf("price_php") : col("price_php");
-if (FORWARD) console.log("  pricing forward from cost_php + markup_pct\n");
+if (FORWARD) {
+  console.log(LANDED
+    ? "  pricing forward; cost from landed import where jp_price_jpy is given\n"
+    : "  pricing forward from cost_php + markup_pct\n");
+}
 
 const wanted = new Map();
 const problems = [];
@@ -72,7 +86,24 @@ for (const [n, r] of rows.entries()) {
   let pesos, derived = null;
 
   if (FORWARD) {
-    const cost = num(iCost), markup = num(iMarkup);
+    let cost = iCost !== -1 ? num(iCost) : NaN;
+    let landed = null;
+
+    // A source-market price wins over a typed cost: it is the real basis.
+    if (LANDED && Number.isFinite(num(iJpy)) && num(iJpy) > 0) {
+      const fx = iFx !== -1 && num(iFx) > 0 ? num(iFx) : 0.41;
+      try {
+        landed = landedCost({
+          jpyPrice: num(iJpy),
+          fxRate: fx,
+          freightPhp: Number.isFinite(num(iFreight)) ? num(iFreight) : 0,
+          dutyPct: iDuty !== -1 && Number.isFinite(num(iDuty)) ? num(iDuty) : 15,
+        });
+        cost = landed.landedIncl / 100;
+      } catch (e) { problems.push(`line ${line}: ${id} ${e.message}`); continue; }
+    }
+
+    const markup = num(iMarkup);
     if (!Number.isFinite(cost) || cost <= 0) { problems.push(`line ${line}: ${id} cost_php "${r[iCost]}" is not a positive number`); continue; }
     if (!Number.isFinite(markup) || markup < 0) { problems.push(`line ${line}: ${id} markup_pct "${r[iMarkup]}" is not a non-negative number`); continue; }
     const srpForCap = iSrp !== -1 ? num(iSrp) : 0;
@@ -83,7 +114,26 @@ for (const [n, r] of rows.entries()) {
         capAt: Number.isFinite(srpForCap) && srpForCap > 0 ? Math.round(srpForCap * 100) : 0,
       });
     } catch (e) { problems.push(`line ${line}: ${id} ${e.message}`); continue; }
+    if (landed) derived.landed = landed;
     pesos = derived.price / 100;
+
+    // A parallel import can land above the price the brand's own local stores
+    // charge. Selling there loses money on every unit, so say so loudly.
+    if (landed && iSrp !== -1) {
+      const srp = num(iSrp);
+      if (Number.isFinite(srp) && srp > 0) {
+        const m = marginAtPrice({ landedNet: landed.landedNet, shelfPrice: Math.round(srp * 100) });
+        if (!m.viable) {
+          problems.push(
+            `line ${line}: ${id} lands at ₱${(landed.landedNet / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })} net ` +
+            `but the market sells it at ₱${srp.toLocaleString("en-US", { minimumFractionDigits: 2 })} — ` +
+            `every sale would lose ₱${Math.abs(m.profit / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}. ` +
+            `Drop the line, or set active:false in src/catalog.js`
+          );
+          continue;
+        }
+      }
+    }
 
     // The whole point of the guard: never price above the market.
     if (iSrp !== -1) {
@@ -114,7 +164,19 @@ for (const [n, r] of rows.entries()) {
 }
 
 let catalog = readFileSync(CATALOG, "utf8");
-const catalogIds = [...catalog.matchAll(/\{ id: "([^"]+)"/g)].map((m) => m[1]);
+// Only ACTIVE products need a price. A deactivated line is not for sale, so
+// demanding a row for it would block every apply until someone re-added a
+// price nobody is going to charge.
+const catalogIds = [...catalog.matchAll(/\{ id: "([^"]+)"[^}]*?active: (true|false)/g)]
+  .filter((m) => m[2] === "true")
+  .map((m) => m[1]);
+const inactiveIds = [...catalog.matchAll(/\{ id: "([^"]+)"[^}]*?active: false/g)].map((m) => m[1]);
+for (const id of inactiveIds) {
+  if (wanted.has(id)) {
+    console.warn(`  note: ${id} is inactive (not for sale); its row is ignored`);
+    wanted.delete(id);
+  }
+}
 
 for (const id of wanted.keys()) if (!catalogIds.includes(id)) problems.push(`unknown product id: ${id}`);
 for (const id of catalogIds) if (!wanted.has(id)) problems.push(`missing from CSV: ${id}`);
@@ -129,9 +191,10 @@ problems.filter((p) => p.includes("sub-centavo")).forEach((p) => console.warn(" 
 // --- rewrite the catalog -----------------------------------------------
 const changes = [];
 catalog = catalog.replace(/(\{ id: "([^"]+)"[^}]*?amount: )(\d+)/g, (full, head, id, oldAmt) => {
-  const next = wanted.get(id).centavos;
-  if (Number(oldAmt) !== next) changes.push({ id, from: Number(oldAmt), to: next });
-  return head + next;
+  const row = wanted.get(id);
+  if (!row) return full;              // inactive, or simply not in this CSV
+  if (Number(oldAmt) !== row.centavos) changes.push({ id, from: Number(oldAmt), to: row.centavos });
+  return head + row.centavos;
 });
 
 // --- rewrite the storefront bundle -------------------------------------

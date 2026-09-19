@@ -114,6 +114,24 @@ at ₱5,757,999.99.
 npm run prices:breakdown    # price, net of VAT, VAT, cost, profit, margin
 ```
 
+### Parallel imports
+
+A parallel importer buys at RETAIL in the source market, not wholesale, so a
+typed `cost_php` is fiction. Give `jp_price_jpy`, `freight_php`, `duty_pct` and
+`fx_rate` instead and `src/landedCost.js` computes the real cost through
+Japanese tax-free export, FX, freight, PH duty and import VAT.
+
+It also refuses to price a line that lands above what the brand's own local
+stores charge:
+
+```
+line 21: fastretailing:3 lands at ₱1,848.26 net but the market sells it at
+₱1,490.00 — every sale would lose ₱517.90. Drop the line, or set
+active:false in src/catalog.js
+```
+
+That is not a pricing problem and no markup fixes it. See PRICING.md.
+
 ### VAT
 
 Catalog prices are **VAT-inclusive shelf prices**, which is what Philippine
@@ -350,7 +368,8 @@ server.js                    Express app. Webhook mounts BEFORE express.json()
 src/config.js                Env loading + fail-fast validation
 src/catalog.js               Server-side price authority (25 products, PHP)
 src/money.js                 Zero-decimal currency handling + VAT split
-src/pricing.js               cost -> markup -> VAT forward pricing (JPY!)
+src/pricing.js               cost -> markup -> VAT forward pricing
+src/landedCost.js            parallel-import landed cost (JP retail -> PH shelf) (JPY!)
 src/cors.js                  Cross-origin access for the storefront
 src/orders.js                Order log + webhook idempotency
 src/email.js                 Resend or SMTP
