@@ -3,11 +3,12 @@
 // Deliberately dependency-free so this runs anywhere. For real volume, swap
 // both functions for your database — the interface is only three calls.
 import { appendFileSync, mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
-import { dirname } from "node:path";
+import { dirname, join } from "node:path";
+import { config } from "./config.js";
 
-const ORDERS_FILE = "data/orders.jsonl";
-const ENQUIRIES_FILE = "data/enquiries.jsonl";
-const EVENTS_FILE = "data/processed-events.json";
+const ORDERS_FILE = join(config.dataDir, "orders.jsonl");
+const ENQUIRIES_FILE = join(config.dataDir, "enquiries.jsonl");
+const EVENTS_FILE = join(config.dataDir, "processed-events.json");
 const MAX_REMEMBERED_EVENTS = 5000;
 
 function ensureDir(file) {

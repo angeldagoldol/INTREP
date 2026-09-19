@@ -1,0 +1,68 @@
+# Render blueprint for the API. The storefront goes to Vercel separately.
+#
+# THE DISK IS THE POINT. Without a mounted disk this service loses every
+# order, every stock level and the record of which webhooks it already
+# handled — and losing that last one means a retried webhook charges you a
+# second notification email and decrements stock twice.
+#
+# Render's FREE tier does not offer disks. This blueprint asks for a Starter
+# instance for that reason. Railway with a volume works the same way.
+services:
+  - type: web
+    name: dagoldol-store
+    runtime: node
+    plan: starter            # free has no disk; see above
+    region: singapore        # closest to the Philippines
+    buildCommand: npm ci && npm run legal:build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    disk:
+      name: store-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DATA_DIR
+        value: /var/data
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: CURRENCY
+        value: php
+      - key: REPORT_TIMEZONE
+        value: Asia/Manila
+      # Everything below is a secret or a per-deployment value. Set them in
+      # the Render dashboard; never in this file, which is in a public repo.
+      - key: PUBLIC_BASE_URL
+        sync: false          # https://your-api.onrender.com
+      - key: ALLOWED_ORIGINS
+        sync: false          # https://your-storefront.vercel.app — NOT "*"
+      - key: PAYMONGO_SECRET_KEY
+        sync: false
+      - key: PAYMONGO_WEBHOOK_SECRET
+        sync: false
+      - key: NOTIFY_EMAIL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      # Legal page facts — see legal/README.md. The build fails without them.
+      - key: LEGAL_BUSINESS_NAME
+        sync: false
+      - key: BUSINESS_REG_TYPE
+        sync: false
+      - key: BUSINESS_REG_NO
+        sync: false
+      - key: BUSINESS_TIN
+        sync: false
+      - key: BUSINESS_ADDRESS
+        sync: false
+      - key: SUPPORT_PHONE
+        sync: false
+      - key: DPO_NAME
+        sync: false
+      - key: JURISDICTION_CITY
+        sync: false
+      - key: COURIERS
+        sync: false

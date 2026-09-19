@@ -12,7 +12,8 @@
     "dev": "node --watch server.js",
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
     "prices:breakdown": "node scripts/price-breakdown.mjs",
-    "legal:build": "node scripts/build-legal.mjs"
+    "legal:build": "node scripts/build-legal.mjs",
+    "storefront:build": "node scripts/build-storefront.mjs"
   },
   "dependencies": {
     "express": "^5.1.0",

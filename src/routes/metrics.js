@@ -1,5 +1,6 @@
 import express from "express";
 import { readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
 import { config } from "../config.js";
 import { getProduct } from "../catalog.js";
 import { splitVat } from "../money.js";
@@ -9,10 +10,12 @@ import { stockReport, setStock } from "../inventory.js";
  * Read the order log. It is append-only JSONL, so a half-written final line
  * after a crash is possible — skip it rather than failing the whole dashboard.
  */
+const ORDERS_FILE = join(config.dataDir, "orders.jsonl");
+
 function readOrders() {
-  if (!existsSync("data/orders.jsonl")) return [];
+  if (!existsSync(ORDERS_FILE)) return [];
   const out = [];
-  for (const line of readFileSync("data/orders.jsonl", "utf8").split("\n")) {
+  for (const line of readFileSync(ORDERS_FILE, "utf8").split("\n")) {
     if (!line.trim()) continue;
     try { out.push(JSON.parse(line)); } catch { /* truncated tail */ }
   }

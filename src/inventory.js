@@ -5,10 +5,11 @@
 // most sessions are never paid and reserving against them would show stock you
 // still have.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { dirname } from "node:path";
+import { dirname, join } from "node:path";
 import { getProduct, listProducts } from "./catalog.js";
+import { config } from "./config.js";
 
-const FILE = "data/stock.json";
+const FILE = join(config.dataDir, "stock.json");
 
 function read() {
   if (!existsSync(FILE)) return {};
