@@ -1,4 +1,4 @@
-import { formatMoney } from "../money.js";
+import { formatMoney, splitVat } from "../money.js";
 import { config } from "../config.js";
 
 function escapeHtml(value) {
@@ -15,6 +15,7 @@ export function buildEnquiryEmail(enquiry) {
   const { ref, name, email, phone, message, items = [], currency, createdAt } = enquiry;
 
   const indicative = items.reduce((s, i) => s + (i.amount || 0) * (i.quantity || 1), 0);
+  const vat = config.vat.rate > 0 && config.vat.inclusive ? splitVat(indicative, config.vat.rate) : null;
   const subject = `${config.brand.name}: vehicle enquiry from ${name || "a customer"} (${ref})`;
 
   const lines = [
@@ -30,7 +31,11 @@ export function buildEnquiryEmail(enquiry) {
     `Interested in`,
     ...items.map((i) => `  ${i.quantity} x ${i.name} — indicative ${formatMoney(i.amount * i.quantity, currency)}`),
     ``,
-    `Indicative total: ${formatMoney(indicative, currency)}`,
+    `Indicative total: ${formatMoney(indicative, currency)}${vat ? " (VAT inclusive)" : ""}`,
+    ...(vat
+      ? [`  net of VAT   ${formatMoney(vat.net, currency)}`,
+         `  ${config.vat.label.padEnd(12)} ${formatMoney(vat.vat, currency)}`]
+      : []),
     ...(message ? [``, `Message`, ...message.split("\n").map((l) => `  ${l}`)] : []),
     ``,
     `Reply to ${email || "the customer"} to take it forward.`,
@@ -64,6 +69,10 @@ export function buildEnquiryEmail(enquiry) {
           </td></tr>`).join("")}
         <tr><td style="padding:12px 0;font-weight:600">Indicative total</td>
             <td style="padding:12px 0;text-align:right;font-weight:600">${escapeHtml(formatMoney(indicative, currency))}</td></tr>
+        ${vat ? `<tr><td style="padding:2px 0;color:#5b5951;font-size:13px">net of VAT</td>
+            <td style="padding:2px 0;text-align:right;color:#5b5951;font-size:13px">${escapeHtml(formatMoney(vat.net, currency))}</td></tr>
+        <tr><td style="padding:2px 0;color:#5b5951;font-size:13px">${escapeHtml(config.vat.label)}</td>
+            <td style="padding:2px 0;text-align:right;color:#5b5951;font-size:13px">${escapeHtml(formatMoney(vat.vat, currency))}</td></tr>` : ""}
       </tbody>
     </table>
 

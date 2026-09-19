@@ -72,6 +72,13 @@ export const config = {
   // actually being listened on rather than a hardcoded 3000.
   baseUrl: (process.env.PUBLIC_BASE_URL || `http://localhost:${PORT}`).replace(/\/$/, ""),
   currency: (process.env.CURRENCY || "gbp").toLowerCase(),
+  vat: {
+    // Philippine VAT. Set VAT_RATE=0 to switch the breakdown off entirely.
+    rate: process.env.VAT_RATE === undefined ? 0.12 : Number(process.env.VAT_RATE),
+    // Catalog amounts are shelf prices, so the tax is already inside them.
+    inclusive: process.env.PRICES_INCLUDE_VAT !== "false",
+    label: process.env.VAT_LABEL || "VAT 12%",
+  },
   // Comma-separated list of origins allowed to call /api/*.
   // "*" is convenient locally and too loose for production.
   allowedOrigins: (process.env.ALLOWED_ORIGINS || "*")
