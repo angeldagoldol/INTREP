@@ -53,8 +53,10 @@ if (!isSet("NOTIFY_EMAIL")) {
   process.exit(1);
 }
 
+const PORT = Number(process.env.PORT || 3000);
+
 export const config = {
-  port: Number(process.env.PORT || 3000),
+  port: PORT,
   // Shown in the storefront, the order emails and the legal pages.
   brand: {
     name: process.env.BRAND_NAME || "dagoldol",
@@ -65,7 +67,10 @@ export const config = {
   shipTo: (process.env.SHIP_TO_COUNTRIES ||
     "PH,US,GB,JP,SG,MY,TH,ID,VN,AU,CA,AE,DE,FR,NL,ES,IT")
     .split(",").map((c) => c.trim().toUpperCase()).filter(Boolean),
-  baseUrl: (process.env.PUBLIC_BASE_URL || "http://localhost:3000").replace(/\/$/, ""),
+  // Used to build the payment providers' success_url and cancel_url, so a
+  // wrong value sends paying customers to a dead address. Default to the port
+  // actually being listened on rather than a hardcoded 3000.
+  baseUrl: (process.env.PUBLIC_BASE_URL || `http://localhost:${PORT}`).replace(/\/$/, ""),
   currency: (process.env.CURRENCY || "gbp").toLowerCase(),
   // Comma-separated list of origins allowed to call /api/*.
   // "*" is convenient locally and too loose for production.
