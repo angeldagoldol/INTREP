@@ -8,4 +8,6 @@ prices.csv
 data/orders.jsonl
 data/enquiries.jsonl
 data/processed-events.json
+# Your stock levels are business data, not source.
+data/stock.json
 .DS_Store

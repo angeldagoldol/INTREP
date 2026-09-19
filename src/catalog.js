@@ -69,6 +69,21 @@ export function getProduct(id) {
   return p && p.active ? p : null;
 }
 
+const BY_NAME = new Map(PRODUCTS.map((p) => [p.name.toLowerCase(), p]));
+
+/**
+ * Look a product up by display name. PayMongo returns line items by name
+ * only, so without this the stock decrement silently matches nothing.
+ * Names are unique in this catalog; assert that rather than trusting it.
+ */
+export function findByName(name) {
+  return BY_NAME.get(String(name || "").trim().toLowerCase()) || null;
+}
+
+if (BY_NAME.size !== PRODUCTS.length) {
+  throw new Error("Duplicate product name in catalog — findByName would be ambiguous");
+}
+
 export function listProducts() {
   return PRODUCTS.filter((p) => p.active);
 }
