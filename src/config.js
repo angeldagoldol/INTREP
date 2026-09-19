@@ -30,14 +30,26 @@ function loadDotEnv(path = ".env") {
 
 loadDotEnv();
 
-const required = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "NOTIFY_EMAIL"];
-const missing = required.filter((k) => !process.env[k] || process.env[k].includes("replace_me"));
+const isSet = (k) => Boolean(process.env[k]) && !process.env[k].includes("replace_me");
 
-if (missing.length) {
+// At least one payment provider must be configured, but not both: a
+// Philippines-only seller may run PayMongo alone, and an international-only
+// seller may run Stripe alone.
+const hasStripe = isSet("STRIPE_SECRET_KEY") && isSet("STRIPE_WEBHOOK_SECRET");
+const hasPayMongo = isSet("PAYMONGO_SECRET_KEY");
+
+if (!hasStripe && !hasPayMongo) {
   console.error(
-    `\nMissing required environment variables: ${missing.join(", ")}\n` +
-      `Copy .env.example to .env and fill them in. See README.md.\n`
+    "\nNo payment provider configured.\n" +
+      "  Stripe   — set STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET\n" +
+      "  PayMongo — set PAYMONGO_SECRET_KEY (and PAYMONGO_WEBHOOK_SECRET)\n" +
+      "Copy .env.example to .env and fill one in. See README.md.\n"
   );
+  process.exit(1);
+}
+
+if (!isSet("NOTIFY_EMAIL")) {
+  console.error("\nMissing NOTIFY_EMAIL — there would be nowhere to send order alerts.\n");
   process.exit(1);
 }
 
@@ -61,9 +73,22 @@ export const config = {
     .split(",")
     .map((o) => o.trim())
     .filter(Boolean),
+  paymongo: {
+    secretKey: process.env.PAYMONGO_SECRET_KEY || "",
+    webhookSecret: process.env.PAYMONGO_WEBHOOK_SECRET || "",
+    // Which wallets/rails to offer. GCash and Maya are the point of this.
+    methods: (process.env.PAYMONGO_METHODS || "gcash,paymaya,card")
+      .split(",").map((m) => m.trim()).filter(Boolean),
+    get enabled() {
+      return Boolean(this.secretKey);
+    },
+  },
   stripe: {
-    secretKey: process.env.STRIPE_SECRET_KEY,
-    webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+    secretKey: process.env.STRIPE_SECRET_KEY || "",
+    webhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
+    get enabled() {
+      return Boolean(this.secretKey && this.webhookSecret);
+    },
   },
   email: {
     notify: process.env.NOTIFY_EMAIL,
@@ -84,7 +109,9 @@ if (!config.email.resendApiKey && !config.email.smtp.host) {
   console.warn(
     "[email] No RESEND_API_KEY and no SMTP_HOST configured — order emails " +
       "will be skipped. Orders are still recorded in data/orders.jsonl.\n" +
-      "        Meanwhile, turn on Stripe Dashboard -> Notifications -> " +
-      "'Successful payments' so you are not flying blind."
+      "        Meanwhile turn on your provider's own notifications so you are " +
+      "not flying blind:\n" +
+      (hasStripe ? "        Stripe:   Dashboard -> Settings -> Notifications -> Successful payments\n" : "") +
+      (hasPayMongo ? "        PayMongo: Dashboard -> Settings -> Notifications\n" : "")
   );
 }

@@ -1,44 +1,84 @@
 import express from "express";
 import { config } from "../config.js";
-import { buildLineItems, listProducts } from "../catalog.js";
+import { buildLineItems, listProducts, getProduct } from "../catalog.js";
+import { createCheckoutSession as paymongoCheckout, MINIMUM_AMOUNT } from "../paymongo.js";
 
 export function checkoutRouter(stripe) {
   const router = express.Router();
 
-  // The storefront reads prices from here so the page and Stripe can never
-  // disagree — there is exactly one source of truth.
+  // The storefront reads prices AND available providers from here, so the
+  // page can never offer a wallet the server is not configured for.
   router.get("/products", (_req, res) => {
-    res.json({ currency: config.currency, products: listProducts() });
+    res.json({
+      currency: config.currency,
+      products: listProducts(),
+      providers: {
+        stripe: config.stripe.enabled,
+        paymongo: config.paymongo.enabled,
+        paymongoMethods: config.paymongo.enabled ? config.paymongo.methods : [],
+        minimumAmount: config.paymongo.enabled ? MINIMUM_AMOUNT : 0,
+      },
+    });
   });
 
   router.post("/checkout", async (req, res) => {
+    // Philippines is the main market, so PayMongo is the default when both
+    // are configured — it is the one that can take GCash and Maya.
+    const requested = String(req.body?.provider || "").toLowerCase();
+    const provider =
+      requested === "stripe" || requested === "paymongo"
+        ? requested
+        : config.paymongo.enabled
+        ? "paymongo"
+        : "stripe";
+
+    if (provider === "paymongo" && !config.paymongo.enabled) {
+      return res.status(400).json({ error: "PayMongo is not configured on this server" });
+    }
+    if (provider === "stripe" && !config.stripe.enabled) {
+      return res.status(400).json({ error: "Stripe is not configured on this server" });
+    }
+
+    // Price every row from the catalog. The browser's numbers are ignored.
     let lineItems;
     try {
       lineItems = buildLineItems(req.body?.cart, config.currency);
     } catch (err) {
-      // Client error — safe to echo, it contains no secrets.
       return res.status(400).json({ error: err.message });
     }
 
     try {
+      if (provider === "paymongo") {
+        const items = req.body.cart.map((row) => {
+          const p = getProduct(row.id);
+          return { name: p.name, amount: p.amount, quantity: Number(row.quantity), sku: p.sku };
+        });
+        const session = await paymongoCheckout({
+          items,
+          referenceNumber: `${config.brand.name}-${Date.now().toString(36)}`,
+        });
+        return res.status(200).json({ url: session.url, id: session.id, provider });
+      }
+
       const session = await stripe.checkout.sessions.create({
         mode: "payment",
         line_items: lineItems,
         success_url: `${config.baseUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${config.baseUrl}/cancel.html`,
-        // Collect what you need to actually ship the goods.
         shipping_address_collection: { allowed_countries: config.shipTo },
         phone_number_collection: { enabled: true },
-        // Lets Stripe email the customer their receipt.
         customer_creation: "always",
       });
-
-      // 303 keeps a form POST -> GET redirect correct; JSON clients use `url`.
-      return res.status(200).json({ url: session.url, id: session.id });
+      return res.status(200).json({ url: session.url, id: session.id, provider });
     } catch (err) {
-      console.error("[checkout] Stripe error:", err?.message || err);
-      // Never leak Stripe internals to the browser.
-      return res.status(502).json({ error: "Could not start checkout. Please try again." });
+      console.error(`[checkout:${provider}]`, err?.message || err);
+
+      // PayMongo's minimum is a customer-actionable message, so pass it
+      // through. Everything else stays server-side.
+      const isMinimum = /minimum payment/i.test(err?.message || "");
+      return res.status(isMinimum ? 400 : 502).json({
+        error: isMinimum ? err.message : "Could not start checkout. Please try again.",
+      });
     }
   });
 

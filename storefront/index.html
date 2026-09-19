@@ -4908,6 +4908,74 @@ void main() {
 
   var CART_KEY = "fivehouses.cart";
   var busy = false;
+  var providers = null;          // filled from /api/products
+  var chosen = null;             // provider id the shopper picked
+
+  // Ask the server which providers it can actually process, so the page never
+  // offers a wallet that is not configured.
+  fetch(STORE_ENDPOINT + "/api/products")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { providers = d.providers || {}; renderPicker(); })
+    .catch(function () { providers = {}; });
+
+  var WALLETS = { gcash: "GCash", paymaya: "Maya", grab_pay: "GrabPay", qrph: "QR Ph", card: "card" };
+
+  function options() {
+    if (!providers) return [];
+    var out = [];
+    if (providers.paymongo) {
+      out.push({
+        id: "paymongo",
+        label: "Philippines",
+        hint: (providers.paymongoMethods || []).map(function (m) { return WALLETS[m] || m; }).join(", "),
+      });
+    }
+    if (providers.stripe) {
+      out.push({ id: "stripe", label: "International card", hint: "Visa, Mastercard, Amex" });
+    }
+    return out;
+  }
+
+  // Insert a provider picker above the review step's buttons.
+  function renderPicker() {
+    var actions = document.querySelector(".drawer-actions");
+    if (!actions || actions.dataset.picker === "1") return;
+    var opts = options();
+    if (opts.length === 0) return;
+    actions.dataset.picker = "1";
+
+    if (opts.length === 1) { chosen = opts[0].id; return; }
+    if (!chosen) chosen = opts[0].id;
+
+    var wrap = document.createElement("div");
+    wrap.style.cssText =
+      "display:flex;gap:var(--space-4);flex-wrap:wrap;margin-bottom:var(--space-3);width:100%";
+
+    opts.forEach(function (o) {
+      var label = document.createElement("label");
+      label.style.cssText =
+        "display:flex;align-items:center;gap:var(--space-2);min-height:44px;cursor:pointer;font-size:var(--text-sm)";
+      var input = document.createElement("input");
+      input.type = "radio";
+      input.name = "fh-provider";
+      input.value = o.id;
+      input.checked = o.id === chosen;
+      input.style.cssText = "width:20px;height:20px;accent-color:var(--accent)";
+      input.addEventListener("change", function () { chosen = o.id; });
+      var span = document.createElement("span");
+      span.innerHTML = "";
+      span.appendChild(document.createTextNode(o.label));
+      var small = document.createElement("small");
+      small.style.cssText = "display:block;color:var(--text-faint)";
+      small.textContent = o.hint;
+      span.appendChild(small);
+      label.appendChild(input);
+      label.appendChild(span);
+      wrap.appendChild(label);
+    });
+
+    actions.parentNode.insertBefore(wrap, actions);
+  }
 
   function readCart() {
     try {
@@ -4948,9 +5016,10 @@ void main() {
     if (note && note.dataset.storeBridge !== "1") {
       note.dataset.storeBridge = "1";
       note.textContent =
-        "You will be taken to Stripe to pay securely. Card details are never " +
-        "handled by this site.";
+        "You will be taken to a secure payment page. Card and wallet details " +
+        "are never handled by this site.";
     }
+    renderPicker();
   }
 
   new MutationObserver(relabel).observe(document.documentElement, {
@@ -4983,7 +5052,7 @@ void main() {
       fetch(STORE_ENDPOINT + "/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart: cart }),
+        body: JSON.stringify({ cart: cart, provider: chosen || undefined }),
       })
         .then(function (res) {
           return res.json().then(function (data) {

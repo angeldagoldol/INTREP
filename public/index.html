@@ -42,6 +42,12 @@
     padding:16px;background:var(--surface);border:1px solid var(--border);
     border-radius:var(--radius);flex-wrap:wrap}
   .err{color:#b3261e;margin:12px 0 0;font-size:14px}
+  fieldset{border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin:0 0 16px}
+  legend{padding:0 6px;font-size:13px;color:var(--muted)}
+  #payopts{display:flex;gap:16px;flex-wrap:wrap}
+  #payopts label{display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer}
+  #payopts input{width:20px;height:20px;accent-color:var(--accent)}
+  .hint{color:var(--muted);font-size:12px;margin:8px 0 0}
   footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--border);
     color:var(--muted);font-size:13px}
   footer a{color:inherit}
@@ -57,9 +63,13 @@
 
   <form id="shop">
     <ul id="items"></ul>
+    <fieldset id="pay" hidden>
+      <legend>Payment</legend>
+      <div id="payopts"></div>
+    </fieldset>
     <div class="total">
       <strong>Total: <span id="total">—</span></strong>
-      <button type="submit" id="buy" disabled>Checkout with Stripe</button>
+      <button type="submit" id="buy" disabled>Checkout</button>
     </div>
     <p class="err" id="err" hidden></p>
   </form>
@@ -87,8 +97,10 @@ const buyEl   = document.getElementById("buy");
 const errEl   = document.getElementById("err");
 const modeEl  = document.getElementById("mode");
 
-let currency = "gbp";
+let currency = "php";
 let products = [];
+let providers = {};
+let chosenProvider = null;
 
 function recalc() {
   const total = products.reduce((sum, p) => {
@@ -102,9 +114,33 @@ function recalc() {
 try {
   const res = await fetch("/api/products");
   if (!res.ok) throw new Error(`Server returned ${res.status}`);
-  ({ currency, products } = await res.json());
+  const data = await res.json();
+  ({ currency, products } = data);
+  providers = data.providers || {};
 
-  modeEl.textContent = "Stripe test mode uses card 4242 4242 4242 4242, any future expiry, any CVC.";
+  // Only offer a provider the server can actually process.
+  const opts = [];
+  if (providers.paymongo) {
+    const wallets = (providers.paymongoMethods || [])
+      .map(m => ({gcash:"GCash",paymaya:"Maya",grab_pay:"GrabPay",qrph:"QR Ph",card:"card"}[m] || m))
+      .join(", ");
+    opts.push({ id:"paymongo", label:"Philippines", hint:wallets });
+  }
+  if (providers.stripe) {
+    opts.push({ id:"stripe", label:"International card", hint:"Visa, Mastercard, Amex" });
+  }
+  if (opts.length > 1) {
+    document.getElementById("payopts").innerHTML = opts.map((o,i) => `
+      <label><input type="radio" name="provider" value="${o.id}" ${i===0?"checked":""}>
+        <span>${o.label}<br><small style="color:var(--muted)">${o.hint}</small></span></label>`).join("");
+    document.getElementById("pay").hidden = false;
+  } else if (opts.length === 1) {
+    chosenProvider = opts[0].id;
+  }
+
+  modeEl.textContent = providers.paymongo
+    ? "Test mode. GCash and Maya open a simulated wallet page. Test cards: 4343 4343 4343 4345 (PayMongo), 4242 4242 4242 4242 (Stripe)."
+    : "Stripe test mode uses card 4242 4242 4242 4242, any future expiry, any CVC.";
 
   itemsEl.innerHTML = products.map(p => `
     <li>
@@ -131,10 +167,13 @@ document.getElementById("shop").addEventListener("submit", async (ev) => {
     .filter(r => r.quantity > 0);
 
   try {
+    const picked = document.querySelector('input[name="provider"]:checked');
+    const provider = picked ? picked.value : chosenProvider;
+
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cart }),
+      body: JSON.stringify({ cart, provider }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`);
@@ -143,7 +182,7 @@ document.getElementById("shop").addEventListener("submit", async (ev) => {
     errEl.textContent = e.message;
     errEl.hidden = false;
     buyEl.disabled = false;
-    buyEl.textContent = "Checkout with Stripe";
+    buyEl.textContent = "Checkout";
   }
 });
 </script>

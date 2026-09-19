@@ -22,7 +22,12 @@ export function buildOrderEmail(order) {
   const {
     orderId, amountTotal, currency, customerName, customerEmail,
     items = [], shipping, createdAt, livemode,
+    provider, paymentMethod, customerPhone,
   } = order;
+
+  // "gcash" -> "GCash", "paymaya" -> "Maya", "card" -> "Card"
+  const WALLETS = { gcash: "GCash", paymaya: "Maya", grab_pay: "GrabPay", qrph: "QR Ph", card: "Card" };
+  const paidWith = paymentMethod ? (WALLETS[paymentMethod] || paymentMethod) : "";
 
   const mode = livemode ? "" : "[TEST] ";
   const subject = `${mode}${config.brand.name}: new order ${orderId} — ${formatMoney(amountTotal, currency)}`;
@@ -43,6 +48,8 @@ export function buildOrderEmail(order) {
     `Placed:   ${createdAt}`,
     `Total:    ${formatMoney(amountTotal, currency)}`,
     `Customer: ${customerName || "(not given)"} <${customerEmail || "no email"}>`,
+    ...(customerPhone ? [`Phone:    ${customerPhone}`] : []),
+    ...(paidWith ? [`Paid with: ${paidWith}${provider ? ` (${provider})` : ""}`] : []),
     ``,
     `Items`,
     ...(rows.length
@@ -54,14 +61,15 @@ export function buildOrderEmail(order) {
     textLines.push(``, `Ship to`, `  ${shipping?.name || ""}`.trimEnd(), ...ship.map((l) => `  ${l}`));
   }
   if (!livemode) {
-    textLines.push(``, `This is a Stripe TEST order. No real money moved.`);
+    const via = provider === "paymongo" ? "PayMongo" : "Stripe";
+    textLines.push(``, `This is a ${via} TEST order. No real money moved.`);
   }
 
   const html = `<!doctype html>
 <html><body style="margin:0;padding:24px;background:#f6f6f4;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#14140f">
   <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e4e2dc;border-radius:10px;padding:24px">
     ${livemode ? "" : `<p style="margin:0 0 16px;padding:8px 12px;background:#fff6e0;border:1px solid #e8d08a;border-radius:6px;font-size:13px">
-      <strong>TEST order.</strong> Stripe test mode — no real money moved.</p>`}
+      <strong>TEST order.</strong> ${provider === "paymongo" ? "PayMongo" : "Stripe"} test mode — no real money moved.</p>`}
     <h1 style="margin:0 0 4px;font-size:19px">New order</h1>
     <p style="margin:0 0 20px;color:#5b5951;font-size:13px">${escapeHtml(orderId)} &middot; ${escapeHtml(createdAt)}</p>
 
@@ -88,13 +96,16 @@ export function buildOrderEmail(order) {
     <p style="margin:0 0 16px">
       ${escapeHtml(customerName || "(name not given)")}<br>
       ${customerEmail ? `<a href="mailto:${escapeHtml(customerEmail)}">${escapeHtml(customerEmail)}</a>` : "(no email)"}
+      ${customerPhone ? `<br>${escapeHtml(customerPhone)}` : ""}
     </p>
+    ${paidWith ? `<p style="margin:0 0 16px;padding:6px 10px;background:#f2f1ed;border-radius:6px;display:inline-block;font-size:13px">
+      Paid with <strong>${escapeHtml(paidWith)}</strong>${provider ? ` &middot; ${escapeHtml(provider)}` : ""}</p>` : ""}
 
     ${ship.length ? `<h2 style="margin:0 0 6px;font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:#5b5951">Ship to</h2>
     <p style="margin:0 0 16px">${[shipping?.name, ...ship].filter(Boolean).map(escapeHtml).join("<br>")}</p>` : ""}
 
     <p style="margin:20px 0 0;padding-top:16px;border-top:1px solid #e4e2dc;color:#5b5951;font-size:12px">
-      ${escapeHtml(config.brand.name)} &middot; sent automatically when Stripe confirmed payment.
+      ${escapeHtml(config.brand.name)} &middot; sent automatically when ${provider === "paymongo" ? "PayMongo" : "Stripe"} confirmed payment.
     </p>
   </div>
 </body></html>`;
