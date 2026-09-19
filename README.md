@@ -427,6 +427,95 @@ order through. The funds line, the day's revenue and that product's stock
 should all move together. Until the first paid order the charts say so rather
 than drawing a flat line at zero.
 
+## Deploying
+
+Two halves, two hosts, and the split is not arbitrary.
+
+| | Where | Why |
+|---|---|---|
+| Storefront | **Vercel** | A 2.8MB static file. A CDN is exactly what it wants. |
+| API + dashboard + legal pages | **Render or Railway** | Needs a **disk**. See below. |
+
+### Why the API cannot go on Vercel
+
+Orders, enquiries, stock levels and the record of which webhooks were already
+handled are all files. Vercel runs each request on a serverless instance whose
+filesystem is read-only apart from `/tmp`, and `/tmp` is private to that
+instance and wiped when it recycles.
+
+That is not a cosmetic problem. Two orders paid seconds apart land on two
+instances, and neither one can see the other's:
+
+```
+  instance A: recorded cs_alpha, stock set to 4
+  instance B: recorded cs_beta,  stock set to 9
+  instance A: sees 1 order, stock sony:0 = 4
+  instance B: sees 1 order, stock sony:0 = 9
+```
+
+Worse, `processed-events.json` is what stops a retried webhook being handled
+twice. Lose it and one payment can email you repeatedly and decrement stock
+more than once.
+
+If you ever do want everything on Vercel, the fix is a database, not a config
+flag: `src/orders.js` and `src/inventory.js` are the only two files that
+touch storage, which is why they are that small.
+
+### 1. The API first — it has the URL everything else needs
+
+**Render**: New → Blueprint → pick this repo. It reads `render.yaml`, which
+asks for a 1GB disk mounted at `/var/data` and sets `DATA_DIR` to match.
+
+> Render's **free** tier has no disks, so the blueprint asks for Starter.
+> Railway's free tier does have volumes — mount one and set `DATA_DIR` to its
+> mount path. Any host works as long as `DATA_DIR` points at a real disk.
+
+Fill in the secrets Render marks as unset — payment keys, `NOTIFY_EMAIL`,
+`ADMIN_TOKEN`, and the legal facts from `legal/README.md`. The build runs
+`npm run legal:build`, so **a missing legal fact fails the deploy**, on
+purpose.
+
+Then set:
+
+- `PUBLIC_BASE_URL` — your API's own https URL
+- `ALLOWED_ORIGINS` — your Vercel URL, **not** `*`
+
+Point your PayMongo webhook at `https://YOUR-API/api/paymongo/webhook`.
+
+### 2. The storefront
+
+Vercel → Add New → Project → import this repo. It reads `vercel.json` and runs
+`npm run storefront:build`.
+
+Set one environment variable:
+
+- `STORE_API_URL` — the API URL from step 1, https only
+
+Then redeploy. The build:
+
+- re-inlines `public/store-bridge.js` into the bundle, so the copy embedded in
+  `storefront/index.html` cannot drift out of date (it already had);
+- stamps `STORE_ENDPOINT`, so the bundle in git stays a demo that charges
+  nothing;
+- stamps a real `<title>` and Open Graph tags — the bundle renders its title
+  from React, so without this a crawler or a shared link sees an untitled page.
+
+**Leave `STORE_API_URL` unset and the deploy takes no payments**, and the
+page keeps its "the checkout is a demo" notice. Set it and the bridge replaces
+that notice, because once checkout is live it is a false statement made to a
+customer on the page where they pay.
+
+### 3. Check it
+
+```bash
+curl https://YOUR-API/healthz                 # {"ok":true}
+curl https://YOUR-API/legal/terms.html        # your real details, no [BRACKETS]
+```
+
+Open the Vercel URL, add something to the basket, and check the footer links
+to your policies. Then put one real low-value order through and confirm the
+email arrives, the dashboard moves, and stock goes down.
+
 ## Going live
 
 - [ ] Swap `sk_test_…` for `sk_live_…` and use the **live** webhook secret
@@ -443,6 +532,7 @@ than drawing a flat line at zero.
 - [ ] Move orders and enquiries from `data/*.jsonl` to a real database
 - [ ] Set `ADMIN_TOKEN` to a random secret and set your opening stock levels
 - [ ] Set `TRUST_PROXY=1` if deploying behind a load balancer
+- [ ] Point `DATA_DIR` at a mounted disk, and confirm data survives a redeploy
 - [ ] Keep `.env` out of git (already in `.gitignore`)
 - [ ] Configure tax — Stripe Tax, or your own rates
 - [ ] Decide shipping countries in `src/routes/checkout.js`
@@ -465,6 +555,9 @@ src/routes/checkout.js       Creates Checkout Sessions
 src/routes/webhook.js        Verifies signature, records order, emails you
 src/routes/metrics.js        Dashboard API, bearer-token gated, no CORS
 scripts/build-legal.mjs      Renders legal/*.md -> public/legal/*.html
+scripts/build-storefront.mjs Builds dist/index.html for the static host
+vercel.json                  Storefront build config (static host)
+render.yaml                  API blueprint — the DISK is the point
 public/                      Minimal reference storefront
 public/store-bridge.js       Artifact cart -> this server (off by default)
 public/admin.html            Stock / sales / funds dashboard

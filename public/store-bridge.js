@@ -22,6 +22,8 @@
   var STORE_ENDPOINT = "";           // <-- your server, e.g. "https://store.example.com"
   var BRAND = "dagoldol";
   var TAGLINE = "Authorised reseller \u00b7 ships from the Philippines worldwide";
+  // Kept in step with STOREFRONT_TITLE in scripts/build-storefront.mjs.
+  var PAGE_TITLE = "dagoldol \u2014 Japanese electronics and apparel";
 
   /* -- 1. Branding. Runs always, with or without a checkout endpoint. ------ */
   function brandFooter() {
@@ -53,6 +55,25 @@
       ". Product names and logos are the property of their respective owners " +
       "and are used for identification only.";
     inner.appendChild(small);
+  }
+
+  /* The page ships with a learning-demo disclaimer that says the checkout
+     charges nothing. Once STORE_ENDPOINT is set that sentence is false, and
+     it is false to a customer on the page where they hand over money. Rewrite
+     it, keeping the parts that stay true.
+
+     React owns this node and re-renders it, so this re-applies on every
+     mutation. It writes only when the text differs, so the observer settles
+     instead of looping. */
+  var LIVE_NOTE =
+    "Company figures on this page are rounded from public sources and may have " +
+    "changed, and nothing here is investment advice. Product prices and checkout " +
+    "are live: you will be charged and the item will be shipped.";
+
+  function brandDisclaimer() {
+    if (!STORE_ENDPOINT) return;
+    var note = document.querySelector(".footer-note");
+    if (note && note.textContent !== LIVE_NOTE) note.textContent = LIVE_NOTE;
   }
 
   /* Policy links. Gated on STORE_ENDPOINT for the same reason checkout is:
@@ -207,7 +228,14 @@
       });
   }
 
-  function applyBranding() { brandFooter(); brandLegal(); brandWordmark(); }
+  /* The page renders its own <title> from React, which replaces whatever the
+     static head carried. Reassert ours — cheaply, since this runs on every
+     mutation. The build stamps the same title statically for crawlers. */
+  function brandTitle() {
+    if (document.title !== PAGE_TITLE) document.title = PAGE_TITLE;
+  }
+
+  function applyBranding() { brandTitle(); brandDisclaimer(); brandFooter(); brandLegal(); brandWordmark(); }
   applyBranding();
   new MutationObserver(applyBranding).observe(document.documentElement, {
     childList: true, subtree: true,

@@ -55,6 +55,16 @@ if (!isSet("NOTIFY_EMAIL")) {
 
 const PORT = Number(process.env.PORT || 3000);
 
+// "*" is the convenient local default. In production it lets any site on the
+// internet create Checkout Sessions against your payment account, so say so
+// loudly rather than letting a deploy quietly ship it.
+if (process.env.NODE_ENV === "production" && (process.env.ALLOWED_ORIGINS || "*").includes("*")) {
+  console.warn(
+    "\n  WARNING: ALLOWED_ORIGINS allows every origin in production.\n" +
+    "  Set it to your storefront's real origin, e.g. https://dagoldol.vercel.app\n"
+  );
+}
+
 export const config = {
   port: PORT,
   // Shown in the storefront, the order emails and the legal pages.
@@ -76,6 +86,12 @@ export const config = {
     // Guards the metrics dashboard. Business numbers are not public.
     token: process.env.ADMIN_TOKEN || "",
   },
+  // Where orders, enquiries, stock and the webhook idempotency record live.
+  // Managed hosts mount a persistent disk at a path of their choosing; point
+  // DATA_DIR at it. Leaving this default on a host WITHOUT a mounted disk
+  // means the container's own filesystem, which is wiped on every deploy.
+  dataDir: (process.env.DATA_DIR || "data").replace(/\/+$/, ""),
+
   // Identity facts for the legal pages. They are NOT committed: this repo is
   // public, and a home address and TIN in git history cannot be taken back.
   // scripts/build-legal.mjs refuses to render a page while any of them is
