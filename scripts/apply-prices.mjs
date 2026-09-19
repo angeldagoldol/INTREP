@@ -60,9 +60,14 @@ const iName = header.indexOf("name");
 // figure that does not exist.
 const iJpy = header.indexOf("jp_price_jpy");
 const iFreight = header.indexOf("freight_php");
+const iWeight = header.indexOf("weight_kg");
+const iVolume = header.indexOf("volume_cm3");
+const iMode = header.indexOf("freight_mode");
+const iRate = header.indexOf("freight_rate");
+const iHandling = header.indexOf("handling_php");
 const iDuty = header.indexOf("duty_pct");
 const iFx = header.indexOf("fx_rate");
-const LANDED = iJpy !== -1 && iFreight !== -1;
+const LANDED = iJpy !== -1 && (iFreight !== -1 || iWeight !== -1);
 
 const iCost = header.indexOf("cost_php");
 const iMarkup = header.indexOf("markup_pct");
@@ -93,10 +98,18 @@ for (const [n, r] of rows.entries()) {
     if (LANDED && Number.isFinite(num(iJpy)) && num(iJpy) > 0) {
       const fx = iFx !== -1 && num(iFx) > 0 ? num(iFx) : 0.41;
       try {
+        const mode = iMode !== -1 ? (r[iMode] || "").trim().toLowerCase() || "sea" : "sea";
         landed = landedCost({
           jpyPrice: num(iJpy),
           fxRate: fx,
-          freightPhp: Number.isFinite(num(iFreight)) ? num(iFreight) : 0,
+          // Weight beats a flat per-unit figure: consolidators bill per kilo,
+          // and for apparel the volumetric weight usually decides it.
+          weightKg: iWeight !== -1 && Number.isFinite(num(iWeight)) ? num(iWeight) : 0,
+          volumeCm3: iVolume !== -1 && Number.isFinite(num(iVolume)) ? num(iVolume) : 0,
+          mode,
+          ratePerKg: iRate !== -1 && Number.isFinite(num(iRate)) ? num(iRate) : 0,
+          handlingPhp: iHandling !== -1 && Number.isFinite(num(iHandling)) ? num(iHandling) : 0,
+          freightPhp: iWeight !== -1 ? 0 : (Number.isFinite(num(iFreight)) ? num(iFreight) : 0),
           dutyPct: iDuty !== -1 && Number.isFinite(num(iDuty)) ? num(iDuty) : 15,
         });
         cost = landed.landedIncl / 100;
@@ -268,6 +281,8 @@ if (FORWARD) {
     console.log(
       `    ${id.padEnd(18)} cost ₱${(d.costIncl / 100).toLocaleString("en-US", { minimumFractionDigits: 2 }).padStart(13)}` +
       `  +${String(d.markupPct).padStart(5)}%  ->  ₱${(d.price / 100).toLocaleString("en-US", { minimumFractionDigits: 2 }).padStart(13)}` +
+      (d.landed ? `  [${d.landed.mode} ${d.landed.billedKg.toFixed(2)}kg` +
+        ` freight ₱${(d.landed.freight/100).toFixed(2)}]` : "") +
       `   (margin ${d.marginPct.toFixed(1)}%` +
       (Math.abs(d.effectiveMarkupPct - d.requestedMarkupPct) > 0.05
         ? `, markup ${d.effectiveMarkupPct.toFixed(2)}% after rounding)` : ")")
