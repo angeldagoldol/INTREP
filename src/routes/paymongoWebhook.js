@@ -49,6 +49,11 @@ function normaliseOrder(event) {
     customerPhone: billing.phone || "",
     // Which wallet they actually used — worth knowing for your PH mix.
     paymentMethod: payment.source?.type || payment.payment_method_used || "",
+    // Card details when the payment was a card. PayMongo has moved these
+    // around between shapes, so read the plausible ones and accept a blank.
+    cardBrand: payment.source?.brand || payment.source?.card?.brand || "",
+    cardLast4: payment.source?.last4 || payment.source?.card?.last4
+      || payment.source?.last_four || "",
     shipping: billing.address ? { name: billing.name, address: billing.address } : null,
     items: lineItems.map((li) => ({
       description: li.name,
