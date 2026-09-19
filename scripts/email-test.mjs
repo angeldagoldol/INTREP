@@ -6,9 +6,12 @@
 // Nothing here touches payments or the order log. It builds the same email a
 // paid order would, sends it through the same code path, and explains any
 // failure in terms of what to go and change.
-import { config } from "../src/config.js";
-import { buildOrderEmail } from "../src/templates/orderEmail.js";
-import { sendOrderNotification } from "../src/email.js";
+// Set before config is evaluated. A static import would be hoisted above this
+// line and the flag would never be seen.
+process.env.CONFIG_TOOLING = "1";
+const { config } = await import("../src/config.js");
+const { buildOrderEmail } = await import("../src/templates/orderEmail.js");
+const { sendOrderNotification } = await import("../src/email.js");
 
 const SAMPLE = {
   orderId: "cs_email_test",
@@ -46,6 +49,42 @@ if (!provider) {
   process.exit(1);
 }
 
+// Can this machine reach the provider at all?
+//
+// Worth checking BEFORE sending, because a blocked egress does not announce
+// itself. A proxy that refuses the CONNECT returns its own 403, the SDK cannot
+// parse it as one of its errors, and what surfaces is
+// "Internal server error ... please try again later" — which reads like the
+// provider is down and sends you off checking a key that was never the
+// problem. Ask the network first, and say so plainly.
+async function probe(url) {
+  try {
+    const res = await fetch(url, { method: "GET", signal: AbortSignal.timeout(12000) });
+    const type = res.headers.get("content-type") || "";
+    // Resend answers an unauthenticated GET with a JSON error. Anything that
+    // is not JSON came from something sitting in between.
+    return { reached: type.includes("json"), status: res.status, type };
+  } catch (err) {
+    return { reached: false, error: err?.message || String(err) };
+  }
+}
+
+if (config.email.resendApiKey) {
+  const base = (process.env.RESEND_BASE_URL || "https://api.resend.com").replace(/\/$/, "");
+  const p = await probe(`${base}/domains`);
+  if (!p.reached) {
+    console.error(`  Cannot reach ${base} from this machine.`);
+    console.error(p.error
+      ? `  ${p.error}`
+      : `  It answered ${p.status} as ${p.type || "an unknown type"} — that is an\n` +
+        `  intermediary, not Resend, which always answers in JSON.`);
+    console.error(`\n  This is a network problem, not a key problem. Check egress rules,`);
+    console.error(`  a corporate or sandbox proxy, or a firewall — then run this again.`);
+    console.error(`  Nothing was sent, and your key has not been tested either way.\n`);
+    process.exit(2);
+  }
+}
+
 const mail = buildOrderEmail(SAMPLE);
 const result = await sendOrderNotification(mail);
 
@@ -77,7 +116,11 @@ const HINTS = [
    (/@resend\.dev$/.test(config.email.from)
      ? `.`
      : `, or set EMAIL_FROM=onboarding@resend.dev\n  to send without a domain of your own.`)],
-  [/ENOTFOUND|ECONNREFUSED|fetch failed|EAI_AGAIN|certificate/i,
+  [/application_error.*Internal server error|Internal server error\. We are unable/i,
+   `That wording usually is not Resend. A proxy refusing the connection returns\n` +
+   `  its own error page, which the SDK cannot parse and reports like this.\n` +
+   `  Check whether this machine can reach api.resend.com before touching the key.`],
+  [/ENOTFOUND|ECONNREFUSED|fetch failed|EAI_AGAIN|certificate|tunnel/i,
    `That is a network failure, not a configuration one. This machine could not\n` +
    `  reach the provider — check egress rules or a proxy before changing keys.`],
   [/Invalid login|535|EAUTH/i,
