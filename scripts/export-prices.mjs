@@ -7,7 +7,7 @@
 // prices.csv is gitignored: cost_php is your wholesale cost and this repo is
 // public. Never commit it.
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { listProducts } from "../src/catalog.js";
+import { listProducts } from "../src/catalog.js";  // active only
 
 const FILE = "prices.csv";
 const toStdout = process.argv.includes("--stdout");

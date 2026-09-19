@@ -54,6 +54,43 @@ Cars are shown at their lowest trim, which is what the page already says.
 
 None of these include registration, insurance or freight.
 
+## Uniqlo: parallel import, and two lines dropped
+
+Uniqlo is parallel imported, so there is no wholesale price. The cost basis is
+Japanese retail plus the cost of getting it here — computed in
+`src/landedCost.js`, not typed in:
+
+```
+JP shelf price (incl. 10% consumption tax)
+  less that tax, reclaimed on tax-free export
+  x FX 0.41/yen (buying rate; mid-market was 0.3986)
+  + freight and handling          = CIF
+  + 15% PH customs duty           = landed, pre-VAT
+  + 12% PH VAT                    = landed cost
+```
+
+| Line | JP | Landed net | Shelf | Margin | |
+|---|---|---|---|---|---|
+| HEATTECH | ¥590 | ₱321.90 | ₱590 | **38.9%** | |
+| Ultra Light Down | ¥5,990 | ₱2,740.04 | ₱3,990 | **23.1%** | |
+| Round Mini Shoulder Bag | ¥1,500 | ₱734.95 | ₱990 | **16.9%** | |
+| UT | ¥1,500 | ₱711.95 | ₱790 | **−0.9%** | dropped |
+| Fleece | ¥3,990 | ₱1,848.26 | ₱1,490 | **−38.9%** | dropped |
+
+**UT and Fleece are set `active: false`.** Uniqlo runs its own stores in the
+Philippines and prices below what a parallel import can land at. Fleece lost
+₱517.90 a unit; it would need ₱2,957 for a 30% margin against a ₱1,490 shelf
+price, so it cannot be priced out of the loss. Both now link to uniqlo.com
+instead of offering a cart button.
+
+Three things stop a dropped line being sold: the shop offers no add-to-cart,
+the app filters it out of a cart it finds in storage, and `buildLineItems()`
+rejects it at checkout.
+
+Re-activate only if the landed cost changes — cheaper freight, a weaker yen, or
+buying on Japanese sale. `npm run prices:apply` refuses a loss-making active
+line and prints the shortfall.
+
 ## VAT and margin
 
 These are **VAT-inclusive** shelf prices — the 12% is already inside them.
