@@ -68,6 +68,30 @@ taken from PayMongo's own Node SDK and are verified. The Checkout Session
 **Run one test-mode order before trusting it.** If a field name is wrong the
 API returns a 400 naming it, and `src/paymongo.js` logs the detail verbatim.
 
+### Changing prices
+
+Never edit `src/catalog.js` and `storefront/index.html` separately. If they
+drift, customers are charged a number other than the one they read.
+
+```bash
+npm run prices:export     # writes prices.csv from the current catalog
+$EDITOR prices.csv        # edit the price_php column only
+npm run prices:apply      # updates BOTH files
+npm run prices:verify     # refuses to pass if they disagree
+```
+
+`prices.csv` has one row per product with `id, sku, name, brand, mode,
+price_php`. Only `price_php` is read; the rest is there so the file is
+readable. Pesos, not centavos — `27995.00` means ₱27,995.00. Currency symbols
+and thousands separators are tolerated, so `"₱27,995.00"` works.
+
+`prices:apply` refuses the whole file rather than applying half of it if any
+product is missing, unknown, duplicated, blank, non-numeric or negative.
+
+`prices:verify` exits non-zero on any mismatch, so it can gate a deploy. It
+also catches a payable product priced below PayMongo's ₱100 floor, which
+would otherwise fail at checkout in front of a customer.
+
 ### Vehicles are enquiry-only
 
 `src/catalog.js` gives every product a `mode`:
@@ -260,6 +284,8 @@ public/                      Minimal reference storefront
 public/store-bridge.js       Artifact cart -> this server (off by default)
 legal/                       Policy templates to complete (Philippine law)
 storefront/index.html        The published storefront, branded, bridge included
+scripts/                     prices export / apply / verify
+prices.csv                   Editable price list (pesos)
 ```
 
 ## Security notes
