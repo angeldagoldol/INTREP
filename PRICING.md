@@ -52,4 +52,17 @@ are billed, and those are the ones to get exactly right.
 
 Cars are shown at their lowest trim, which is what the page already says.
 
-None of these include registration, insurance, freight or your margin.
+None of these include registration, insurance or freight.
+
+## VAT and margin
+
+These are **VAT-inclusive** shelf prices — the 12% is already inside them.
+`npm run prices:breakdown` shows the split per item. A PS5 at ₱40,032 is
+₱35,742.86 net plus ₱4,289.14 VAT.
+
+Your margin is not added on top. You buy below SRP and sell at or near it, and
+the gap is the margin. Adding 12% and a markup to an SRP would double-count
+the tax and price you above the shelf, which loses the sale rather than
+earning anything.
+
+Export sales are zero-rated for PH VAT, so overseas orders show no VAT line.

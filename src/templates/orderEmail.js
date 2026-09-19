@@ -1,4 +1,4 @@
-import { formatMoney } from "../money.js";
+import { formatMoney, splitVat } from "../money.js";
 import { config } from "../config.js";
 
 // Builds the order notification. Plain data in, {subject, html, text} out —
@@ -36,6 +36,14 @@ export function buildOrderEmail(order) {
     ? "Line items could not be retrieved from Stripe — open the order in the Stripe Dashboard."
     : "";
 
+  // Philippine VAT applies to domestic sales. Export sales are zero-rated, so
+  // an order shipping outside PH gets no VAT line rather than a wrong one.
+  // Confirm the treatment with your accountant before filing on it.
+  const shipCountry = (shipping?.address?.country || "").toUpperCase();
+  const domestic = !shipCountry || shipCountry === "PH";
+  const vatApplies = config.vat.rate > 0 && config.vat.inclusive && domestic;
+  const vat = vatApplies ? splitVat(amountTotal, config.vat.rate) : null;
+
   const rows = items.map((it) => {
     const line = it.amountTotal ?? (it.unitAmount || 0) * (it.quantity || 1);
     return { ...it, line };
@@ -46,7 +54,14 @@ export function buildOrderEmail(order) {
     ``,
     `Order:    ${orderId}`,
     `Placed:   ${createdAt}`,
-    `Total:    ${formatMoney(amountTotal, currency)}`,
+    `Total:    ${formatMoney(amountTotal, currency)}${vat ? " (VAT inclusive)" : ""}`,
+    ...(vat
+      ? [`  net of VAT   ${formatMoney(vat.net, currency)}`,
+         `  ${config.vat.label.padEnd(12)} ${formatMoney(vat.vat, currency)}`]
+      : []),
+    ...(!domestic && config.vat.rate > 0
+      ? [`  (export sale to ${shipCountry} — zero-rated for PH VAT)`]
+      : []),
     `Customer: ${customerName || "(not given)"} <${customerEmail || "no email"}>`,
     ...(customerPhone ? [`Phone:    ${customerPhone}`] : []),
     ...(paidWith ? [`Paid with: ${paidWith}${provider ? ` (${provider})` : ""}`] : []),
@@ -86,9 +101,21 @@ export function buildOrderEmail(order) {
           </td>
         </tr>`).join("")}
         <tr>
-          <td style="padding:12px 0;font-weight:600">Total</td>
+          <td style="padding:12px 0;font-weight:600">Total${vat ? " <span style=\"font-weight:400;color:#5b5951;font-size:12px\">VAT inclusive</span>" : ""}</td>
           <td style="padding:12px 0;text-align:right;font-weight:600">${escapeHtml(formatMoney(amountTotal, currency))}</td>
         </tr>
+        ${vat ? `<tr>
+          <td style="padding:2px 0;color:#5b5951;font-size:13px">net of VAT</td>
+          <td style="padding:2px 0;text-align:right;color:#5b5951;font-size:13px">${escapeHtml(formatMoney(vat.net, currency))}</td>
+        </tr>
+        <tr>
+          <td style="padding:2px 0 8px;color:#5b5951;font-size:13px">${escapeHtml(config.vat.label)}</td>
+          <td style="padding:2px 0 8px;text-align:right;color:#5b5951;font-size:13px">${escapeHtml(formatMoney(vat.vat, currency))}</td>
+        </tr>` : ""}
+        ${!domestic && config.vat.rate > 0 ? `<tr>
+          <td colspan="2" style="padding:2px 0 8px;color:#5b5951;font-size:12px">
+            Export sale to ${escapeHtml(shipCountry)} &mdash; zero-rated for PH VAT.</td>
+        </tr>` : ""}
       </tbody>
     </table>
 

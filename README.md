@@ -68,6 +68,36 @@ taken from PayMongo's own Node SDK and are verified. The Checkout Session
 **Run one test-mode order before trusting it.** If a field name is wrong the
 API returns a 400 naming it, and `src/paymongo.js` logs the detail verbatim.
 
+### VAT
+
+Catalog prices are **VAT-inclusive shelf prices**, which is what Philippine
+price tags are expected to show — the number the customer actually pays.
+
+So VAT is **extracted** from a price, never added to one. Adding 12% to an SRP
+would both double-count the tax and put you above the price a competitor
+charges: a PS5 at ₱40,032 already contains ₱4,289.14 of VAT.
+
+```bash
+npm run prices:breakdown          # per-item table
+node scripts/price-breakdown.mjs --csv   # for your accountant
+```
+
+The order and enquiry emails carry the split. It reconciles exactly: the net
+is rounded and the VAT taken as the remainder, so the two always add back to
+the amount charged — verified across 200,000 amounts. Rounding each half
+independently leaves invoices a centavo out, which BIR paperwork notices.
+
+**Export sales are zero-rated**, so an order shipping outside the Philippines
+gets a zero-rated note instead of a VAT line. Confirm that treatment with your
+accountant before filing on it.
+
+Settings: `VAT_RATE` (default `0.12`, set `0` to switch the breakdown off),
+`PRICES_INCLUDE_VAT` (default `true`), `VAT_LABEL` (default `VAT 12%`).
+
+**Where your margin is.** It is not added here. You buy at wholesale below
+SRP, sell at or near SRP, and the gap is your margin. Pricing above the
+published SRP does not create margin, it just loses the sale.
+
 ### Changing prices
 
 Never edit `src/catalog.js` and `storefront/index.html` separately. If they
@@ -284,7 +314,7 @@ public/                      Minimal reference storefront
 public/store-bridge.js       Artifact cart -> this server (off by default)
 legal/                       Policy templates to complete (Philippine law)
 storefront/index.html        The published storefront, branded, bridge included
-scripts/                     prices export / apply / verify
+scripts/                     prices export / apply / verify / breakdown
 prices.csv                   Editable price list (pesos)
 ```
 

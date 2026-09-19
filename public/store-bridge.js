@@ -329,8 +329,8 @@
     if (note && note.dataset.storeBridge !== "1") {
       note.dataset.storeBridge = "1";
       note.textContent =
-        "You will be taken to a secure payment page. Card and wallet details " +
-        "are never handled by this site.";
+        "Prices include VAT. You will be taken to a secure payment page; card " +
+        "and wallet details are never handled by this site.";
     }
     renderPicker();
     renderEnquiry();
