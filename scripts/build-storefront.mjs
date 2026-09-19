@@ -12,6 +12,7 @@
 //
 // Everything else in the 2.8MB bundle is left byte-for-byte alone.
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 
 const SRC = "storefront/index.html";
 const BRIDGE = "public/store-bridge.js";
@@ -84,7 +85,6 @@ if (headClose === -1) throw new Error(`${SRC} has no </head> to stamp metadata i
 out = out.slice(0, headClose) + headTags + out.slice(headClose);
 
 mkdirSync(OUT_DIR, { recursive: true });
-writeFileSync(`${OUT_DIR}/index.html`, out, "utf8");
 
 // The product photos are separate files the page loads from ./products/. Only
 // the small gallery thumbnails are inlined as data URIs, so a build that emits
@@ -105,10 +105,48 @@ mkdirSync(`${OUT_DIR}/products`, { recursive: true });
 let copied = 0;
 for (const f of wanted) { copyFileSync(`${PRODUCT_SRC}/${f}`, `${OUT_DIR}/products/${f}`); copied++; }
 
+// Which of these are the seller's own photographs?
+//
+// The stock photos are Wikimedia Commons images under CC BY-SA or CC0, and the
+// page prints each one's author and licence beneath it. Swap in your own photo
+// and that line would credit a stranger for your work and claim a Creative
+// Commons licence over it — a false attribution, and the opposite of what the
+// licence is for. So: a file whose hash no longer matches the recorded stock
+// hash is yours, and its stock credit is removed.
+const sha = (f) => createHash("sha256").update(readFileSync(f)).digest("hex");
+const stockDb = JSON.parse(readFileSync(`${PRODUCT_SRC}/stock-photos.json`, "utf8")).photos;
+
+const own = [];
+for (const f of wanted) {
+  const known = stockDb[f];
+  if (!known || sha(`${PRODUCT_SRC}/${f}`) !== known.sha256) own.push(f);
+}
+
+// Rewrite the credit data for the seller's own photos. `#photo` is a sentinel
+// the bridge looks for to render a plain "Photo: <brand>" with no links; even
+// if the bridge never runs, what remains is still truthful.
+const BRAND = process.env.BRAND_NAME || "dagoldol";
+for (const f of own) {
+  const slug = stockDb[f]?.slug;
+  if (!slug) continue;
+  const entry = new RegExp(
+    `("${slug}":\\{file:\`${f.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\`,)` +
+    "credit:`[^`]*`,license:`[^`]*`,licenseUrl:`[^`]*`,page:`[^`]*`");
+  const before = out;
+  out = out.replace(entry, `$1credit:\`${BRAND}\`,license:\`own photograph\`,licenseUrl:\`#photo\`,page:\`#photo\``);
+  if (out === before) throw new Error(`Could not rewrite the photo credit for ${f} (slug ${slug}).`);
+}
+
+// Written LAST, after every rewrite above. Writing it earlier silently
+// dropped the photo-credit changes made below it.
+writeFileSync(`${OUT_DIR}/index.html`, out, "utf8");
+
 const kb = (n) => `${(n / 1024).toFixed(0)}KB`;
 console.log(`\n  ${OUT_DIR}/index.html  ${kb(out.length)}`);
 console.log(`  bridge re-inlined from ${BRIDGE} (${kb(bridge.length)})`);
 console.log(`  ${copied} product photos copied to ${OUT_DIR}/products/`);
+console.log(`  ${own.length} of them are your own; ${copied - own.length} still stock Wikimedia photos`);
+if (own.length) console.log(`    stock credit removed from: ${own.join(", ")}`);
 if (endpoint) {
   console.log(`  checkout -> ${endpoint}`);
   console.log(`  legal    -> ${endpoint}/legal/terms.html\n`);

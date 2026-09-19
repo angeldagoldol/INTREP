@@ -105,6 +105,22 @@
     copyTimer = setTimeout(function () { copyTimer = null; fixStaleCopy(); }, 250);
   }
 
+  /* Photo credits for the seller's own photographs.
+
+     The build rewrites those entries to point at the `#photo` sentinel, which
+     is already truthful on its own ("dagoldol · own photograph"). This tidies
+     it to a plain line with no links, since there is no licence page to link
+     to for a photo you took yourself. */
+  function fixOwnPhotoCredits() {
+    var anchors = document.querySelectorAll('.credit a[href$="#photo"]');
+    for (var i = 0; i < anchors.length; i++) {
+      var span = anchors[i].closest(".credit");
+      if (!span || span.dataset.ownPhoto === "1") continue;
+      span.dataset.ownPhoto = "1";
+      span.textContent = "Photo: " + BRAND;
+    }
+  }
+
   /* The page ships with a learning-demo disclaimer that says the checkout
      charges nothing. Once STORE_ENDPOINT is set that sentence is false, and
      it is false to a customer on the page where they hand over money. Rewrite
@@ -283,7 +299,7 @@
     if (document.title !== PAGE_TITLE) document.title = PAGE_TITLE;
   }
 
-  function applyBranding() { brandTitle(); brandDisclaimer(); brandFooter(); brandLegal(); brandWordmark(); scheduleCopyFix(); }
+  function applyBranding() { brandTitle(); brandDisclaimer(); brandFooter(); brandLegal(); brandWordmark(); fixOwnPhotoCredits(); scheduleCopyFix(); }
   applyBranding();
   new MutationObserver(applyBranding).observe(document.documentElement, {
     childList: true, subtree: true,

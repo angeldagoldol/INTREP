@@ -1,0 +1,229 @@
+{
+  "_comment": "sha256 of each stock Wikimedia photo shipped with this storefront. A file whose hash differs is treated as the seller's OWN photo: the Creative Commons credit below is dropped for it, because crediting a stranger for your own photograph is a false attribution. Nothing to maintain by hand \u2014 replace the file and the build notices.",
+  "photos": {
+    "fr-bag.jpg": {
+      "sha256": "46fd0c6ada789a6f6b59a1183e880ce774a19c486832ec1b4c63d8a93bf76505",
+      "slug": "fr-bag",
+      "credit": "DAHAOI Taoh MINGWHUA",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "page": "https://commons.wikimedia.org/wiki/File:HK_SKD_TKO_%E5%AF%B6%E7%90%B3_Po_Lam_MCP_Central_mall_shop_UNIQLO_Clothing_April_2026_N13P_30.jpg"
+    },
+    "fr-down.jpg": {
+      "sha256": "ec483b0da59a8d29e7748355b0c6dd8980ea3707f4f500e8512224b375ca0e6a",
+      "slug": "fr-down",
+      "credit": "HU HAEILL EYHALU 1112",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:HK_TKO_%E5%B0%87%E8%BB%8D%E6%BE%B3_Tseung_Kwan_O_PopCorn_mall_shop_Uniqlo_clothing_December_2022_Px3_01.jpg"
+    },
+    "fr-fleece.jpg": {
+      "sha256": "97e2ca588d87a946dceaaf7fcf46876cdb2d128342f8ebfe19f538035926f286",
+      "slug": "fr-fleece",
+      "credit": "Masahiko OHKUBO",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:UNIQLO%E3%81%AE%E3%82%82%E3%81%93%E3%82%82%E3%81%93_(54941286463).jpg"
+    },
+    "fr-heattech.jpg": {
+      "sha256": "dcb80b84f494d5085e7e45ac46ca664beb3bc5015781408d0675cc0dd7917403",
+      "slug": "fr-heattech",
+      "credit": "P1898",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:UNIQLO_clothing_2026-09-07_Philippines_01.jpg"
+    },
+    "fr-ut.jpg": {
+      "sha256": "cfd3f9ad2662fa3ca2c5c2ef4df1a05f6916474525584d7c9f646f2e01409fa3",
+      "slug": "fr-ut",
+      "credit": "PENG HSIEN-YING",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:UT%E7%9A%84%E6%B0%B4%E8%B2%A9%E8%B3%A3%E6%A9%9F_(3258620958).jpg"
+    },
+    "honda-civic.jpg": {
+      "sha256": "3ce2decf1aba6644a2c38fda5022e39ddfb418d45687eee6a63962b623e24dc1",
+      "slug": "honda-civic",
+      "credit": "Tokumeigakarinoaoshima",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Honda_CIVIC_EX_(6BA-FL1).jpg"
+    },
+    "honda-hondajet.jpg": {
+      "sha256": "4c938006b363418c43700678581597b964a5332f88f36bab1e36342223f9859b",
+      "slug": "honda-hondajet",
+      "credit": "MarcelX42",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Hamburg_Airport_Honda_HA-420_HondaJet_D-IVVV_(DSC03385).jpg"
+    },
+    "honda-nbox.jpg": {
+      "sha256": "c02a2b85529cbbe15d4c12d5298d979d546a6b73fc53d4b59e2fe768adf43bca",
+      "slug": "honda-nbox",
+      "credit": "Tokumeigakarinoaoshima",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Honda_N-BOX_(6BA-JF5).jpg"
+    },
+    "honda-supercub.jpg": {
+      "sha256": "f78a2560fea63d74b5ea64357dffcf86aa06ec43708b30281cdf957ff9984962",
+      "slug": "honda-supercub",
+      "credit": "Tokumeigakarinoaoshima",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Osaka_Auto_Messe_2019_(93)_-_Honda_Super_Cub_C125_(2BJ-JA48).jpg"
+    },
+    "honda-vezel.jpg": {
+      "sha256": "5bdcb8f3769f831b53150d3f6da2a019696ec3f92f56f3bcd4819b59da065629",
+      "slug": "honda-vezel",
+      "credit": "Vauxford",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:2023_Honda_HR-V_Advance_i-MMD_CVT_1.5.jpg"
+    },
+    "nissan-gtr.jpg": {
+      "sha256": "f1d80dec9613439a9ac200ce1bb2f84ceb2d33c02464a7c3fb8b09371dfb69bb",
+      "slug": "nissan-gtr",
+      "credit": "MrWalkr",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Nissan_R35_GT-R_in_Nottingham.jpg"
+    },
+    "nissan-note.jpg": {
+      "sha256": "d73a42712594a1c771a6ac933bca3bd4106b79a384071afb5f5fafe36bc7d3a8",
+      "slug": "nissan-note",
+      "credit": "TTTNIS",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "page": "https://commons.wikimedia.org/wiki/File:2020-2024_Nissan_Note_S.jpg"
+    },
+    "nissan-sakura.jpg": {
+      "sha256": "9cfe6103248371a1eba0fde4177571e754733f540ba7a2b81e6494cb101057c1",
+      "slug": "nissan-sakura",
+      "credit": "TTTNIS",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "page": "https://commons.wikimedia.org/wiki/File:2024_Nissan_Sakura_G.jpg"
+    },
+    "nissan-serena.jpg": {
+      "sha256": "825eea3a6670a639d3ac2d47042113cca46df90be8302c4067fc0814243cea49",
+      "slug": "nissan-serena",
+      "credit": "TTTNIS",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "page": "https://commons.wikimedia.org/wiki/File:Nissan_Serena_C28_e-Power_Highway_Star_V.jpg"
+    },
+    "nissan-xtrail.jpg": {
+      "sha256": "0a337a8f9fe870eb7d0d0f6e3ff8fb75eb9f01845ef0e06a6a066e9b4f1ce697",
+      "slug": "nissan-xtrail",
+      "credit": "Alexander-93",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Nissan_X-Trail_(T33)_1X7A7179.jpg"
+    },
+    "sony-alpha.jpg": {
+      "sha256": "bc57c5b03514e3a17ee8202e33585c36d4071e9e66123fdd36d36d80c22d4ab8",
+      "slug": "sony-alpha",
+      "credit": "Henry S\u00f6derlund",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Sony_A7_IV_(ILCE-7M4)_-_by_Henry_S%C3%B6derlund_(51739988735).jpg"
+    },
+    "sony-bravia.jpg": {
+      "sha256": "cc85567ae72509725b44b20af3476a4bf031b5a109e9fd4db0d5b24b78058b1c",
+      "slug": "sony-bravia",
+      "credit": "ETC@USC",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Sony_Bravia_3D_on_display_at_CES_20110106.jpg"
+    },
+    "sony-dualsense.jpg": {
+      "sha256": "743e3c6478f15b3d3b629fc99bde48cf1242505f2015f7a4a12c40f7be8952e8",
+      "slug": "sony-dualsense",
+      "credit": "Alex Cochrane",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Playstation_DualSense_Controller.png"
+    },
+    "sony-ps5-pro.jpg": {
+      "sha256": "12dd364ec8179f1a4b831746a41a18f37efcb1c01526292cabf6e36cf4a37e8b",
+      "slug": "sony-ps5-pro",
+      "credit": "BeatEmUps",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:PlayStation_5_Pro_no_disc_drive.jpg"
+    },
+    "sony-ps5.jpg": {
+      "sha256": "c31d958547f425d393769ae7cfbf901cb20be743b3a56aba280556f3b497e9f5",
+      "slug": "sony-ps5",
+      "credit": "Howardcorn33",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "page": "https://commons.wikimedia.org/wiki/File:Black_and_white_Playstation_5_base_edition_with_controller.png"
+    },
+    "sony-sensors.jpg": {
+      "sha256": "23f444a7207f07b63bc5e891a8500b3162e580a1646417d4e37b0406f2655aa4",
+      "slug": "sony-sensors",
+      "credit": "Solomon203",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Taipei_IT_Month_Sony_Exmor_CMOS_sensors_20131202.jpg"
+    },
+    "sony-wh1000x.jpg": {
+      "sha256": "8db13988b6b4dc412ede2f43e05a9cc8859cfa731ea683722f42c1ac45ac9a74",
+      "slug": "sony-wh1000x",
+      "credit": "www.digitalpush.net",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Sony-WH-1000XM3-kabellose-Bluetooth-Noise-Cancelling-Kopfhoerer.2.jpg"
+    },
+    "toyota-bz4x.jpg": {
+      "sha256": "c402d7f465ce96699e82566a21fa6656ce29460828abf9d2134fd13fd4839f9d",
+      "slug": "toyota-bz4x",
+      "credit": "Alexander Migl",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Toyota_bZ4X_Automesse_Ludwigsburg_2022_1X7A5897.jpg"
+    },
+    "toyota-corolla.jpg": {
+      "sha256": "dbfbf7cb2f8b0b7d6a1eefbbb25cd68d001758e7abe98db2ba66934b453bc506",
+      "slug": "toyota-corolla",
+      "credit": "Alexander Migl",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Toyota_Corolla_Hybrid_(E210)_IMG_4338.jpg"
+    },
+    "toyota-land-cruiser.jpg": {
+      "sha256": "a7df6a291b0b73315295f6bef4cbb9a11486f4f3578a0e2d137982514bf6ab78",
+      "slug": "toyota-land-cruiser",
+      "credit": "TTTNIS",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "page": "https://commons.wikimedia.org/wiki/File:2021_Toyota_Land_Cruieser_300_ZX.jpg"
+    },
+    "toyota-mirai.jpg": {
+      "sha256": "ffc555b4690bed4d68192aa8756aa27c0c009877b05cc9552cef97e768c71be1",
+      "slug": "toyota-mirai",
+      "credit": "Alexander Migl",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Toyota_Mirai_(JPD20)_IMG_5303.jpg"
+    },
+    "toyota-prius.jpg": {
+      "sha256": "63bdb1e0f148fa9917aa076a3bb9e78decc51a120a0eebe094af290af47558ab",
+      "slug": "toyota-prius",
+      "credit": "Alexander-93",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Toyota_Prius_(XW60)_Plug-in_Hybrid_IMG_9905.jpg"
+    },
+    "toyota-rav4.jpg": {
+      "sha256": "28cf1eecbafb28c5ca883ae993b8476f7633cc6ffdbf37ce1290355c1f60997a",
+      "slug": "toyota-rav4",
+      "credit": "Mr.choppers",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:2024_Toyota_RAV4_Prime_XSE_Premium_in_Silver_Sky_with_Midnight_Black_roof,_front_left.jpg"
+    }
+  }
+}
