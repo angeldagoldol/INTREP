@@ -96,8 +96,14 @@ catalog = catalog.replace(/(\{ id: "([^"]+)"[^}]*?amount: )(\d+)/g, (full, head,
 let bundle = readFileSync(BUNDLE, "utf8");
 const nameToPesos = new Map();
 for (const [id, v] of wanted) {
-  const m = new RegExp(`\\{ id: "${id.replace(/[:.]/g, "\\$&")}", name: "([^"]+)"`).exec(catalog);
-  if (m) nameToPesos.set(m[1], v.centavos / 100);
+  const m = new RegExp(`\\{ id: "${id.replace(/[:.]/g, "\\$&")}", name: ("(?:[^"\\\\]|\\\\.)*")`).exec(catalog);
+  if (!m) continue;
+  // The catalog stores names with JS escapes ("Alpha \\u03b17 series") while the
+  // bundle holds the literal character ("Alpha α7 series"). Decode before
+  // matching, or every non-ASCII product silently fails to update.
+  let name;
+  try { name = JSON.parse(m[1]); } catch { name = m[1].slice(1, -1); }
+  nameToPesos.set(name, v.centavos / 100);
 }
 
 const whStart = bundle.search(/\bWh\s*=\s*\{/);
@@ -109,6 +115,7 @@ for (let k = braceAt; k < bundle.length; k++) {
 let wh = bundle.slice(braceAt, whEnd);
 let bundleChanges = 0;
 let renotated = 0;
+const touched = new Set();
 wh = wh.replace(
   /(?:"([^"]+)"|([A-Za-z][\w$]*)|`([^`]+)`)\s*:\s*\{(buy:[^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g,
   (full, q, bare, tick, body) => {
@@ -119,12 +126,24 @@ wh = wh.replace(
     // notation (price:1.976e+06) which JS reads correctly but nobody can.
     const before = Number(/price:([0-9.e+]+)/.exec(body)?.[1]);
     const updated = body.replace(/price:[0-9.e+]+/, `price:${next.toFixed(2).replace(/\.00$/, "")}`);
+    touched.add(name);
     if (Math.abs(before - next) > 0.005) bundleChanges++;
     else if (updated !== body) renotated++;
     return full.replace(body, updated);
   }
 );
 bundle = bundle.slice(0, braceAt) + wh + bundle.slice(whEnd);
+
+const unmatched = [...nameToPesos.keys()].filter((n) => !touched.has(n));
+if (unmatched.length) {
+  console.error(
+    "\nRefusing to write — these products were not found in the storefront bundle:\n" +
+      unmatched.map((n) => `  ${n}`).join("\n") +
+      "\nApplying anyway would leave the storefront showing a different price " +
+      "from the one charged."
+  );
+  process.exit(1);
+}
 
 if (DRY) {
   console.log(`DRY RUN — ${changes.length} catalog changes, ${bundleChanges} bundle price changes` +
