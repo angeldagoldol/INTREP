@@ -3,16 +3,21 @@ import Stripe from "stripe";
 import { config } from "./src/config.js";
 import { checkoutRouter } from "./src/routes/checkout.js";
 import { webhookRouter } from "./src/routes/webhook.js";
+import { paymongoWebhookRouter } from "./src/routes/paymongoWebhook.js";
 import { cors } from "./src/cors.js";
 
-const stripe = new Stripe(config.stripe.secretKey);
+// Stripe is optional now — a Philippines-only seller may run PayMongo alone.
+const stripe = config.stripe.enabled ? new Stripe(config.stripe.secretKey) : null;
 const app = express();
 
 app.disable("x-powered-by");
 
 // ORDER MATTERS. The webhook needs the raw request body for signature
 // verification, so it is mounted before the JSON parser below.
-app.use("/api", webhookRouter(stripe));
+// Both webhooks need the RAW body for signature verification, so they mount
+// before express.json() below. Order matters.
+if (config.stripe.enabled) app.use("/api", webhookRouter(stripe));
+if (config.paymongo.enabled) app.use("/api", paymongoWebhookRouter());
 
 app.use(express.json({ limit: "64kb" }));
 // CORS applies only to the browser-facing API, never the webhook above.
@@ -27,6 +32,11 @@ app.listen(config.port, () => {
   console.log(`  Currency:        ${config.currency.toUpperCase()}`);
   console.log(`  Ships to:        ${config.shipTo.join(", ")}`);
   console.log(`  Orders notify:   ${config.email.notify}`);
-  console.log(`  Stripe mode:     ${config.stripe.secretKey.startsWith("sk_live") ? "LIVE — real money" : "test"}`);
+  const providers = [];
+  if (config.paymongo.enabled)
+    providers.push(`PayMongo (${config.paymongo.methods.join(", ")}) ${config.paymongo.secretKey.startsWith("sk_live") ? "LIVE" : "test"}`);
+  if (config.stripe.enabled)
+    providers.push(`Stripe ${config.stripe.secretKey.startsWith("sk_live") ? "LIVE" : "test"}`);
+  console.log(`  Payments:        ${providers.join("  |  ")}`);
   console.log(`\n  Local webhooks:  npm run stripe:listen\n`);
 });

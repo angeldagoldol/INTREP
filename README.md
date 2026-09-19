@@ -18,32 +18,64 @@ Browser ──POST /api/checkout──▶ Server ──▶ Stripe Checkout (host
 ```
 
 
-## Read this before choosing a payment provider
+## Payments: two providers, by design
 
-Your main market is the Philippines, and that changes the answer.
+Your main market is the Philippines, and that drives the split.
 
-**Stripe works in PH** — available since 2021, accepts PHP and USD, and local
-onboarding is still subject to regional rollout, so check you can actually get
-an account before building on it.
-
-**But Stripe does not reliably support GCash, Maya or QR Ph**, and that is
-where Philippine volume is: GCash has roughly 76 million users, Maya about 47
-million. Card penetration is comparatively low. A PH store that only takes
-cards will lose a large share of its customers at checkout.
-
-Practical split:
-
-| Market | Provider | Why |
+| Market | Provider | Methods |
 |---|---|---|
-| International (US, EU, JP, SG) | **Stripe** — this repo | Cards, already built and tested |
-| Philippines | **PayMongo** or **HitPay** | GCash, Maya, QR Ph, InstaPay, over-the-counter, PHP payouts |
+| **Philippines** (default) | **PayMongo** | GCash, Maya, card |
+| International | Stripe | Visa, Mastercard, Amex |
 
-`src/routes/checkout.js` is the only file that talks to Stripe, so adding a
-second provider beside it is a contained change rather than a rewrite. The
-webhook, order log, email and catalog are all provider-agnostic already.
+**Why both:** Stripe works in the Philippines but does not reliably support
+GCash, Maya or QR Ph — and that is where local volume is (GCash ~76M users,
+Maya ~47M). A PH store on cards alone loses a large share of customers at
+checkout. PayMongo covers the wallets; Stripe covers the rest of the world.
 
-I have NOT built the PayMongo path — say the word and it can go in next to
-the Stripe one.
+Either can run alone. Set only `PAYMONGO_SECRET_KEY` and the server boots
+PayMongo-only; set only the Stripe pair and it boots Stripe-only. It refuses
+to start with neither. `/api/products` reports which are live, so the
+storefront only ever offers a provider the server can process.
+
+### PayMongo setup
+
+1. Dashboard → Developers → API Keys. Copy the **secret** key into
+   `PAYMONGO_SECRET_KEY` (start with `sk_test_`).
+2. Register the webhook — PayMongo shows the secret **once**, so save it:
+
+```bash
+curl https://api.paymongo.com/v1/webhooks \
+  -u "$PAYMONGO_SECRET_KEY:" \
+  -H "Content-Type: application/json" \
+  -d '{"data":{"attributes":{
+        "url":"https://yourdomain.com/api/paymongo/webhook",
+        "events":["checkout_session.payment.paid"]}}}'
+```
+
+3. Put the returned `secret_key` into `PAYMONGO_WEBHOOK_SECRET`.
+
+PayMongo's minimum charge is **₱100**. Orders below it are rejected locally,
+before the API call, with a message the customer can act on.
+
+### A caveat on the PayMongo request shape
+
+This sandbox blocks `api.paymongo.com` and `docs.paymongo.com`, so the
+outbound call has **never been run against the live API**. The auth scheme,
+the `{data:{attributes}}` envelope and the webhook signature algorithm were
+taken from PayMongo's own Node SDK and are verified. The Checkout Session
+*field names* come from secondary sources.
+
+**Run one test-mode order before trusting it.** If a field name is wrong the
+API returns a 400 naming it, and `src/paymongo.js` logs the detail verbatim.
+
+### !! Displayed currency does not match charged currency yet !!
+
+The storefront artifact still shows the **Japanese yen** prices baked into its
+bundle (¥79,980 for a PS5), while this server charges **PHP**
+(₱30,392.40). A customer would see one number and be charged another.
+
+Fix before going live — either set your real PHP prices in the artifact, or
+switch `CURRENCY` and the catalog to the currency the page displays.
 
 ## Why it is built this way
 
@@ -168,7 +200,8 @@ requires 3D Secure.
 - [ ] Check `CURRENCY` against `src/money.js` — JPY is zero-decimal
 - [ ] Complete every legal page and link them from the footer and checkout
 - [ ] Confirm your reseller agreement covers online sale of these brands
-- [ ] Add a GCash/Maya route for PH customers (PayMongo or HitPay)
+- [ ] Run one PayMongo test order to confirm the Checkout Session fields
+- [ ] Make the artifact's displayed prices match the charged currency
 - [ ] Register the business with DTI (or SEC) and get your BIR receipts in order
 - [ ] Replace the placeholder PHP prices — they are a flat JPY conversion
 - [ ] Move orders from `data/orders.jsonl` to a real database
