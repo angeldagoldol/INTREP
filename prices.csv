@@ -1,26 +1,26 @@
 id,sku,name,brand,mode,price_php
-toyota:0,TOY-COROLLA,Corolla,Toyota,enquiry,760000.00
-toyota:1,TOY-RAV4,RAV4,Toyota,enquiry,1254000.00
-toyota:2,TOY-PRIUS,Prius,Toyota,enquiry,1045000.00
-toyota:3,TOY-LAND-CRUISER,Land Cruiser,Toyota,enquiry,1976000.00
-toyota:4,TOY-BZ4X,bZ4X,Toyota,enquiry,1900000.00
-toyota:5,TOY-MIRAI,Mirai,Toyota,enquiry,2758800.00
-honda:0,HON-N-BOX,N-BOX,Honda,enquiry,627000.00
-honda:1,HON-CIVIC,Civic,Honda,enquiry,1311000.00
-honda:2,HON-VEZEL,Vezel,Honda,enquiry,1007000.00
-honda:3,HON-SUPER-CUB,Super Cub,Honda,enquiry,188100.00
-sony:0,SON-PLAYSTATION-5,PlayStation 5,Sony,checkout,30392.40
-sony:1,SON-PLAYSTATION-5-PRO,PlayStation 5 Pro,Sony,checkout,45592.40
-sony:2,SON-DUALSENSE-WIRELESS,DualSense wireless controller,Sony,checkout,4362.40
-sony:3,SON-WH-1000X-HEADPHONE,WH-1000X headphones,Sony,checkout,22572.00
-sony:4,SON-ALPHA-7-SERIES,Alpha α7 series,Sony,checkout,125400.00
-sony:6,SON-BRAVIA,BRAVIA,Sony,checkout,57000.00
-fastretailing:0,FAS-HEATTECH,HEATTECH,Uniqlo,checkout,224.20
-fastretailing:1,FAS-ULTRA-LIGHT-DOWN,Ultra Light Down,Uniqlo,checkout,2276.20
-fastretailing:2,FAS-UT,UT,Uniqlo,checkout,570.00
-fastretailing:3,FAS-FLEECE,Fleece,Uniqlo,checkout,1516.20
-fastretailing:4,FAS-ROUND-MINI-SHOULDE,Round Mini Shoulder Bag,Uniqlo,checkout,570.00
-nissan:0,NIS-SAKURA,Sakura,Nissan,enquiry,988000.00
-nissan:1,NIS-NOTE-E-POWER,Note e-POWER,Nissan,enquiry,885400.00
-nissan:2,NIS-SERENA,Serena,Nissan,enquiry,1075400.00
-nissan:3,NIS-X-TRAIL,X-Trail,Nissan,enquiry,1459200.00
+toyota:0,TOY-COROLLA,Corolla,Toyota,enquiry,1213000.00
+toyota:1,TOY-RAV4,RAV4,Toyota,enquiry,2183000.00
+toyota:2,TOY-PRIUS,Prius,Toyota,enquiry,2650000.00
+toyota:3,TOY-LAND-CRUISER,Land Cruiser,Toyota,enquiry,5758000.00
+toyota:4,TOY-BZ4X,bZ4X,Toyota,enquiry,3190000.00
+toyota:5,TOY-MIRAI,Mirai,Toyota,enquiry,4850000.00
+honda:0,HON-N-BOX,N-BOX,Honda,enquiry,950000.00
+honda:1,HON-CIVIC,Civic,Honda,enquiry,1600000.00
+honda:2,HON-VEZEL,Vezel,Honda,enquiry,1550000.00
+honda:3,HON-SUPER-CUB,Super Cub,Honda,enquiry,169000.00
+sony:0,SON-PLAYSTATION-5,PlayStation 5,Sony,checkout,40032.00
+sony:1,SON-PLAYSTATION-5-PRO,PlayStation 5 Pro,Sony,checkout,56990.00
+sony:2,SON-DUALSENSE-WIRELESS,DualSense wireless controller,Sony,checkout,3990.00
+sony:3,SON-WH-1000X-HEADPHONE,WH-1000X headphones,Sony,checkout,16999.00
+sony:4,SON-ALPHA-7-SERIES,Alpha α7 series,Sony,checkout,144999.00
+sony:6,SON-BRAVIA,BRAVIA,Sony,checkout,54999.00
+fastretailing:0,FAS-HEATTECH,HEATTECH,Uniqlo,checkout,590.00
+fastretailing:1,FAS-ULTRA-LIGHT-DOWN,Ultra Light Down,Uniqlo,checkout,3990.00
+fastretailing:2,FAS-UT,UT,Uniqlo,checkout,790.00
+fastretailing:3,FAS-FLEECE,Fleece,Uniqlo,checkout,1490.00
+fastretailing:4,FAS-ROUND-MINI-SHOULDE,Round Mini Shoulder Bag,Uniqlo,checkout,990.00
+nissan:0,NIS-SAKURA,Sakura,Nissan,enquiry,1250000.00
+nissan:1,NIS-NOTE-E-POWER,Note e-POWER,Nissan,enquiry,1350000.00
+nissan:2,NIS-SERENA,Serena,Nissan,enquiry,2150000.00
+nissan:3,NIS-X-TRAIL,X-Trail,Nissan,enquiry,2290000.00
