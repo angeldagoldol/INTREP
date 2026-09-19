@@ -4,6 +4,8 @@ import { constructEvent } from "../paymongo.js";
 import { buildOrderEmail } from "../templates/orderEmail.js";
 import { sendOrderNotification } from "../email.js";
 import { recordOrder, alreadyProcessed, markProcessed } from "../orders.js";
+import { decrement } from "../inventory.js";
+import { findByName } from "../catalog.js";
 
 // Events that mean "the customer actually paid". Anything else is noise.
 const PAID_EVENTS = new Set(["checkout_session.payment.paid", "payment.paid"]);
@@ -50,6 +52,8 @@ function normaliseOrder(event) {
     shipping: billing.address ? { name: billing.name, address: billing.address } : null,
     items: lineItems.map((li) => ({
       description: li.name,
+      // PayMongo returns names only, so map back through the catalog.
+      productId: findByName(li.name)?.id || null,
       quantity: li.quantity,
       unitAmount: li.amount ?? null,
       amountTotal: (li.amount || 0) * (li.quantity || 1),
@@ -96,6 +100,18 @@ export function paymongoWebhookRouter() {
       try {
         const order = normaliseOrder(event);
         recordOrder(order);
+
+        // Stock moves on CONFIRMED payment, never on session creation: most
+        // sessions are never paid, and reserving against them would hide stock
+        // that is still on the shelf.
+        const moved = decrement(
+          (order.items || []).map((i) => ({ id: i.productId, quantity: i.quantity }))
+        );
+        for (const m of moved) {
+          if (m.short > 0) {
+            console.error(`[stock] OVERSOLD ${m.id}: ${m.short} unit(s) beyond stock on ${order.orderId}`);
+          }
+        }
         console.log(
           `[order] paymongo ${order.orderId} ${order.amountTotal} ${order.currency}` +
             (order.paymentMethod ? ` via ${order.paymentMethod}` : "")

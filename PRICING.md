@@ -71,11 +71,32 @@ JP shelf price (incl. 10% consumption tax)
 
 | Line | JP | Landed net | Shelf | Margin | |
 |---|---|---|---|---|---|
-| HEATTECH | ¥590 | ₱321.90 | ₱590 | **38.9%** | |
-| Ultra Light Down | ¥5,990 | ₱2,740.04 | ₱3,990 | **23.1%** | |
-| Round Mini Shoulder Bag | ¥1,500 | ₱734.95 | ₱990 | **16.9%** | |
-| UT | ¥1,500 | ₱711.95 | ₱790 | **−0.9%** | dropped |
-| Fleece | ¥3,990 | ₱1,848.26 | ₱1,490 | **−38.9%** | dropped |
+| Line | JP | Weight | Freight | Landed net | Shelf | Margin |
+|---|---|---|---|---|---|---|
+| HEATTECH | ¥590 | 0.15 kg | ₱22.50 | ₱416.77 | ₱590 | **20.9%** |
+| Ultra Light Down | ¥5,990 | 0.30 kg | ₱45.00 | ₱2,757.29 | ₱3,990 | **22.6%** |
+| Round Mini Shoulder Bag | ¥1,500 | 0.25 kg | ₱37.50 | ₱824.08 | ₱990 | **6.8%** |
+| UT | ¥1,500 | 0.18 kg | — | ₱812.00 | ₱790 | **−15.1%** dropped |
+| Fleece | ¥3,990 | 0.45 kg | — | ₱1,925.88 | ₱1,490 | **−44.8%** dropped |
+
+Sea consolidated at ₱150/kg actual weight plus ₱120/unit handling (brokerage,
+documentation, warehousing, last mile).
+
+**Freight mode is the business decision, not a detail.** By air at ₱550/kg
+with volumetric weight, four of the five lose money — HEATTECH drops to
+−4.2%, Fleece to −86.5%. Only Ultra Light Down survives, at 15.2%. Sea takes
+40–60 days and needs you to hold stock; air does not, and there is no margin
+left to pay for it.
+
+**The Shoulder Bag at 6.8% is thin enough to be FX risk, not profit.** The yen
+moved between ₱0.3949 and ₱0.48135 over 52 weeks:
+
+| FX | Margin |
+|---|---|
+| 0.3949 | 9.4% |
+| 0.4100 | 6.8% |
+| 0.4400 | 1.4% |
+| 0.4814 | **−5.9%** |
 
 **UT and Fleece are set `active: false`.** Uniqlo runs its own stores in the
 Philippines and prices below what a parallel import can land at. Fleece lost

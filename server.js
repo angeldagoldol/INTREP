@@ -6,6 +6,7 @@ import { webhookRouter } from "./src/routes/webhook.js";
 import { paymongoWebhookRouter } from "./src/routes/paymongoWebhook.js";
 import { cors } from "./src/cors.js";
 import { enquiryRouter } from "./src/routes/enquiry.js";
+import { metricsRouter } from "./src/routes/metrics.js";
 
 // Stripe is optional now — a Philippines-only seller may run PayMongo alone.
 const stripe = config.stripe.enabled ? new Stripe(config.stripe.secretKey) : null;
@@ -24,7 +25,12 @@ if (config.stripe.enabled) app.use("/api", webhookRouter(stripe));
 if (config.paymongo.enabled) app.use("/api", paymongoWebhookRouter());
 
 app.use(express.json({ limit: "64kb" }));
-// CORS applies only to the browser-facing API, never the webhook above.
+// The dashboard mounts FIRST and without CORS, so no cross-origin page can
+// read your numbers. Order matters: the `cors` middleware below runs for every
+// /api request that reaches it, so mounting the dashboard after it would hand
+// out Access-Control-Allow-Origin on the metrics response too.
+app.use("/api", metricsRouter());
+// CORS applies only to the browser-facing API, never the webhooks above.
 app.use("/api", cors, checkoutRouter(stripe));
 app.use("/api", cors, enquiryRouter());
 

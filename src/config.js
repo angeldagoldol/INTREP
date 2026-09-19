@@ -72,6 +72,15 @@ export const config = {
   // actually being listened on rather than a hardcoded 3000.
   baseUrl: (process.env.PUBLIC_BASE_URL || `http://localhost:${PORT}`).replace(/\/$/, ""),
   currency: (process.env.CURRENCY || "gbp").toLowerCase(),
+  admin: {
+    // Guards the metrics dashboard. Business numbers are not public.
+    token: process.env.ADMIN_TOKEN || "",
+  },
+  report: {
+    // Which day a sale belongs to. Manila by default: the main market is PH,
+    // and on UTC every sale before 8am local would land on the day before.
+    timezone: process.env.REPORT_TIMEZONE || "Asia/Manila",
+  },
   vat: {
     // Philippine VAT. Set VAT_RATE=0 to switch the breakdown off entirely.
     rate: process.env.VAT_RATE === undefined ? 0.12 : Number(process.env.VAT_RATE),

@@ -330,6 +330,59 @@ browser will not let a page call this API cross-origin without it, and an
 allowlist means only your storefront can create Checkout Sessions on your
 Stripe account.
 
+## Stock, sales and funds
+
+A dashboard at `/admin.html`, behind a bearer token. Set one first:
+
+```bash
+ADMIN_TOKEN=$(openssl rand -hex 24)      # put it in .env
+```
+
+Then open `http://localhost:3000/admin.html?token=YOUR_ADMIN_TOKEN` once. The
+page moves the token into `sessionStorage` and scrubs it out of the address
+bar, so it is not left sitting in your browser history — but it is still in
+that first request line, so treat any access log as holding a secret, and
+roll the token if one leaks.
+
+**Three questions, three charts.**
+
+| | reads | moved by |
+|---|---|---|
+| Funds | running total, **net of VAT** | confirmed payments |
+| Sales | revenue per day, VAT-inclusive | confirmed payments |
+| Stock | units on hand per line | payments, and you |
+
+Funds is **net of VAT but gross of cost of goods — it is not profit.** The
+order log does not carry what you paid for the item, so the dashboard cannot
+know your margin and does not guess at one. For margin, use
+`npm run prices:breakdown`.
+
+Days are **Asia/Manila** days, not UTC ones — set `REPORT_TIMEZONE` to change
+that. On UTC every sale made before 8am local would be filed under the day
+before.
+
+### Setting stock
+
+Nothing knows what you have until you say so:
+
+```bash
+curl -X POST http://localhost:3000/api/admin/stock \
+  -H "Authorization: Bearer $ADMIN_TOKEN" -H "Content-Type: application/json" \
+  -d '{"productId":"sony:0","units":4}'
+```
+
+From then on a **confirmed payment** takes units out — never a checkout
+session, because most sessions are never paid and reserving against them
+would hide stock that is still on the shelf. Stock floors at zero and logs
+`[stock] OVERSOLD ...` rather than going negative, so an oversell shows up as
+something to go and fix instead of quietly poisoning every total after it.
+
+Cars are listed too, at `0` until you set them. They are enquiry lines, so no
+checkout ever drains them — move those by hand.
+
+Stock lives in `data/stock.json`, which is gitignored along with the rest of
+`data/`.
+
 ## Testing
 
 ```bash
@@ -342,6 +395,11 @@ any future expiry, any CVC. You should get an email and a line in
 
 Other test cards: `4000 0000 0000 9995` declines, `4000 0025 0000 3155`
 requires 3D Secure.
+
+For the dashboard, set `ADMIN_TOKEN`, POST a few stock lines, then put a test
+order through. The funds line, the day's revenue and that product's stock
+should all move together. Until the first paid order the charts say so rather
+than drawing a flat line at zero.
 
 ## Going live
 
@@ -356,6 +414,7 @@ requires 3D Secure.
 - [ ] Register the business with DTI (or SEC) and get your BIR receipts in order
 - [ ] Replace the placeholder PHP prices — they are a flat JPY conversion
 - [ ] Move orders and enquiries from `data/*.jsonl` to a real database
+- [ ] Set `ADMIN_TOKEN` to a random secret and set your opening stock levels
 - [ ] Set `TRUST_PROXY=1` if deploying behind a load balancer
 - [ ] Keep `.env` out of git (already in `.gitignore`)
 - [ ] Configure tax — Stripe Tax, or your own rates
@@ -372,12 +431,15 @@ src/pricing.js               cost -> markup -> VAT forward pricing
 src/landedCost.js            parallel-import landed cost (JP retail -> PH shelf) (JPY!)
 src/cors.js                  Cross-origin access for the storefront
 src/orders.js                Order log + webhook idempotency
+src/inventory.js             Stock levels; decremented on confirmed payment
 src/email.js                 Resend or SMTP
 src/templates/orderEmail.js  Email rendering (pure, testable)
 src/routes/checkout.js       Creates Checkout Sessions
 src/routes/webhook.js        Verifies signature, records order, emails you
+src/routes/metrics.js        Dashboard API, bearer-token gated, no CORS
 public/                      Minimal reference storefront
 public/store-bridge.js       Artifact cart -> this server (off by default)
+public/admin.html            Stock / sales / funds dashboard
 legal/                       Policy templates to complete (Philippine law)
 storefront/index.html        The published storefront, branded, bridge included
 scripts/                     prices export / apply / verify / breakdown
@@ -392,4 +454,9 @@ prices.csv                   Your working file — GITIGNORED, holds costs
 - The webhook route uses `express.raw` and is mounted before `express.json()`.
   Reversing that order breaks signature verification.
 - Stripe errors are logged server-side and never returned to the browser.
-- `data/` is gitignored — it holds customer names and addresses.
+- `data/` is gitignored — it holds customer names, addresses and stock levels.
+- `/api/admin/*` needs `ADMIN_TOKEN` and is mounted **before** the CORS
+  middleware, so no other origin can read your numbers. It returns 503 rather
+  than serving anything if no token is set.
+- The dashboard page itself is public; only the data behind it is gated. It
+  carries `noindex`.

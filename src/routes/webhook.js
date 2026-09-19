@@ -3,6 +3,8 @@ import { config } from "../config.js";
 import { buildOrderEmail } from "../templates/orderEmail.js";
 import { sendOrderNotification } from "../email.js";
 import { recordOrder, alreadyProcessed, markProcessed } from "../orders.js";
+import { decrement } from "../inventory.js";
+import { findByName } from "../catalog.js";
 
 /**
  * The webhook is the ONLY trustworthy signal that an order was paid.
@@ -65,12 +67,24 @@ export function webhookRouter(stripe) {
         let items = [];
         let itemsError = null;
         try {
-          const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
+          // `price_data.product_data.metadata` is a REQUEST-only shape: what
+          // comes back is a Price whose `product` is an id string, with the
+          // metadata on the Product. Without this expand the id lookup below
+          // silently misses every time and stock never moves.
+          const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+            limit: 100,
+            expand: ["data.price.product"],
+          });
           items = lineItems.data.map((li) => ({
             description: li.description,
             quantity: li.quantity,
             unitAmount: li.price?.unit_amount ?? null,
             amountTotal: li.amount_total,
+            // Set in buildLineItems. The name fallback is a backstop only:
+            // names are display text and can be edited out from under us.
+            productId: li.price?.product?.metadata?.product_id
+              || findByName(li.description)?.id
+              || null,
           }));
         } catch (err) {
           itemsError = err?.message || String(err);
@@ -98,6 +112,18 @@ export function webhookRouter(stripe) {
         };
 
         recordOrder(order);
+
+        // Stock moves on CONFIRMED payment, never on session creation: most
+        // sessions are never paid, and reserving against them would hide stock
+        // that is still on the shelf.
+        const moved = decrement(
+          (order.items || []).map((i) => ({ id: i.productId, quantity: i.quantity }))
+        );
+        for (const m of moved) {
+          if (m.short > 0) {
+            console.error(`[stock] OVERSOLD ${m.id}: ${m.short} unit(s) beyond stock on ${order.orderId}`);
+          }
+        }
         console.log(`[order] ${order.orderId} ${order.amountTotal} ${order.currency}`);
 
         const mail = buildOrderEmail(order);

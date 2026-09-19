@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>dagoldol — stock, sales, funds</title>
+<meta name="color-scheme" content="light dark">
+<style>
+  /* Palette steps validated with the dataviz palette checker against both
+     surfaces — light #2a78d6/#1baf7a, dark #3987e5/#199e70. The dark steps are
+     chosen for the dark surface, not derived by flipping the light ones.
+     The green carries a contrast warning against the light surface, which is
+     why every funds figure is also written out as text and mirrored in the
+     table view. */
+  .viz-root{
+    color-scheme:light;
+    --surface-1:#fcfcfb; --surface-2:#f3f2ef; --border:#e4e2dc;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#78766f;
+    --series-sales:#2a78d6;      /* categorical slot 1 */
+    --series-funds:#1baf7a;      /* categorical slot 3 */
+    /* Status steps are fixed, not themed: the same hex in both modes, so a
+       state never changes colour with the surface. On light, warning is
+       sub-3:1 by design — which is why shape and the word carry the meaning
+       and the hue only reinforces it. */
+    --status-good:#0ca30c; --status-warning:#fab219; --status-critical:#d03b3b;
+    --grid:#e8e7e2; --focus:#2f6fed;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:where(:not([data-theme="light"])) .viz-root{
+      color-scheme:dark;
+      --surface-1:#1a1a19; --surface-2:#242422; --border:#343430;
+      --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#8e8c83;
+      --series-sales:#3987e5; --series-funds:#199e70;
+      --grid:#2b2b28;  --focus:#6f9dff;
+    }
+  }
+  :root[data-theme="dark"] .viz-root{
+    color-scheme:dark;
+    --surface-1:#1a1a19; --surface-2:#242422; --border:#343430;
+    --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#8e8c83;
+    --series-sales:#3987e5; --series-funds:#199e70;
+    --grid:#2b2b28; --focus:#6f9dff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--surface-2);color:var(--text-primary);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:24px 16px}
+  .wrap{max-width:1040px;margin:0 auto}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  h1{font-size:20px;margin:0}
+  .sub{color:var(--text-secondary);font-size:13px;margin:2px 0 0}
+  .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  select,button{min-height:40px;min-width:40px;padding:0 12px;font:inherit;font-size:14px;border-radius:8px;
+    border:1px solid var(--border);background:var(--surface-1);color:var(--text-primary);cursor:pointer}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  .card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px}
+  .card h2{font-size:14px;margin:0 0 2px;font-weight:620}
+  .card .note{color:var(--text-secondary);font-size:12px;margin:0 0 14px}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:12px;margin-bottom:16px}
+  .tile{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:16px}
+  .tile .label{color:var(--text-secondary);font-size:12px;margin:0 0 6px}
+  .tile .value{font-size:26px;font-weight:620;font-variant-numeric:tabular-nums;line-height:1.1}
+  .tile .meta{color:var(--text-muted);font-size:12px;margin:6px 0 0}
+  figure{margin:0}
+  figure > svg{display:block;width:100%;overflow:visible}
+  figure > svg svg{overflow:visible}
+  .grid line{stroke:var(--grid);stroke-width:1}
+  .axis text{fill:var(--text-muted);font-size:11px}
+  .lbl{fill:var(--text-secondary);font-size:11px;font-variant-numeric:tabular-nums}
+  .lbl-strong{fill:var(--text-primary);font-size:11px;font-weight:620;font-variant-numeric:tabular-nums}
+  .lbl-mute{fill:var(--text-muted);font-size:10px}
+  .halo{paint-order:stroke;stroke:var(--surface-1);stroke-width:3px;stroke-linejoin:round}
+  .tip{position:fixed;pointer-events:none;background:var(--surface-1);border:1px solid var(--border);
+    border-radius:8px;padding:8px 10px;font-size:12px;box-shadow:0 6px 20px #0003;opacity:0;transition:opacity .1s;z-index:10}
+  .tip .t{color:var(--text-muted);margin-bottom:2px}
+  .tip .v{font-variant-numeric:tabular-nums;font-weight:620}
+  .swatch{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 10px;padding:0;list-style:none;
+    color:var(--text-secondary);font-size:12px}
+  .legend li{display:inline-flex;align-items:center;gap:5px}
+  .legend svg,.status svg{width:13px;height:13px;flex:none}
+  table{border-collapse:collapse;width:100%;font-size:13px;margin-top:6px}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border)}
+  th{color:var(--text-secondary);font-weight:620;font-size:12px}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .status{display:inline-flex;align-items:center;gap:5px;font-size:12px}
+  .tag{color:var(--text-muted);font-size:11px}
+  [hidden]{display:none!important}
+  .empty{color:var(--text-secondary);font-size:13px;padding:22px 0;text-align:center}
+  .empty code{font-size:12px;background:var(--surface-2);padding:2px 5px;border-radius:4px}
+  @media (prefers-reduced-motion:reduce){ .tip{transition:none} }
+  /* High contrast mode forces every fill and stroke to a system colour, which
+     collapses the status hues. That is survivable only because each bar also
+     carries an icon and a number; the fills that carry no meaning are dropped
+     so the marks that do stay legible. */
+  @media (forced-colors:active){
+    .halo{stroke:Canvas}
+    .area{fill:none}
+    .track{fill:none;stroke:CanvasText;stroke-width:1}
+    .tip{box-shadow:none}
+  }
+</style>
+</head>
+<body class="viz-root">
+<div class="wrap">
+  <header>
+    <div>
+      <h1>dagoldol</h1>
+      <p class="sub" id="asof">Loading…</p>
+    </div>
+    <div class="controls">
+      <label class="sub" for="days">Window</label>
+      <select id="days">
+        <option value="7">7 days</option>
+        <option value="30" selected>30 days</option>
+        <option value="90">90 days</option>
+      </select>
+      <button id="toggle" aria-pressed="false">Table view</button>
+      <button id="theme" aria-label="Switch between light and dark" title="Switch between light and dark"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" style="vertical-align:-2px"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 0 0 13z" fill="currentColor"/></svg></button>
+    </div>
+  </header>
+
+  <div class="tiles" id="tiles"></div>
+
+  <section class="card">
+    <h2>Funds — running total, net of VAT</h2>
+    <p class="note">Cash received less the VAT you owe. <strong>Gross of cost of goods, so not profit.</strong></p>
+    <figure id="fig-funds"></figure>
+  </section>
+
+  <section class="card">
+    <h2>Sales — revenue per day</h2>
+    <p class="note">VAT-inclusive, as charged.</p>
+    <figure id="fig-sales"></figure>
+  </section>
+
+  <section class="card">
+    <h2>Stock on hand</h2>
+    <p class="note" id="stock-note">Units of every line you list. Scarcest first.</p>
+    <ul class="legend" id="stock-legend"></ul>
+    <figure id="fig-stock"></figure>
+  </section>
+
+  <section class="card" id="tables" hidden>
+    <h2>Table view</h2>
+    <p class="note">The same numbers, readable without colour.</p>
+    <div id="table-body"></div>
+  </section>
+</div>
+<div class="tip" id="tip" aria-hidden="true"></div>
+
+<script type="module">
+const $ = (s) => document.querySelector(s);
+const tip = $("#tip");
+let DATA = null;
+
+/* The token arrives in the query string, which would otherwise sit in the
+   address bar, in history, and in any Referer this page sends. Read it once,
+   keep it in sessionStorage so a reload still works, and scrub the URL. */
+const KEY = "dagoldol.adminToken";
+let token = sessionStorage.getItem(KEY) || "";
+{
+  const q = new URLSearchParams(location.search);
+  if (q.get("token")) {
+    token = q.get("token");
+    try { sessionStorage.setItem(KEY, token); } catch { /* private mode */ }
+    q.delete("token");
+    history.replaceState(null, "", location.pathname + (q.toString() ? `?${q}` : ""));
+  }
+}
+
+const nf = (cur, opts) => new Intl.NumberFormat("en-PH",
+  { style:"currency", currency:(cur||"php").toUpperCase(), ...opts });
+const money      = (c, cur) => nf(cur, { maximumFractionDigits:0 }).format(c/100);
+const moneyExact = (c, cur) => nf(cur, {}).format(c/100);
+// Axis ticks get compact notation: "₱1.2M" is 34px wide where "₱1,200,000" is
+// 77px, and a y-axis wide enough for the long form leaves no room to plot on a
+// phone.
+const moneyShort = (c, cur) => nf(cur, { notation:"compact", maximumFractionDigits:1 }).format(c/100);
+const shortDay = (d) => new Date(d+"T00:00:00Z").toLocaleDateString("en-GB",{day:"numeric",month:"short",timeZone:"UTC"});
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+function showTip(html, ev){
+  tip.innerHTML = html;
+  tip.style.opacity = "1";
+  const r = tip.getBoundingClientRect();
+  tip.style.left = Math.max(8, Math.min(window.innerWidth - r.width - 8, ev.clientX + 12)) + "px";
+  tip.style.top  = Math.max(8, ev.clientY - r.height - 12) + "px";
+}
+const hideTip = () => { tip.style.opacity = "0"; };
+
+/* A gridline at an arbitrary fraction of the data max reads as noise, so the
+   scale is rounded up to the next 1/1.5/2/2.5/3/4/5/7.5 decade step. */
+function niceMax(v){
+  if (!(v > 0)) return 1;
+  const base = Math.pow(10, Math.floor(Math.log10(v)));
+  for (const m of [1,1.5,2,2.5,3,4,5,7.5,10]) if (v <= m*base + 1e-9) return m*base;
+  return 10*base;
+}
+
+/* ---- line chart: one series, so no legend box; the title names it ------- */
+function lineChart(el, series, { valueKey, color, cur, label }) {
+  const W = Math.max(240, el.clientWidth || 900), H = 230;
+  const m = { t: 16, r: W < 420 ? 12 : 16, b: 26, l: 56 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const max = niceMax(Math.max(...series.map((d) => d[valueKey])));
+  const x = (i) => m.l + (series.length === 1 ? iw/2 : (i / (series.length - 1)) * iw);
+  const y = (v) => m.t + ih - (v / max) * ih;
+
+  const ticks = [...new Set([0, max/2, max])];
+  const path = series.map((d,i) => `${i?"L":"M"}${x(i).toFixed(1)},${y(d[valueKey]).toFixed(1)}`).join("");
+  const area = `${path}L${x(series.length-1).toFixed(1)},${m.t+ih}L${x(0).toFixed(1)},${m.t+ih}Z`;
+  const last = series[series.length-1];
+  const ly = y(last[valueKey]);
+  // The funds line only ever climbs, so its final point sits at the top of the
+  // plot and a label placed above it lands on the marker. Drop below instead.
+  const labelY = ly < m.t + 26 ? ly + 19 : ly - 10;
+
+  el.innerHTML = `
+  <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">
+    <g class="grid">${ticks.map((t)=>`<line x1="${m.l}" x2="${W-m.r}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}"/>`).join("")}</g>
+    <g class="axis">
+      ${ticks.map((t)=>`<text x="${m.l-8}" y="${(y(t)+4).toFixed(1)}" text-anchor="end">${moneyShort(t,cur)}</text>`).join("")}
+      <text x="${m.l}" y="${H-6}">${shortDay(series[0].day)}</text>
+      <text x="${W-m.r}" y="${H-6}" text-anchor="end">${shortDay(last.day)}</text>
+    </g>
+    <path class="area" d="${area}" fill="${color}" opacity=".10"/>
+    <path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${x(series.length-1).toFixed(1)}" cy="${ly.toFixed(1)}" r="4.5" fill="${color}"
+            stroke="var(--surface-1)" stroke-width="2"/>
+    <text class="lbl-strong halo" x="${W-m.r}" y="${labelY.toFixed(1)}" text-anchor="end">${money(last[valueKey],cur)}</text>
+    <line class="cross" x1="0" x2="0" y1="${m.t}" y2="${m.t+ih}" stroke="${color}" stroke-width="1" opacity="0"/>
+    <rect class="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent" style="cursor:crosshair"/>
+  </svg>`;
+
+  const svg = el.querySelector("svg"), cross = el.querySelector(".cross"), hit = el.querySelector(".hit");
+  const move = (ev) => {
+    const box = svg.getBoundingClientRect();
+    const px = (ev.clientX - box.left) / box.width * W;
+    const i = Math.max(0, Math.min(series.length-1, Math.round(((px - m.l)/iw) * (series.length-1))));
+    const d = series[i];
+    cross.setAttribute("x1", x(i).toFixed(1)); cross.setAttribute("x2", x(i).toFixed(1));
+    cross.setAttribute("opacity", ".45");
+    showTip(`<div class="t">${shortDay(d.day)}</div>
+      <div class="v"><span class="swatch" style="background:${color}"></span>${moneyExact(d[valueKey],cur)}</div>
+      ${d.orders!==undefined?`<div class="t">${d.orders} order${d.orders===1?"":"s"} · ${d.units} unit${d.units===1?"":"s"} that day</div>`:""}`, ev);
+  };
+  hit.addEventListener("pointermove", move);
+  hit.addEventListener("pointerdown", move);
+  hit.addEventListener("pointerleave", () => { hideTip(); cross.setAttribute("opacity","0"); });
+}
+
+/* ---- status: colour is never the only signal ---------------------------- */
+const GLYPH = {
+  good:     '<circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2"/>',
+  warning:  '<path d="M8 2.2l6 11.6H2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+  critical: '<path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>',
+};
+// The glyph wears ink, never the status hue: on the light surface the warning
+// step is 1.79:1 against it, and a mark you cannot see carries nothing. Shape
+// plus the word identify the state; the bar's hue only reinforces it.
+const iconHtml = (s) => `<svg viewBox="0 0 16 16" aria-hidden="true">${GLYPH[s]}</svg>`;
+const STATUS_LABEL = { good:"In stock", warning:"Low", critical:"Out of stock" };
+const STATUS_VAR  = { good:"var(--status-good)", warning:"var(--status-warning)", critical:"var(--status-critical)" };
+
+function renderLegend(el, rows){
+  const present = ["critical","warning","good"].filter((s) => rows.some((r) => r.status === s));
+  el.innerHTML = present.map((s) =>
+    `<li><span style="display:inline-flex">${iconHtml(s)}</span>${STATUS_LABEL[s]}
+      <span class="swatch" style="background:${STATUS_VAR[s]}"></span></li>`).join("");
+}
+
+/* ---- horizontal bars: icon + name + number, colour only reinforces ----- */
+function barChart(el, rows, { cur }) {
+  if (!rows.length) { el.innerHTML = `<p class="empty">No active lines.</p>`; return; }
+  const W = Math.max(240, el.clientWidth || 900);
+  const rowH = 26, gap = 2;
+  // On a phone a fixed 200px label gutter leaves negative room to plot, so the
+  // gutter scales and the names are clipped to what actually fits.
+  const ml = Math.round(Math.max(92, Math.min(216, W * 0.34)));
+  const mr = W < 420 ? 44 : 96;
+  const m = { t: 6, r: mr, b: 6, l: ml };
+  const H = m.t + rows.length*rowH + m.b;
+  const iw = Math.max(40, W - m.l - m.r);
+  const max = Math.max(1, ...rows.map((r) => r.units));
+  const nameX = 18, nameRoom = m.l - 10 - nameX;
+  const clip = (s) => {
+    const n = Math.max(3, Math.floor(nameRoom / 6.1));
+    return s.length > n ? s.slice(0, n-1) + "…" : s;
+  };
+
+  el.innerHTML = `
+  <svg viewBox="0 0 ${W} ${H}" role="img"
+       aria-label="Units on hand for ${rows.length} lines. ${rows.filter((r)=>r.status==="critical").length} out of stock, ${rows.filter((r)=>r.status==="warning").length} low.">
+    ${rows.map((r,i) => {
+      const y = m.t + i*rowH, bh = rowH - gap*2;
+      const w = r.units ? Math.max(3, (r.units/max) * iw) : 0;
+      const col = STATUS_VAR[r.status], rx = Math.min(4, w/2);
+      // Only the data end is rounded — a rounded baseline end floats the bar
+      // off the axis it is measured from.
+      const bar = w ? `<path class="bar" d="M${m.l},${y+gap}H${m.l+w-rx}a${rx},${rx} 0 0 1 ${rx},${rx}V${y+gap+bh-rx}a${rx},${rx} 0 0 1 -${rx},${rx}H${m.l}Z" fill="${col}"/>` : "";
+      return `<g>
+        <title>${esc(r.brand)} · ${esc(r.name)} — ${r.units} unit${r.units===1?"":"s"}, ${STATUS_LABEL[r.status]}</title>
+        <svg x="0" y="${y+(rowH-12)/2}" width="12" height="12" viewBox="0 0 16 16" style="color:var(--text-secondary)">${GLYPH[r.status]}</svg>
+        <text class="lbl" x="${nameX}" y="${y+rowH/2+4}">${esc(clip(r.name))}</text>
+        <rect class="track" x="${m.l}" y="${y+gap}" width="${iw}" height="${bh}" rx="4" fill="var(--grid)" opacity=".5"/>
+        ${bar}
+        <text class="lbl-strong halo" x="${m.l+w+8}" y="${y+rowH/2+4}">${r.units}</text>
+        <rect class="hit" data-i="${i}" x="0" y="${y}" width="${W}" height="${rowH}" fill="transparent" style="cursor:pointer"/>
+      </g>`;
+    }).join("")}
+  </svg>`;
+
+  el.querySelectorAll(".hit").forEach((hit) => {
+    const r = rows[Number(hit.dataset.i)];
+    const show = (ev) => showTip(
+      `<div class="t">${esc(r.brand)} · ${esc(r.name)}</div>
+       <div class="v">${r.units} unit${r.units===1?"":"s"}</div>
+       <div class="t">${STATUS_LABEL[r.status]} · ${money(r.units*r.amount,cur)} at retail${r.mode==="enquiry"?" · enquiry line":""}</div>`, ev);
+    hit.addEventListener("pointermove", show);
+    hit.addEventListener("pointerdown", show);
+    hit.addEventListener("pointerleave", hideTip);
+  });
+}
+
+function renderTables(d){
+  const cur = d.currency;
+  const sold = d.sales.series.filter((s)=>s.orders||s.revenue);
+  $("#table-body").innerHTML = `
+  <h3 style="font-size:13px;margin:14px 0 0">Stock — all active lines</h3>
+  <table><thead><tr><th>Product</th><th>Brand</th><th class="num">Units</th><th>Status</th><th class="num">At retail</th></tr></thead>
+  <tbody>${d.stock.rows.map((r)=>`<tr>
+    <td>${esc(r.name)}${r.mode==="enquiry"?' <span class="tag">enquiry</span>':""}</td>
+    <td>${esc(r.brand)}</td><td class="num">${r.units}</td>
+    <td><span class="status">${iconHtml(r.status)}${STATUS_LABEL[r.status]}
+      <span class="swatch" style="background:${STATUS_VAR[r.status]}"></span></span></td>
+    <td class="num">${money(r.units*r.amount,cur)}</td></tr>`).join("")}</tbody></table>
+
+  <h3 style="font-size:13px;margin:18px 0 0">Sales by day — ${d.timezone}</h3>
+  <table><thead><tr><th>Day</th><th class="num">Orders</th><th class="num">Units</th><th class="num">Revenue</th><th class="num">Funds (running)</th></tr></thead>
+  <tbody>${sold.map((s)=>`<tr>
+    <td>${shortDay(s.day)}</td><td class="num">${s.orders}</td><td class="num">${s.units}</td>
+    <td class="num">${moneyExact(s.revenue,cur)}</td><td class="num">${moneyExact(s.fundsNet,cur)}</td></tr>`).join("")
+    || `<tr><td colspan="5" style="color:var(--text-secondary)">No sales in this window.</td></tr>`}</tbody></table>
+
+  <h3 style="font-size:13px;margin:18px 0 0">Best sellers — all time</h3>
+  <table><thead><tr><th>Product</th><th class="num">Units</th><th class="num">Revenue</th></tr></thead>
+  <tbody>${d.topProducts.map((p)=>`<tr><td>${esc(p.name)}</td>
+    <td class="num">${p.units}</td><td class="num">${moneyExact(p.revenue,cur)}</td></tr>`).join("")
+    || `<tr><td colspan="3" style="color:var(--text-secondary)">Nothing sold yet.</td></tr>`}</tbody></table>`;
+}
+
+function render(d){
+  DATA = d;
+  const cur = d.currency;
+  $("#asof").textContent =
+    `Stock, sales and funds · ${d.timezone} days · updated ${new Date(d.generatedAt).toLocaleString("en-GB")}`;
+
+  const low = d.stock.rows.filter((r)=>r.status!=="good").length;
+  // Each tile says which period it covers. A window chart beside an all-time
+  // total with no label is how a dashboard gets believed and is still wrong.
+  $("#tiles").innerHTML = `
+    <div class="tile"><p class="label">Funds, net of VAT · all time</p>
+      <p class="value">${money(d.funds.netOfVat,cur)}</p>
+      <p class="meta">${money(d.funds.revenueGross,cur)} taken · ${money(d.funds.vatCollected,cur)} is VAT</p></div>
+    <div class="tile"><p class="label">Orders · last ${d.windowDays} days</p>
+      <p class="value">${d.window.orders}</p>
+      <p class="meta">${d.window.units} unit${d.window.units===1?"":"s"} · ${d.sales.totalOrders} order${d.sales.totalOrders===1?"":"s"} all time</p></div>
+    <div class="tile"><p class="label">Stock on hand</p>
+      <p class="value">${d.stock.totalUnits}</p>
+      <p class="meta">${money(d.stock.retailValue,cur)} at retail</p></div>
+    <div class="tile"><p class="label">Lines needing attention</p>
+      <p class="value">${low}</p>
+      <p class="meta">${d.stock.totalUnits===0 ? `of ${d.stock.rows.length} — no stock recorded yet`
+        : low ? `of ${d.stock.rows.length} — low or out of stock` : "all lines in stock"}</p></div>`;
+
+  const hasSales = d.sales.series.some((s)=>s.revenue>0) || d.funds.openingNet > 0;
+  if (hasSales) {
+    lineChart($("#fig-funds"), d.sales.series, { valueKey:"fundsNet", color:"var(--series-funds)", cur, label:`Running total of funds net of VAT over the last ${d.windowDays} days` });
+  } else {
+    $("#fig-funds").innerHTML = `<p class="empty">No paid orders yet — the funds line appears with your first sale.</p>`;
+  }
+  if (d.sales.series.some((s)=>s.revenue>0)) {
+    lineChart($("#fig-sales"), d.sales.series, { valueKey:"revenue", color:"var(--series-sales)", cur, label:`Revenue per day over the last ${d.windowDays} days` });
+  } else {
+    $("#fig-sales").innerHTML = `<p class="empty">No sales in this window.</p>`;
+  }
+
+  renderLegend($("#stock-legend"), d.stock.rows);
+  if (d.stock.totalUnits === 0) {
+    $("#stock-legend").innerHTML = "";
+    $("#fig-stock").innerHTML = `<p class="empty">No stock recorded yet. Set a line with<br>
+      <code>POST /api/admin/stock {"productId":"sony:0","units":4}</code></p>`;
+  } else {
+    barChart($("#fig-stock"), d.stock.rows, { cur });
+  }
+  renderTables(d);
+}
+
+async function load(){
+  const days = $("#days").value;
+  try {
+    const res = await fetch(`/api/admin/metrics?days=${days}`,
+      { headers: token ? { Authorization:`Bearer ${token}` } : {} });
+    if (!res.ok) {
+      const e = await res.json().catch(()=>({}));
+      $("#asof").textContent = `Could not load: ${e.error || res.status}. Open this page with ?token=YOUR_ADMIN_TOKEN once.`;
+      return;
+    }
+    render(await res.json());
+  } catch (err) {
+    $("#asof").textContent = `Could not reach the server: ${err.message}`;
+  }
+}
+
+$("#days").addEventListener("change", load);
+$("#toggle").addEventListener("click", (e)=>{
+  const on = $("#tables").hidden;
+  $("#tables").hidden = !on;
+  e.currentTarget.setAttribute("aria-pressed", String(on));
+  e.currentTarget.textContent = on ? "Hide table" : "Table view";
+});
+$("#theme").addEventListener("click", ()=>{
+  const dark = document.documentElement.dataset.theme === "dark";
+  document.documentElement.dataset.theme = dark ? "light" : "dark";
+  if (DATA) render(DATA);
+});
+let t = 0;
+addEventListener("resize", ()=>{ clearTimeout(t); t = setTimeout(()=>{ if (DATA) render(DATA); }, 120); });
+load();
+</script>
+</body>
+</html>
