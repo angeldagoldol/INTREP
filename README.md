@@ -288,6 +288,24 @@ Pick one:
 
 If neither is set the server still runs and records orders; it just warns.
 
+**Check it before a customer does:**
+
+```bash
+npm run email:test
+```
+
+That sends one realistic order notification through the same code path a paid
+order uses, and explains any failure in terms of what to change — a rejected
+key, an unverified domain, a network block. It touches no payments and writes
+no orders.
+
+**The onboarding@resend.dev catch.** Resend's shared sender only delivers to
+the address that owns the Resend account. That is fine while `NOTIFY_EMAIL` is
+your own inbox, which is the whole point here. The moment you want mail going
+anywhere else — a colleague, a shared orders@ — you need your own domain
+verified under Domains, and `EMAIL_FROM` set to an address on it. `email:test`
+names this failure when you hit it.
+
 **What the email tells you.** Every paid order sends one, with the customer's
 name, email and phone, the line items, the VAT split, the shipping address —
 and **how they paid**: GCash, Maya, QR Ph, or a card with its brand and last
