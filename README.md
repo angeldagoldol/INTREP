@@ -288,6 +288,17 @@ Pick one:
 
 If neither is set the server still runs and records orders; it just warns.
 
+**What the email tells you.** Every paid order sends one, with the customer's
+name, email and phone, the line items, the VAT split, the shipping address —
+and **how they paid**: GCash, Maya, QR Ph, or a card with its brand and last
+four digits, named alongside the provider that took it. Those last four are
+what let you match an order to a line on a payout statement, which is the one
+moment you need them.
+
+If a provider does not report the method, the email says so in as many words
+rather than leaving the line out — a missing line reads like a missing
+feature, not like missing data.
+
 **Do this too, it is free:** Stripe Dashboard → Settings → Notifications →
 enable "Successful payments". That emails you per order with no code at all,
 and is a good backstop if this server is ever down.

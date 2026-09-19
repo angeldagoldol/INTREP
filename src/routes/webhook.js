@@ -91,8 +91,38 @@ export function webhookRouter(stripe) {
           console.error(`[webhook] could not fetch line items for ${session.id}: ${itemsError}`);
         }
 
+        // What did they actually pay with? The session only lists the methods
+        // that were OFFERED; the method used hangs off the PaymentIntent. This
+        // is a second fallible call and, like the line items above, it is not
+        // allowed to lose the order: the event is already marked processed, so
+        // a throw here means the sale vanishes and the retry is ignored too.
+        let paymentMethod = "", cardBrand = "", cardLast4 = "", methodError = null;
+        if (session.payment_intent) {
+          try {
+            const pi = await stripe.paymentIntents.retrieve(
+              typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent.id,
+              { expand: ["payment_method"] }
+            );
+            const pm = pi.payment_method;
+            paymentMethod = pm?.type || pi.payment_method_types?.[0] || "";
+            cardBrand = pm?.card?.brand || "";
+            cardLast4 = pm?.card?.last4 || "";
+          } catch (err) {
+            methodError = err?.message || String(err);
+            console.error(`[webhook] could not read the payment method for ${session.id}: ${methodError}`);
+            // Fall back to what the session already told us. It is the list of
+            // methods offered, so it is only trustworthy when there was one.
+            const offered = session.payment_method_types || [];
+            if (offered.length === 1) paymentMethod = offered[0];
+          }
+        }
+
         const order = {
           orderId: session.id,
+          provider: "stripe",
+          paymentMethod,
+          cardBrand,
+          cardLast4,
           paymentIntent: session.payment_intent,
           amountTotal: session.amount_total,
           currency: session.currency,
