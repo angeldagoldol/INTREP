@@ -57,6 +57,54 @@
     inner.appendChild(small);
   }
 
+  /* The page still carries copy from before it became a real storefront:
+     prices described as Japanese yen list prices, and a checkout described as
+     a demo. The first is false whatever the build, because the catalogue is
+     in Philippine pesos now. The second is true only while STORE_ENDPOINT is
+     empty.
+
+     This is done by sweeping text nodes rather than by selector, because the
+     same claims appear in the shop header, an FAQ answer and the cart. Each
+     rule rewrites its own source text, so once applied it no longer matches
+     and the pass is idempotent. */
+  var COPY_ALWAYS = [
+    ["at approximate Japanese list prices (tax included)",
+     "at Philippine retail prices, VAT included"],
+    ["They are approximate Japanese list prices in yen, with 10% consumption tax included, rounded from 2025 announcements.",
+     "They are Philippine retail prices in pesos, VAT included."],
+  ];
+  var COPY_WHEN_LIVE = [
+    ["Checkout here is a demo; each product links to its official store.",
+     "Vehicles are sold by enquiry; everything else can be bought here."],
+    ["You can fill a cart and go through checkout, but it is a demo: no payment details are asked for, nothing is charged and nothing is shipped.",
+     "You can fill a cart and check out for real: payment is taken by card, GCash or Maya on a secure page, and we ship the item."],
+    [" No payment details are asked for and nothing is charged or shipped.",
+     " Payment is taken on a secure page; this site never handles your card or wallet details."],
+  ];
+
+  function fixStaleCopy() {
+    var rules = STORE_ENDPOINT ? COPY_ALWAYS.concat(COPY_WHEN_LIVE) : COPY_ALWAYS;
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    var node;
+    while ((node = walker.nextNode())) {
+      var text = node.nodeValue;
+      if (!text || text.length < 12) continue;
+      var next = text;
+      for (var i = 0; i < rules.length; i++) {
+        if (next.indexOf(rules[i][0]) !== -1) next = next.split(rules[i][0]).join(rules[i][1]);
+      }
+      if (next !== text) node.nodeValue = next;
+    }
+  }
+
+  /* The sweep walks every text node, so it is debounced rather than run on
+     each mutation: React re-renders this page constantly. */
+  var copyTimer = null;
+  function scheduleCopyFix() {
+    if (copyTimer) return;
+    copyTimer = setTimeout(function () { copyTimer = null; fixStaleCopy(); }, 250);
+  }
+
   /* The page ships with a learning-demo disclaimer that says the checkout
      charges nothing. Once STORE_ENDPOINT is set that sentence is false, and
      it is false to a customer on the page where they hand over money. Rewrite
@@ -235,7 +283,7 @@
     if (document.title !== PAGE_TITLE) document.title = PAGE_TITLE;
   }
 
-  function applyBranding() { brandTitle(); brandDisclaimer(); brandFooter(); brandLegal(); brandWordmark(); }
+  function applyBranding() { brandTitle(); brandDisclaimer(); brandFooter(); brandLegal(); brandWordmark(); scheduleCopyFix(); }
   applyBranding();
   new MutationObserver(applyBranding).observe(document.documentElement, {
     childList: true, subtree: true,

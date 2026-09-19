@@ -11,7 +11,7 @@
 //      and would have shipped a storefront with no links to the legal pages.
 //
 // Everything else in the 2.8MB bundle is left byte-for-byte alone.
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from "node:fs";
 
 const SRC = "storefront/index.html";
 const BRIDGE = "public/store-bridge.js";
@@ -86,9 +86,29 @@ out = out.slice(0, headClose) + headTags + out.slice(headClose);
 mkdirSync(OUT_DIR, { recursive: true });
 writeFileSync(`${OUT_DIR}/index.html`, out, "utf8");
 
+// The product photos are separate files the page loads from ./products/. Only
+// the small gallery thumbnails are inlined as data URIs, so a build that emits
+// index.html alone looks fine in every automated check and shows a shop full
+// of empty cards to an actual customer. Copy them, and refuse to build if one
+// the page asks for is not there.
+const PRODUCT_SRC = "storefront/products";
+const wanted = [...new Set([...out.matchAll(/file:`([^`]+)`/g)].map((m) => m[1]))].sort();
+const missing = wanted.filter((f) => !existsSync(`${PRODUCT_SRC}/${f}`));
+if (missing.length) {
+  throw new Error(
+    `${missing.length} product image(s) the page references are missing from ${PRODUCT_SRC}/:\n` +
+    missing.map((f) => `  ${f}`).join("\n") +
+    `\nThe shop would render empty cards. Add them before deploying.`
+  );
+}
+mkdirSync(`${OUT_DIR}/products`, { recursive: true });
+let copied = 0;
+for (const f of wanted) { copyFileSync(`${PRODUCT_SRC}/${f}`, `${OUT_DIR}/products/${f}`); copied++; }
+
 const kb = (n) => `${(n / 1024).toFixed(0)}KB`;
 console.log(`\n  ${OUT_DIR}/index.html  ${kb(out.length)}`);
 console.log(`  bridge re-inlined from ${BRIDGE} (${kb(bridge.length)})`);
+console.log(`  ${copied} product photos copied to ${OUT_DIR}/products/`);
 if (endpoint) {
   console.log(`  checkout -> ${endpoint}`);
   console.log(`  legal    -> ${endpoint}/legal/terms.html\n`);
