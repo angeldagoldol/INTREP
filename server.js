@@ -5,12 +5,16 @@ import { checkoutRouter } from "./src/routes/checkout.js";
 import { webhookRouter } from "./src/routes/webhook.js";
 import { paymongoWebhookRouter } from "./src/routes/paymongoWebhook.js";
 import { cors } from "./src/cors.js";
+import { enquiryRouter } from "./src/routes/enquiry.js";
 
 // Stripe is optional now — a Philippines-only seller may run PayMongo alone.
 const stripe = config.stripe.enabled ? new Stripe(config.stripe.secretKey) : null;
 const app = express();
 
 app.disable("x-powered-by");
+// Behind a proxy (Railway, Fly, nginx) this makes req.ip the real client,
+// which the enquiry rate limiter depends on.
+if (process.env.TRUST_PROXY) app.set("trust proxy", Number(process.env.TRUST_PROXY) || 1);
 
 // ORDER MATTERS. The webhook needs the raw request body for signature
 // verification, so it is mounted before the JSON parser below.
@@ -22,6 +26,7 @@ if (config.paymongo.enabled) app.use("/api", paymongoWebhookRouter());
 app.use(express.json({ limit: "64kb" }));
 // CORS applies only to the browser-facing API, never the webhook above.
 app.use("/api", cors, checkoutRouter(stripe));
+app.use("/api", cors, enquiryRouter());
 
 app.get("/healthz", (_req, res) => res.json({ ok: true }));
 

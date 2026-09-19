@@ -6,6 +6,7 @@ import { appendFileSync, mkdirSync, readFileSync, writeFileSync, existsSync } fr
 import { dirname } from "node:path";
 
 const ORDERS_FILE = "data/orders.jsonl";
+const ENQUIRIES_FILE = "data/enquiries.jsonl";
 const EVENTS_FILE = "data/processed-events.json";
 const MAX_REMEMBERED_EVENTS = 5000;
 
@@ -16,6 +17,11 @@ function ensureDir(file) {
 export function recordOrder(order) {
   ensureDir(ORDERS_FILE);
   appendFileSync(ORDERS_FILE, JSON.stringify(order) + "\n", "utf8");
+}
+
+export function recordEnquiry(enquiry) {
+  ensureDir(ENQUIRIES_FILE);
+  appendFileSync(ENQUIRIES_FILE, JSON.stringify(enquiry) + "\n", "utf8");
 }
 
 function readEvents() {

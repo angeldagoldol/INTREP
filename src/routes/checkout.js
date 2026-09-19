@@ -1,6 +1,6 @@
 import express from "express";
 import { config } from "../config.js";
-import { buildLineItems, listProducts, getProduct } from "../catalog.js";
+import { buildLineItems, listProducts, listPayable, listEnquiry, getProduct } from "../catalog.js";
 import { createCheckoutSession as paymongoCheckout, MINIMUM_AMOUNT } from "../paymongo.js";
 
 export function checkoutRouter(stripe) {
@@ -11,7 +11,9 @@ export function checkoutRouter(stripe) {
   router.get("/products", (_req, res) => {
     res.json({
       currency: config.currency,
-      products: listProducts(),
+      products: listProducts(),      // everything, each carrying its mode
+      payable: listPayable().map((p) => p.id),
+      enquiry: listEnquiry().map((p) => p.id),
       providers: {
         stripe: config.stripe.enabled,
         paymongo: config.paymongo.enabled,
