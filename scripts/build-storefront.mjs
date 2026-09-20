@@ -52,6 +52,15 @@ if (!DECL.test(bridge)) {
 }
 bridge = bridge.replace(DECL, `var STORE_ENDPOINT = ${JSON.stringify(endpoint)};`);
 
+const companies = extractCompanies(html);
+{
+  const DECL = /var SCORE_DETAIL = \{\};/;
+  if (!DECL.test(bridge)) throw new Error(`Could not find the SCORE_DETAIL declaration in ${BRIDGE}.`);
+  bridge = bridge.replace(DECL, `var SCORE_DETAIL = ${JSON.stringify(companies)};`);
+}
+// Both bridge rewrites must land BEFORE it is embedded in `out` below.
+// Mutating `bridge` afterwards changes a string nothing reads again.
+
 // Replace the contents of <script id="store-bridge">…</script>, not the tag.
 const open = html.indexOf('<script id="store-bridge">');
 if (open === -1) throw new Error(`${SRC} has no <script id="store-bridge"> block to replace.`);
@@ -104,6 +113,62 @@ if (missing.length) {
 mkdirSync(`${OUT_DIR}/products`, { recursive: true });
 let copied = 0;
 for (const f of wanted) { copyFileSync(`${PRODUCT_SRC}/${f}`, `${OUT_DIR}/products/${f}`); copied++; }
+
+// The scorecard in the page shows five numbers and nothing else. The page
+// already holds a paragraph explaining each one — it is rendered in the
+// Dossier section and nowhere near the scores. Lift that data out here so the
+// bridge can put it behind the scores where someone reading them will look.
+//
+// Parsed from the bundle rather than duplicated by hand: if the artifact's
+// prose ever changes, this follows it instead of quietly going stale.
+function extractCompanies(source) {
+  const start = source.indexOf("wh=[{id:`toyota`");
+  if (start === -1) throw new Error("Could not find the company data in the bundle.");
+  const end = source.indexOf("}];", start);
+  if (end === -1) throw new Error("Company data in the bundle is unterminated.");
+  const records = source.slice(start, end).split(/,?\{id:`/).slice(1);
+
+  const field = (rec, key) => {
+    const m = new RegExp("[,{]" + key + ":`((?:[^`\\\\]|\\\\.)*)`").exec("," + rec);
+    return m ? m[1] : null;
+  };
+  const obj = (rec, key) => {
+    const m = new RegExp(key + ":\\{([^}]*)\\}").exec(rec);
+    if (!m) return {};
+    return Object.fromEntries(m[1].split(",").map((pair) => {
+      const [k, v] = pair.split(":");
+      return [k, v === "null" ? null : Number(v)];
+    }));
+  };
+
+  const out = {};
+  for (const raw of records) {
+    const id = raw.slice(0, raw.indexOf("`"));
+    out[id] = {
+      name: field(raw, "name"),
+      fy: field(raw, "fy"),
+      scores: obj(raw, "scores"),
+      income: obj(raw, "income"),
+      funds: field(raw, "funds"),
+      supply: field(raw, "supply"),
+      demand: field(raw, "demand"),
+      marketing: field(raw, "marketing"),
+    };
+  }
+
+  // A half-parsed record would show a customer an empty panel, so fail here
+  // instead. Every company needs its five scores and its four paragraphs.
+  const PROSE = ["funds", "supply", "demand", "marketing"];
+  for (const [id, c] of Object.entries(out)) {
+    if (!c.name || !c.fy) throw new Error(`Company ${id}: missing name or fiscal year.`);
+    if (Object.keys(c.scores).length !== 5) throw new Error(`Company ${id}: expected 5 scores, got ${Object.keys(c.scores).length}.`);
+    if (c.income.revenue == null) throw new Error(`Company ${id}: missing revenue.`);
+    const thin = PROSE.filter((k) => !c[k] || c[k].length < 80);
+    if (thin.length) throw new Error(`Company ${id}: no usable text for ${thin.join(", ")}.`);
+  }
+  if (Object.keys(out).length < 2) throw new Error("Parsed fewer than two companies — the bundle shape has changed.");
+  return out;
+}
 
 // Which of these are the seller's own photographs?
 //

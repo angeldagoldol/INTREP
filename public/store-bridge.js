@@ -105,6 +105,272 @@
     copyTimer = setTimeout(function () { copyTimer = null; fixStaleCopy(); }, 250);
   }
 
+  /* ---- Scorecard detail -------------------------------------------------
+
+     The scorecard prints five numbers — Funds 92, Supply 90 — and says only
+     "Editorial scores out of 100". A number with no reasoning behind it is
+     decoration; the reader cannot tell why Nissan scores 30 on income and
+     Toyota 88.
+
+     The page already answers that. Every company carries a paragraph for
+     Funds, Supply, Demand and Marketing, and full revenue/operating/net
+     figures for Income. It is all rendered in the Dossier, a long way from
+     the scores it explains. The build lifts that data out of the bundle into
+     SCORE_DETAIL below, and this puts it one tap from the number.
+
+     A dialog rather than an inline expander: the scorecard sits in a bento
+     card with overflow:hidden, which would clip the panel, and on a phone the
+     card is too small for 300 words anyway. */
+  var SCORE_DETAIL = {};
+
+  var METRICS = ["funds", "supply", "demand", "income", "marketing"];
+  var METRIC_LABEL = {
+    funds: "Funds", supply: "Supply", demand: "Demand",
+    income: "Income", marketing: "Marketing",
+  };
+  /* The one piece of text here that is not the page's own: a plain line
+     saying what each score is measuring, which the page never states. */
+  var METRIC_MEANS = {
+    funds: "What the company is worth and how it pays for things.",
+    supply: "How it gets parts, builds product and moves it.",
+    demand: "Who is buying, where, and how hard.",
+    income: "What it actually earns on what it sells.",
+    marketing: "How the brand is built and spent.",
+  };
+
+  // The page's own formatters, so these figures read exactly as they do in
+  // the Dossier: ¥48.0T, ¥836B-as-0.836T, and a real minus sign on a loss.
+  function sign(v) { return v < 0 ? "−" : ""; }
+  function tn(v) {
+    if (v == null) return "n/a";
+    var a = Math.abs(v);
+    return sign(v) + "¥" + (a >= 10 ? a.toFixed(1) : a >= 1 ? a.toFixed(2) : a.toFixed(3)) + "T";
+  }
+  function pct(v) { return sign(v) + Math.abs(v * 100).toFixed(1) + "%"; }
+
+  function companyFromCard(scoresEl) {
+    // The grid that holds the scorecard also holds a "Shop <name>" button.
+    // That name is the only identifier rendered anywhere near it.
+    var host = scoresEl.closest(".card-grid") || scoresEl.parentElement;
+    var btn = host && host.querySelector(".g-shop-btn");
+    if (!btn) return null;
+    var name = btn.textContent.replace(/^\s*Shop\s+/, "").trim();
+    for (var id in SCORE_DETAIL) {
+      if (SCORE_DETAIL[id].name === name) return SCORE_DETAIL[id];
+    }
+    return null;
+  }
+
+  function incomeHtml(co) {
+    var i = co.income || {};
+    var rows = [["Revenue", i.revenue], ["Operating income", i.operating], ["Net income", i.net]];
+    var margins = i.operating == null
+      ? "Net margin " + pct(i.net / i.revenue) +
+        ". An investment holding company does not report a headline operating profit; " +
+        "its results swing with the value of what it owns."
+      : "Operating margin " + pct(i.operating / i.revenue) +
+        ", net margin " + pct(i.net / i.revenue) + ".";
+    var figs = rows.map(function (r) {
+      return '<div class="fh-fig"><strong>' + esc(tn(r[1])) + "</strong><span>" + esc(r[0]) + "</span></div>";
+    }).join("");
+    return '<div class="fh-figs">' + figs + "</div><p>" + esc(co.fy) + ". " + esc(margins) + "</p>";
+  }
+
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  /* Styled from the page's own tokens, so the dialog follows its light/dark
+     toggle without knowing anything about it. Every value has a fallback in
+     case a token is renamed. */
+  var SCORE_CSS = [
+    ".fh-score-row{cursor:pointer;border-radius:6px;transition:background-color .12s}",
+    ".fh-score-row:hover{background:var(--surface-sunken,#f2f1ed)}",
+    ".fh-score-row:focus-visible{outline:2px solid var(--accent,#1b4d3e);outline-offset:2px}",
+
+    ".fh-score-dlg{border:1px solid var(--border,#e4e2dc);border-radius:var(--radius-lg,16px);",
+      "background:var(--surface,#fff);color:var(--text,#14140f);font-family:var(--font-sans,system-ui,sans-serif);",
+      "padding:0;width:min(560px,calc(100vw - 32px));max-height:min(82vh,720px);overflow:hidden;",
+      "display:flex;flex-direction:column;box-shadow:0 24px 60px #00000038}",
+    ".fh-score-dlg::backdrop{background:#0b0b0acc}",
+
+    ".fh-dlg-close-form{margin:0;position:absolute;top:10px;right:10px;z-index:2}",
+    ".fh-dlg-close{min-width:40px;min-height:40px;border-radius:999px;border:1px solid var(--border,#e4e2dc);",
+      "background:var(--surface,#fff);color:inherit;font-size:20px;line-height:1;cursor:pointer}",
+    ".fh-dlg-close:focus-visible{outline:2px solid var(--accent,#1b4d3e);outline-offset:2px}",
+
+    ".fh-dlg-body{padding:26px 24px 20px;overflow:auto;-webkit-overflow-scrolling:touch;flex:1 1 auto;min-height:0}",
+    ".fh-dlg-co{margin:0 0 2px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.62}",
+    ".fh-dlg-h{margin:0 0 4px;font-size:26px;line-height:1.15;font-weight:640}",
+    ".fh-dlg-means{margin:0 0 16px;font-size:14px;opacity:.72}",
+    ".fh-dlg-body p{font-size:15px;line-height:1.62;margin:0 0 14px}",
+
+    ".fh-dlg-score{display:flex;align-items:center;gap:14px;margin:0 0 18px}",
+    ".fh-dlg-bar{flex:1;height:8px;border-radius:999px;background:var(--surface-sunken,#f2f1ed);overflow:hidden}",
+    ".fh-dlg-bar>span{display:block;height:100%;border-radius:999px;background:var(--accent,#1b4d3e)}",
+    ".fh-dlg-score>strong{font-size:22px;font-weight:660;font-variant-numeric:tabular-nums}",
+    ".fh-dlg-of{font-size:13px;font-weight:400;opacity:.55}",
+
+    ".fh-figs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}",
+    ".fh-fig{background:var(--surface-sunken,#f2f1ed);border-radius:var(--radius-sm,6px);padding:10px}",
+    ".fh-fig strong{display:block;font-size:17px;font-variant-numeric:tabular-nums}",
+    ".fh-fig span{display:block;font-size:11px;opacity:.66;margin-top:2px}",
+
+    ".fh-dlg-foot{font-size:12px!important;opacity:.6;margin:16px 0 0!important}",
+
+    ".fh-dlg-nav{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;",
+      "padding:12px 16px;border-top:1px solid var(--border,#e4e2dc);background:var(--surface,#fff)}",
+    ".fh-dlg-nav button{min-height:40px;padding:0 14px;border-radius:999px;cursor:pointer;",
+      "border:1px solid var(--border,#e4e2dc);background:var(--surface,#fff);color:inherit;font:inherit;font-size:14px}",
+    ".fh-dlg-nav button:hover{background:var(--surface-sunken,#f2f1ed)}",
+    ".fh-dlg-nav button:focus-visible{outline:2px solid var(--accent,#1b4d3e);outline-offset:2px}",
+    ".fh-dlg-pos{font-size:12px;opacity:.6;font-variant-numeric:tabular-nums}",
+
+    /* On a phone it reads as a bottom sheet: more width, thumb-reachable nav. */
+    "@media (max-width:520px){",
+      /* width:100vw counts the scrollbar and overflows the page sideways.
+         Auto width with zero inline margins fills the viewport exactly. */
+      ".fh-score-dlg{width:auto;max-width:none;max-height:88dvh;",
+        "border-radius:16px 16px 0 0;border-bottom:0;margin:auto 0 0}",
+      ".fh-dlg-body{padding:22px 18px 16px}",
+      ".fh-dlg-h{font-size:22px}",
+      ".fh-figs{grid-template-columns:1fr;gap:8px}",
+      ".fh-fig{display:flex;align-items:baseline;justify-content:space-between}",
+      ".fh-fig span{margin-top:0}",
+    "}",
+    "@media (prefers-reduced-motion:reduce){.fh-score-row{transition:none}}",
+    "@media (forced-colors:active){",
+      ".fh-score-dlg{border:1px solid CanvasText}",
+      ".fh-dlg-bar>span{background:Highlight}",
+      ".fh-fig{border:1px solid CanvasText}",
+    "}",
+  ].join("");
+
+  function injectScoreCss() {
+    if (document.getElementById("fh-score-css")) return;
+    var st = document.createElement("style");
+    st.id = "fh-score-css";
+    st.textContent = SCORE_CSS;
+    document.head.appendChild(st);
+  }
+
+  var dlg = null, lastTrigger = null, current = { co: null, metric: null };
+
+  function buildDialog() {
+    if (dlg) return dlg;
+    injectScoreCss();
+    dlg = document.createElement("dialog");
+    dlg.className = "fh-score-dlg";
+    dlg.innerHTML =
+      '<form method="dialog" class="fh-dlg-close-form">' +
+        '<button value="close" class="fh-dlg-close" aria-label="Close">×</button>' +
+      "</form>" +
+      '<div class="fh-dlg-body"></div>' +
+      '<nav class="fh-dlg-nav">' +
+        '<button type="button" data-step="-1">← Previous</button>' +
+        '<span class="fh-dlg-pos" aria-live="polite"></span>' +
+        '<button type="button" data-step="1">Next →</button>' +
+      "</nav>";
+    document.body.appendChild(dlg);
+
+    dlg.querySelectorAll("[data-step]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var i = METRICS.indexOf(current.metric);
+        var next = METRICS[(i + Number(b.dataset.step) + METRICS.length) % METRICS.length];
+        fillDialog(current.co, next);
+      });
+    });
+    dlg.addEventListener("close", function () {
+      if (lastTrigger && document.contains(lastTrigger)) lastTrigger.focus();
+    });
+    // Clicking the backdrop closes it; clicking the panel must not.
+    dlg.addEventListener("click", function (ev) { if (ev.target === dlg) dlg.close(); });
+    return dlg;
+  }
+
+  function fillDialog(co, metric) {
+    current = { co: co, metric: metric };
+    var score = co.scores[metric];
+    var body = dlg.querySelector(".fh-dlg-body");
+    body.innerHTML =
+      '<p class="fh-dlg-co">' + esc(co.name) + "</p>" +
+      '<h2 class="fh-dlg-h">' + esc(METRIC_LABEL[metric]) + "</h2>" +
+      '<p class="fh-dlg-means">' + esc(METRIC_MEANS[metric]) + "</p>" +
+      '<div class="fh-dlg-score"><div class="fh-dlg-bar"><span style="width:' + score + '%"></span></div>' +
+        "<strong>" + score + '<span class="fh-dlg-of">/100</span></strong></div>' +
+      (metric === "income" ? incomeHtml(co) : "<p>" + esc(co[metric]) + "</p>") +
+      '<p class="fh-dlg-foot">Editorial score out of 100, for comparing the five companies.</p>';
+    dlg.querySelector(".fh-dlg-pos").textContent =
+      (METRICS.indexOf(metric) + 1) + " of " + METRICS.length;
+    if (!dlg.open) {
+      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+    }
+    body.scrollTop = 0;
+  }
+
+  function openDetail(co, metric, trigger) {
+    lastTrigger = trigger || null;
+    buildDialog();
+    fillDialog(co, metric);
+  }
+
+  function enhanceScorecards() {
+    var cards = document.querySelectorAll(".g-scores");
+    for (var c = 0; c < cards.length; c++) {
+      var card = cards[c];
+      var co = companyFromCard(card);
+      if (!co) continue;               // company not matched: leave it alone
+
+      var rows = card.querySelectorAll(".score");
+      for (var r = 0; r < rows.length; r++) {
+        (function (row) {
+          var key = (row.querySelector("dt") || {}).textContent || "";
+          var metric = null;
+          for (var m = 0; m < METRICS.length; m++) {
+            if (METRIC_LABEL[METRICS[m]].toLowerCase() === key.trim().toLowerCase()) metric = METRICS[m];
+          }
+          if (!metric || co.scores[metric] == null) return;
+
+          // Refreshed on every pass, not just the first: the dossier swaps
+          // company without necessarily replacing these nodes, and a label
+          // still reading "92 for Toyota" over Nissan's row would be worse
+          // than no label at all.
+          row.setAttribute("role", "button");
+          row.setAttribute("tabindex", "0");
+          row.setAttribute("aria-haspopup", "dialog");
+          row.setAttribute("aria-label",
+            METRIC_LABEL[metric] + " " + co.scores[metric] + " out of 100 for " + co.name + ". Open the detail.");
+          row.classList.add("fh-score-row");
+
+          if (row.dataset.fhBound === "1") return;   // one set of listeners only
+          row.dataset.fhBound = "1";
+
+          // Resolved at CLICK time, never captured here. If this card is ever
+          // reused for another company, a captured value would open the wrong
+          // company's text beside the right company's number.
+          var open = function (ev) {
+            var live = companyFromCard(row.closest(".g-scores") || card);
+            if (!live || live.scores[metric] == null) return;
+            ev.preventDefault();
+            openDetail(live, metric, row);
+          };
+          row.addEventListener("click", open);
+          row.addEventListener("keydown", function (ev) {
+            if (ev.key === "Enter" || ev.key === " " || ev.key === "Spacebar") open(ev);
+          });
+        })(rows[r]);
+      }
+
+      var note = card.querySelector(".g-note");
+      if (note && note.dataset.fhHint !== "1") {
+        note.dataset.fhHint = "1";
+        note.textContent = "Editorial scores out of 100. Tap any row for the full detail.";
+      }
+    }
+  }
+
   /* Photo credits for the seller's own photographs.
 
      The build rewrites those entries to point at the `#photo` sentinel, which
@@ -299,7 +565,7 @@
     if (document.title !== PAGE_TITLE) document.title = PAGE_TITLE;
   }
 
-  function applyBranding() { brandTitle(); brandDisclaimer(); brandFooter(); brandLegal(); brandWordmark(); fixOwnPhotoCredits(); scheduleCopyFix(); }
+  function applyBranding() { brandTitle(); brandDisclaimer(); brandFooter(); brandLegal(); brandWordmark(); fixOwnPhotoCredits(); enhanceScorecards(); scheduleCopyFix(); }
   applyBranding();
   new MutationObserver(applyBranding).observe(document.documentElement, {
     childList: true, subtree: true,
