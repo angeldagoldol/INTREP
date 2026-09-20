@@ -207,10 +207,30 @@
     ".fh-dlg-means{margin:0 0 16px;font-size:14px;opacity:.72}",
     ".fh-dlg-body p{font-size:15px;line-height:1.62;margin:0 0 14px}",
 
-    ".fh-dlg-score{display:flex;align-items:center;gap:14px;margin:0 0 18px}",
-    ".fh-dlg-bar{flex:1;height:8px;border-radius:999px;background:var(--surface-sunken,#f2f1ed);overflow:hidden}",
-    ".fh-dlg-bar>span{display:block;height:100%;border-radius:999px;background:var(--accent,#1b4d3e)}",
-    ".fh-dlg-score>strong{font-size:22px;font-weight:660;font-variant-numeric:tabular-nums}",
+    /* Comparison chart. Mark tones validated for >=3:1 against both the light
+       and dark track: accent for the selected company, #8c8880 / #6e6e66 for
+       the rest. Only the data end of each bar is rounded — a rounded baseline
+       end floats the bar off the zero it is measured from. */
+    ".fh-chart-cap{font-size:11px;letter-spacing:.07em;text-transform:uppercase;opacity:.55;margin:0 0 8px}",
+    ".fh-chart{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:2px}",
+    ".fh-crow{margin:0}",
+    ".fh-cbtn{display:grid;grid-template-columns:62px 1fr 34px;align-items:center;gap:10px;width:100%;",
+      "min-height:34px;padding:2px 6px 2px 8px;border:0;border-radius:6px;background:none;color:inherit;",
+      "font:inherit;text-align:left;cursor:pointer;position:relative}",
+    ".fh-cbtn:hover{background:var(--surface-sunken,#f2f1ed)}",
+    ".fh-cbtn:focus-visible{outline:2px solid var(--accent,#1b4d3e);outline-offset:-2px}",
+    ".fh-cname{font-size:13px;opacity:.78;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
+    ".fh-ctrack{height:10px;border-radius:2px;background:var(--surface-sunken,#f2f1ed)}",
+    ".fh-cfill{display:block;height:100%;background:#8c8880;border-radius:0 4px 4px 0}",
+    ".fh-cval{font-size:13px;text-align:right;font-variant-numeric:tabular-nums;opacity:.78}",
+
+    /* Selection is bold plus a marker in the gutter, so it survives being read", 
+       without colour. */
+    '.fh-crow[data-sel="1"] .fh-cfill{background:var(--accent,#1b4d3e)}',
+    '.fh-crow[data-sel="1"] .fh-cname,.fh-crow[data-sel="1"] .fh-cval{opacity:1;font-weight:680}',
+    '.fh-crow[data-sel="1"] .fh-cbtn::before{content:"";position:absolute;left:0;top:6px;bottom:6px;',
+      "width:3px;border-radius:2px;background:var(--accent,#1b4d3e)}",
+
     ".fh-dlg-of{font-size:13px;font-weight:400;opacity:.55}",
 
     ".fh-figs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}",
@@ -237,13 +257,18 @@
       ".fh-dlg-body{padding:22px 18px 16px}",
       ".fh-dlg-h{font-size:22px}",
       ".fh-figs{grid-template-columns:1fr;gap:8px}",
+      ".fh-cbtn{grid-template-columns:54px 1fr 30px;gap:8px}",
+      ".fh-cname{font-size:12px}",
       ".fh-fig{display:flex;align-items:baseline;justify-content:space-between}",
       ".fh-fig span{margin-top:0}",
     "}",
+    "@media (prefers-color-scheme:dark){.fh-cfill{background:#6e6e66}}",
     "@media (prefers-reduced-motion:reduce){.fh-score-row{transition:none}}",
     "@media (forced-colors:active){",
       ".fh-score-dlg{border:1px solid CanvasText}",
-      ".fh-dlg-bar>span{background:Highlight}",
+      ".fh-ctrack{border:1px solid CanvasText}",
+      ".fh-cfill{background:CanvasText}",
+      '.fh-crow[data-sel="1"] .fh-cfill{background:Highlight}',
       ".fh-fig{border:1px solid CanvasText}",
     "}",
   ].join("");
@@ -290,18 +315,57 @@
     return dlg;
   }
 
+  // "Toyota Motor" -> "Toyota". The full name is on the dialog already; the
+  // chart needs the rows to fit a phone.
+  function shortName(n) { return String(n).replace(/\s+(Motor|Group)$/, ""); }
+
+  /* The comparison chart.
+     One measure across five companies, so one hue — not five. The company you
+     opened wears the accent, the rest a recessive neutral; both clear 3:1 on
+     the track in light and dark. Selection is never carried by colour alone:
+     the chosen row is also bold and keeps a marker in the gutter.
+     Company order is FIXED rather than sorted by score. Sorting would reshuffle
+     the rows every time you flip to the next metric; holding them still is what
+     makes flipping read as one chart changing rather than five new ones. */
+  function chartHtml(co, metric) {
+    var ids = Object.keys(SCORE_DETAIL);
+    var rows = ids.map(function (id) {
+      var c = SCORE_DETAIL[id];
+      var v = c.scores[metric];
+      var me = c.name === co.name;
+      return '<li class="fh-crow"' + (me ? ' data-sel="1" aria-current="true"' : "") + ">" +
+        '<button type="button" class="fh-cbtn" data-co="' + esc(id) + '" ' +
+          'aria-label="' + esc(shortName(c.name)) + " scores " + v + " out of 100 on " +
+            esc(METRIC_LABEL[metric]) + (me ? ". This is the company you opened." : ". Open this company.") + '">' +
+          '<span class="fh-cname">' + esc(shortName(c.name)) + "</span>" +
+          '<span class="fh-ctrack"><span class="fh-cfill" style="width:' + v + '%"></span></span>' +
+          '<span class="fh-cval">' + v + "</span>" +
+        "</button></li>";
+    }).join("");
+    return '<p class="fh-chart-cap">All five compared, out of 100</p>' +
+      '<ol class="fh-chart">' + rows + "</ol>";
+  }
+
   function fillDialog(co, metric) {
     current = { co: co, metric: metric };
-    var score = co.scores[metric];
     var body = dlg.querySelector(".fh-dlg-body");
     body.innerHTML =
       '<p class="fh-dlg-co">' + esc(co.name) + "</p>" +
       '<h2 class="fh-dlg-h">' + esc(METRIC_LABEL[metric]) + "</h2>" +
       '<p class="fh-dlg-means">' + esc(METRIC_MEANS[metric]) + "</p>" +
-      '<div class="fh-dlg-score"><div class="fh-dlg-bar"><span style="width:' + score + '%"></span></div>' +
-        "<strong>" + score + '<span class="fh-dlg-of">/100</span></strong></div>' +
+      chartHtml(co, metric) +
       (metric === "income" ? incomeHtml(co) : "<p>" + esc(co[metric]) + "</p>") +
-      '<p class="fh-dlg-foot">Editorial score out of 100, for comparing the five companies.</p>';
+      '<p class="fh-dlg-foot">Editorial scores out of 100. Tap another company to read theirs.</p>';
+
+    // Tapping another company's bar opens that company, so the chart is a way
+    // through the data rather than a picture of it.
+    body.querySelectorAll(".fh-cbtn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next = SCORE_DETAIL[btn.dataset.co];
+        if (next && next.name !== current.co.name) fillDialog(next, current.metric);
+      });
+    });
+
     dlg.querySelector(".fh-dlg-pos").textContent =
       (METRICS.indexOf(metric) + 1) + " of " + METRICS.length;
     if (!dlg.open) {
