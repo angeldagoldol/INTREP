@@ -6,7 +6,7 @@
  * this plugin serves it at /__tabi/photo-status and pushes every change to the
  * page as the HMR event `tabi:photo-status`.
  */
-import { readFileSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 export const PHOTO_STATUS_PATH = '/__tabi/photo-status';
@@ -25,7 +25,9 @@ export function readPhotoStatus(file, { alive = defaultAlive } = {}) {
   const states = ['running', 'done', 'offline', 'stopped'];
   let state = states.includes(json.state) ? json.state : 'stopped';
   if (state === 'running' && !alive(json.pid)) state = 'stopped';
-  return { state, done: count(json.done), total: count(json.total), published: count(json.published), missing: count(json.missing), updatedAt: count(json.updatedAt) };
+  // Why it stopped early: no connection, Commons turned it away, Commons was busy, or sharp could not load.
+  const reason = ['offline', 'refused', 'busy', 'tools'].includes(json.reason) ? json.reason : '';
+  return { state, reason, done: count(json.done), total: count(json.total), published: count(json.published), missing: count(json.missing), updatedAt: count(json.updatedAt) };
 }
 
 function defaultAlive(pid) {
@@ -57,7 +59,14 @@ export function photoDownloadStatus() {
         if (path.resolve(changed) !== file) return;
         server.ws.send({ type: 'custom', event: PHOTO_STATUS_EVENT, data: readPhotoStatus(file) });
       };
-      server.watcher.add(file);
+      // Watch the folder (made now if need be): a watcher added for a file that does not exist yet
+      // misses it when the download creates it.
+      try {
+        mkdirSync(path.dirname(file), { recursive: true });
+      } catch {
+        return; // read-only checkout: no notice progress, nothing else changes
+      }
+      server.watcher.add(path.dirname(file));
       server.watcher.on('add', send);
       server.watcher.on('change', send);
     },

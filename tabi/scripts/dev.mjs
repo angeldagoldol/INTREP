@@ -14,7 +14,9 @@
  *
  * Offline, the download prints a short warning and stops; Vite keeps running.
  * Ctrl+C (or `q` in Vite) stops both; photos downloaded so far are kept and
- * the next run carries on from there.
+ * the next run carries on from there. The launcher asks the download to stop
+ * over an IPC channel rather than with a signal, which on Windows would end
+ * it before it saved its last photos.
  */
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
@@ -28,31 +30,49 @@ const fetchScript = path.join(ROOT, 'scripts', 'photos', 'fetch.mjs');
 /** Let Vite print its address first, so the photo lines come after it. */
 const DOWNLOAD_DELAY_MS = 1200;
 
-const children = new Set();
+/** A Node process for `args` (this same Node, no shell: the same on Windows, macOS and Linux). */
 function start(args, options) {
-  const child = spawn(process.execPath, args, { cwd: ROOT, stdio: 'inherit', ...options });
-  children.add(child);
-  child.on('exit', () => children.delete(child));
-  return child;
+  return spawn(process.execPath, args, { cwd: ROOT, stdio: 'inherit', ...options });
 }
+
+const running = (child) => Boolean(child) && child.exitCode === null && child.signalCode === null;
 
 const vite = start([viteBin, ...process.argv.slice(2)]);
 let photos = null;
 const timer = setTimeout(() => {
   if (process.env.TABI_SKIP_PHOTOS === '1') return;
-  photos = start([fetchScript, '--auto', '--dev'], { stdio: ['ignore', 'inherit', 'inherit'] });
+  // stdin stays Vite's (its keyboard shortcuts); the IPC channel lets us ask the download to stop.
+  photos = start([fetchScript, '--auto', '--dev'], { stdio: ['ignore', 'inherit', 'inherit', 'ipc'] });
   photos.on('error', () => {});
 }, DOWNLOAD_DELAY_MS);
+
+/** How long the download may take to save what it has and exit before it is stopped outright. */
+const STOP_GRACE_MS = 4000;
 
 let stopping = false;
 function stop(signal) {
   if (stopping) return;
   stopping = true;
   clearTimeout(timer);
-  // A terminal's Ctrl+C reaches every process in it already; this covers a plain `kill` of the launcher.
-  for (const child of children) if (child.exitCode === null) child.kill(signal);
+  // A terminal's Ctrl+C reaches every process in it already; this covers a plain `kill` of the launcher, and `q` in Vite.
+  if (running(vite)) vite.kill(signal);
+  if (running(photos)) {
+    // Asked, not signalled: on Windows a signal sent to a child process ends it on the spot, and the
+    // download should save its last photos first. Signalled only if it has not stopped in time.
+    if (photos.connected) photos.send({ type: 'stop' }, () => {});
+    else photos.kill(signal);
+    setTimeout(() => {
+      if (running(photos)) photos.kill('SIGTERM');
+    }, STOP_GRACE_MS).unref();
+  }
 }
 for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(signal, () => stop(signal === 'SIGHUP' ? 'SIGTERM' : signal));
+// Whoever started us (npm, an editor's task runner) went away without passing its signal on: stop too,
+// rather than leave a dev server running in the background.
+const parent = process.ppid;
+setInterval(() => {
+  if (process.ppid !== parent) stop('SIGTERM');
+}, 1000).unref();
 
 vite.on('error', (error) => {
   console.error(`Could not start Vite: ${error.message}`);
@@ -63,8 +83,8 @@ vite.on('exit', (code, signal) => {
   // Vite is done (q, Ctrl+C, or it failed): stop the download too — it saves what it has and resumes next time.
   stop('SIGTERM');
   const finish = () => process.exit(code ?? (signal ? 0 : 1));
-  if (photos && photos.exitCode === null && photos.signalCode === null) {
+  if (running(photos)) {
     photos.on('exit', finish);
-    setTimeout(finish, 5000).unref();
+    setTimeout(finish, STOP_GRACE_MS + 2000).unref();
   } else finish();
 });

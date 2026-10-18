@@ -15,6 +15,7 @@ import {
   progressBar,
   recentlyFailed,
   recoverJournal,
+  recoverable,
   searchChoices,
   searchQuery,
   shouldReport,
@@ -272,6 +273,28 @@ describe('resuming an interrupted run', () => {
     expect(Object.keys(records)).toEqual(['home-hero']);
     expect(dropped).toBe(3);
     expect(recoverJournal(null, slots, { exists: allOnDisk })).toEqual({ records: {}, dropped: 0 });
+  });
+
+  it('takes back photos already on disk that photos.generated.json lost (a newer copy of the project unzipped over this one)', () => {
+    const backup = {
+      'home-hero': record('home-hero', 'File:Hero first.jpg'),
+      'home-region': record('home-region', 'File:Region.jpg'),
+      'osaka-market': record('osaka-market', 'File:Market.jpg'),
+      'kyoto-temple': record('kyoto-temple', 'File:Not a candidate any more.jpg'),
+      'gone-slot': record('gone-slot', 'File:Whatever.jpg'),
+    };
+    const journal = { 'home-region': record('home-region', 'File:Region.jpg', { color: '#000000' }) };
+    const exists = (name) => !name.startsWith('osaka-market-');
+    // The file was reset to {}: everything that still fits its slot and is on disk comes back, the journal's copy first.
+    const found = recoverable({ journal, backup, generated: {}, slots, exists });
+    expect(Object.keys(found.records).sort()).toEqual(['home-hero', 'home-region']);
+    expect(found.records['home-region'].color).toBe('#000000');
+    expect(found).toMatchObject({ journal: 1, backup: 1 });
+    // Records the file still has are left alone; --force (download again) ignores the backup.
+    const kept = recoverable({ backup, generated: { 'home-hero': record('home-hero', 'File:Hero second.jpg') }, slots, exists }).records;
+    expect(Object.keys(kept)).toEqual(['home-region']);
+    expect(recoverable({ journal, backup, generated: {}, slots, exists, force: true })).toMatchObject({ journal: 1, backup: 0 });
+    expect(recoverable({ backup: null, journal: null, slots, exists })).toEqual({ records: {}, journal: 0, backup: 0 });
   });
 });
 

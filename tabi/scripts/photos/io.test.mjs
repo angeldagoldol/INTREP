@@ -4,19 +4,24 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import {
+  LOCK_STALE_MS,
   acquireLock,
+  heartbeatLock,
   isOfflineError,
   loadGenerated,
   networkHint,
+  politeFetch,
   proxyFromEnv,
   publishRecords,
   queryImageInfo,
   readJson,
   redactProxy,
   releaseLock,
+  requestTrouble,
   routeUrl,
   saveGenerated,
   searchImageInfo,
+  stopHint,
   testRoutes,
   userAgent,
 } from './io.mjs';
@@ -151,7 +156,7 @@ describe('searchImageInfo — the search fallback', () => {
   it('sends API requests one at a time, even when searches and lookups overlap', async () => {
     let inFlight = 0;
     let most = 0;
-    const fetchImpl = async (url) => {
+    const fetchImpl = async () => {
       inFlight += 1;
       most = Math.max(most, inFlight);
       await new Promise((resolve) => setTimeout(resolve, 5));
@@ -188,6 +193,62 @@ describe('network helpers', () => {
     expect(networkHint(offline)).toMatch(/Could not reach Wikimedia Commons \(ENOTFOUND\)[\s\S]*npm run photos:fetch/);
   });
 
+  it('explains a network filter that replaces HTTPS certificates, with the Windows and macOS commands', () => {
+    const cert = Object.assign(new TypeError('fetch failed'), { cause: Object.assign(new Error('self-signed certificate in certificate chain'), { code: 'SELF_SIGNED_CERT_IN_CHAIN' }) });
+    expect(isOfflineError(cert)).toBe(true);
+    const hint = networkHint(cert);
+    expect(hint).toMatch(/NODE_EXTRA_CA_CERTS=\/path\/to\/cert\.pem npm run photos:fetch/);
+    expect(hint).toMatch(/\$env:NODE_EXTRA_CA_CERTS=/);
+  });
+
+  it('tells a file Commons has no good copy of apart from Commons turning the download away or asking it to slow down', () => {
+    const http = (status) => Object.assign(new Error(`HTTP ${status}`), { status, url: 'https://upload.wikimedia.org/x.jpg' });
+    expect([401, 403, 407, 451].map((s) => requestTrouble(http(s)))).toEqual(['refused', 'refused', 'refused', 'refused']);
+    expect(requestTrouble(http(429))).toBe('throttled');
+    expect(requestTrouble(Object.assign(new Error('timed out'), { name: 'TimeoutError' }))).toBe('throttled');
+    expect(requestTrouble(http(503))).toBe('server');
+    expect(requestTrouble(http(404))).toBeNull();
+    expect(requestTrouble(new Error('Input buffer contains unsupported image format'))).toBeNull();
+    expect(stopHint(http(403))).toMatch(/turned the download away \(HTTP 403 from upload\.wikimedia\.org\)[\s\S]*PHOTOS_CONTACT=you@example\.com npm run photos:fetch[\s\S]*\$env:PHOTOS_CONTACT=/);
+    expect(stopHint(http(407))).toMatch(/proxy wants a user name and password/);
+    expect(stopHint(http(429))).toMatch(/busy and asked the download to slow down \(HTTP 429/);
+    expect(stopHint(Object.assign(new Error('timed out'), { name: 'TimeoutError' }))).toMatch(/answered too slowly/);
+    expect(stopHint(http(503))).toMatch(/had trouble answering \(HTTP 503 from upload\.wikimedia\.org\)[\s\S]*carries on where it stopped/);
+  });
+
+  it('names the host, not the whole URL, in HTTP errors, and does not retry a refusal', async () => {
+    let calls = 0;
+    const fetchImpl = async () => {
+      calls += 1;
+      return new Response('Please respect our robot policy', { status: 403 });
+    };
+    const url = `https://refused.example/w/api.php?titles=${'File:A long title.jpg|'.repeat(40)}`;
+    const error = await politeFetch(url, { fetchImpl }).catch((e) => e);
+    expect(error.message).toBe('HTTP 403 from refused.example');
+    expect(error).toMatchObject({ status: 403, url });
+    expect(calls).toBe(1);
+  });
+
+  it('honours Retry-After for every request to that host, not only the one that was told', async () => {
+    const seen = [];
+    const start = Date.now();
+    const fetchImpl = async (url) => {
+      seen.push({ url, at: Date.now() - start });
+      if (seen.length === 1) return new Response('slow down', { status: 429, headers: { 'Retry-After': '1' } });
+      return new Response('ok');
+    };
+    const first = politeFetch('https://busy.example/a.jpg', { fetchImpl });
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    const second = politeFetch('https://busy.example/b.jpg', { fetchImpl });
+    const other = politeFetch('https://calm.example/c.jpg', { fetchImpl });
+    await Promise.all([first, second, other]);
+    const at = (name) => seen.filter((s) => s.url.endsWith(name)).map((s) => s.at);
+    expect(at('a.jpg')).toHaveLength(2);
+    expect(at('a.jpg')[1]).toBeGreaterThanOrEqual(950);
+    expect(at('b.jpg')[0]).toBeGreaterThanOrEqual(950); // waited although it was never told itself
+    expect(at('c.jpg')[0]).toBeLessThan(500); // another host is not held up
+  });
+
   it('reads the proxy from the environment and explains what to do when Node cannot use it', () => {
     expect(proxyFromEnv({})).toBe('');
     expect(proxyFromEnv({ https_proxy: 'http://proxy:3128' })).toBe('http://proxy:3128');
@@ -218,10 +279,15 @@ describe('the download’s own files', () => {
     const lock = path.join(dir, 'lock.json');
     expect(await acquireLock(lock)).toBe(true);
     expect(await acquireLock(lock)).toBe(true); // ours already
-    await writeFile(lock, JSON.stringify({ pid: process.ppid, at: 1 }));
+    await writeFile(lock, JSON.stringify({ pid: process.ppid, at: Date.now() }));
     expect(await acquireLock(lock)).toBe(false); // a live process (our parent) holds it
-    await writeFile(lock, JSON.stringify({ pid: 2 ** 22 + 12345, at: 1 }));
-    expect(await acquireLock(lock)).toBe(true); // stale
+    await writeFile(lock, JSON.stringify({ pid: process.ppid, at: Date.now() - LOCK_STALE_MS - 1 }));
+    expect(await acquireLock(lock)).toBe(true); // not refreshed for a minute: that download died
+    await writeFile(lock, JSON.stringify({ pid: 2 ** 22 + 12345, at: Date.now() }));
+    expect(await acquireLock(lock)).toBe(true); // its process is gone
+    await writeFile(lock, JSON.stringify({ pid: process.pid, at: 1 }));
+    await heartbeatLock(lock);
+    expect((await readJson(lock, {})).at).toBeGreaterThan(Date.now() - 5000);
     await releaseLock(lock);
     expect(await readJson(lock, 'none')).toBe('none');
   });

@@ -30,6 +30,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { buildRecord, commonsPageUrl, DOWNLOAD_WIDTH, matchesOnly, parseArgs } from './lib.mjs';
 import {
+  BACKUP_FILE,
   FAILURES_FILE,
   GENERATED_FILE,
   JOURNAL_FILE,
@@ -38,6 +39,7 @@ import {
   STATUS_FILE,
   acquireLock,
   errorCode,
+  heartbeatLock,
   isOfflineError,
   loadGenerated,
   loadManifests,
@@ -50,8 +52,10 @@ import {
   redactProxy,
   proxyFromEnv,
   releaseLock,
+  requestTrouble,
   saveGenerated,
   searchImageInfo,
+  stopHint,
   testRoutes,
   transport,
   writeJsonAtomic,
@@ -64,7 +68,7 @@ import {
   photos,
   planFetch,
   progressBar,
-  recoverJournal,
+  recoverable,
   searchChoices,
   searchQuery,
   shouldReport,
@@ -73,12 +77,17 @@ import {
   slotsOf,
   usableCandidates,
 } from './plan.mjs';
-import { processImage, removeOutputs } from './process.mjs';
 
 /** Images downloaded and resized at once (Wikimedia asks for a small number; API requests go one at a time). */
 const DOWNLOADS_AT_ONCE = 3;
 /** Search pages looked at per slot (20 results each) before it is given up. */
 const SEARCH_PAGES = 2;
+/**
+ * Requests turned away (403 & co.) or still told to slow down after their retries, in a row
+ * with no photo saved in between, before the run stops instead of asking on (a blocked
+ * network, or Wikimedia refusing this client): it would only fail every slot, faster and faster.
+ */
+const TROUBLE_TO_STOP = 5;
 
 let opts;
 try {
@@ -115,6 +124,36 @@ const done = (line) => say(paint('32', line));
 const exit = (code) => process.exit(auto ? 0 : code);
 
 if (auto && process.env.TABI_SKIP_PHOTOS === '1') exit(0);
+
+/* ------------------------------------------------------------- stopping */
+
+const controller = new AbortController();
+const { signal } = controller;
+let stopping = false;
+let stoppedAt = 0;
+
+/**
+ * Stop the run; what is downloaded is saved and the next run carries on. Asked by Ctrl+C
+ * (SIGINT), a `kill` (SIGTERM), a closed terminal (SIGHUP), or `npm run dev` over IPC
+ * ({ type: 'stop' }: on Windows a signal sent to a child process kills it outright, so the
+ * launcher asks instead). A second request a few seconds later forces the exit; a terminal's
+ * Ctrl+C and the launcher often ask at the same moment, which counts once.
+ */
+function requestStop() {
+  if (stopping) {
+    if (Date.now() - stoppedAt > 3000) process.exit(auto ? 0 : 130);
+    return;
+  }
+  stopping = true;
+  stoppedAt = Date.now();
+  controller.abort(new Error('stopped'));
+}
+for (const name of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(name, requestStop);
+if (process.send) {
+  process.on('message', (message) => {
+    if (message?.type === 'stop') requestStop();
+  });
+}
 
 const routes = testRoutes();
 if (routes) warn(`TEST MODE: Commons requests go to ${[routes.api, routes.upload].filter(Boolean).join(' and ')} (TABI_COMMONS_API / TABI_COMMONS_UPLOAD).`);
@@ -159,14 +198,27 @@ if (!opts.dryRun && !(await acquireLock())) {
   exit(1);
 }
 
+// Keep the lock fresh while this run lives, so a run that dies leaves a lock the next one can take over.
+if (!opts.dryRun) setInterval(() => heartbeatLock(), 15_000).unref();
+
 const exists = (name) => existsSync(path.join(PUBLIC_DIR, name));
 
-// Photos an interrupted run downloaded but had not published yet: publish them now.
+// Photos already on this computer that photos.generated.json does not list — downloaded by an
+// interrupted run (the journal), or published before a newer copy of the project was unzipped
+// over this folder (the backup) — are published again now, without asking Commons for them.
 if (!opts.dryRun) {
-  const { records } = recoverJournal(await readJson(JOURNAL_FILE, {}), slots, { exists });
-  if (Object.keys(records).length) {
-    generated = await publishRecords(records);
-    note(`Picked up ${photos(Object.keys(records).length)} downloaded by an earlier run.`);
+  const found = recoverable({
+    journal: await readJson(JOURNAL_FILE, {}),
+    backup: await readJson(BACKUP_FILE, {}),
+    generated,
+    slots,
+    exists,
+    force: opts.force,
+  });
+  if (Object.keys(found.records).length) {
+    generated = await publishRecords(found.records);
+    if (found.journal) note(`Picked up ${photos(found.journal)} downloaded by an earlier run.`);
+    if (found.backup) note(`Took back ${photos(found.backup)} already in public/photos (photos.generated.json had been replaced).`);
   }
   await writeJsonAtomic(JOURNAL_FILE, {});
 }
@@ -184,35 +236,21 @@ if (total === 0) {
   if (auto) {
     const have = plan.cached.length;
     if (plan.waiting.length === 0) done(`✓ All ${have} real photos are on this computer (public/photos).`);
-    else note(`✓ ${have} of ${plan.selected.length} real photos are on this computer; ${photos(plan.waiting.length)} could not be downloaded last time (\`npm run photos:fetch\` tries again).`);
+    else note(`✓ ${have} of ${plan.selected.length} real photos are on this computer; ${photos(plan.waiting.length)} found no usable picture on Commons last time (\`npm run photos:fetch\` tries again).`);
   } else {
     console.log(`${plan.selected.length} photo slot(s) selected · all ${plan.cached.length} already downloaded${opts.force ? '' : ' (--force downloads them again)'}`);
   }
   await writeStatus({ state: 'done', done: 0, total: 0, have: plan.cached.length, missing: plan.waiting.length });
+  await prune({ complete: true });
+  await saveBackup();
   await finishLock();
   exit(0);
 }
 
 /* ---------------------------------------------------------------- the run */
 
+const { processImage } = opts.dryRun ? {} : await loadImageTools();
 const { proxy } = await transport();
-const controller = new AbortController();
-const { signal } = controller;
-let stopping = false;
-let stoppedAt = 0;
-for (const name of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
-  process.on(name, () => {
-    // The first signal stops the run (what is downloaded is saved); one a few seconds later forces the exit.
-    // A terminal's Ctrl+C and the dev launcher can both send one at the same moment: that counts once.
-    if (stopping) {
-      if (Date.now() - stoppedAt > 3000) process.exit(auto ? 0 : 130);
-      return;
-    }
-    stopping = true;
-    stoppedAt = Date.now();
-    controller.abort(new Error('stopped'));
-  });
-}
 
 const firstRun = Object.keys(generated).length === 0;
 if (auto) {
@@ -221,17 +259,23 @@ if (auto) {
 } else {
   console.log(`${plan.selected.length} photo slot(s) selected · ${plan.cached.length} already downloaded · ${total} to fetch${opts.dryRun ? ' (dry run)' : ''}`);
 }
-if (proxy === 'undici' || proxy === 'node') note(`HTTPS_PROXY is set: going through ${redactProxy(proxyFromEnv())} (NO_PROXY respected).`);
+if (proxy === 'undici' || proxy === 'node') note(`A proxy is set: going through ${redactProxy(proxyFromEnv())} (NO_PROXY respected).`);
 if (proxy === 'unused') warn('HTTPS_PROXY is set, but this Node cannot use it by itself: if the download fails, run it with NODE_USE_ENV_PROXY=1 (Node ≥ 22.21).');
 
+await writeStatus({ state: 'running', done: 0, total, published: 0 });
+
 const owners = fileOwners(slots, generated);
+/** `failed` entries carry `later: true` when Commons, not the slot, was the problem (it is not remembered as failed). */
 const report = { ok: [], failed: [], searched: 0 };
 const journal = {};
 let journalWrites = Promise.resolve();
 let finished = 0;
 let lastReported = 0;
 let lastReportAt = Date.now();
-let offlineError = null;
+/** Why the run stopped early: no connection, or Commons turning it away (see TROUBLE_TO_STOP). */
+let runError = null;
+/** Requests refused or throttled in a row (after their own retries), reset by every photo saved. */
+let troubleInARow = 0;
 let published = 0;
 let statusAt = 0;
 
@@ -264,7 +308,28 @@ function progress({ batchEnd = total, force = false } = {}) {
   }
 }
 
-/** The 1920px thumbnail (a standard step; the original when that is smaller), else the original if it is not huge. */
+/** Errors that end the whole run, not just one slot: no connection, or Commons turning it away again and again. */
+const endsRun = (error) => isOfflineError(error) || Boolean(error?.endsRun);
+
+/**
+ * A request failed although the file was not to blame (requestTrouble: refused, throttled,
+ * server trouble). Refusals and throttling count towards stopping the run; past
+ * TROUBLE_TO_STOP in a row the error is marked to end it. → its kind
+ */
+function noteTrouble(error) {
+  const kind = requestTrouble(error);
+  if (kind === 'refused' || kind === 'throttled') {
+    troubleInARow += 1;
+    if (troubleInARow >= TROUBLE_TO_STOP) error.endsRun = true;
+  }
+  return kind;
+}
+
+/**
+ * The 1920px thumbnail (a standard step; the original when that is smaller), else the original
+ * if it is not huge — but not when Commons turned the thumbnail away or asked to slow down:
+ * a far bigger file would only make that worse.
+ */
 async function download(info) {
   const urls = [info.thumburl, Number(info.size) < 40e6 ? info.url : null].filter(Boolean);
   let lastError;
@@ -275,6 +340,7 @@ async function download(info) {
     } catch (error) {
       if (signal.aborted || isOfflineError(error)) throw error;
       lastError = error;
+      if (['refused', 'throttled'].includes(requestTrouble(error))) break;
     }
   }
   throw lastError ?? new Error('no download URL');
@@ -300,14 +366,21 @@ async function take(slot, choice, via, tried, trouble) {
       query: via === 'search' ? searchQuery(photo) : undefined,
     });
     await journalAdd(record);
+    troubleInARow = 0;
     const kb = out.files.reduce((n, f) => n + f.bytes, 0) / 1024;
     report.ok.push({ id: photo.id, title: choice.title, via, note: `${out.widths.join('/')}w · ${kb.toFixed(0)} KB · ${record.license} · ${record.author}` });
     if (choice.verdict.credit.restrictions && !auto) console.warn(`! ${photo.id}: Commons lists restrictions: ${choice.verdict.credit.restrictions}`);
     return true;
   } catch (error) {
     if (signal.aborted || isOfflineError(error)) throw error;
-    trouble.network ||= error.status === 429 || error.status >= 500 || error.name === 'TimeoutError';
-    tried.push(`${choice.title}: download/processing failed (${error.status ?? errorCode(error) ?? error.message})`);
+    const kind = noteTrouble(error);
+    if (error.endsRun) throw error;
+    if (kind) trouble.network = true;
+    // Asked to slow down: wait for this picture rather than search. (A refusal of one file may be
+    // about that file; refusals of everything end the run through noteTrouble.)
+    if (kind === 'throttled') trouble.held = true;
+    const why = error.status ? `HTTP ${error.status}` : error.name === 'TimeoutError' ? 'no answer in time' : errorCode(error) || error.message;
+    tried.push(`${choice.title}: download/processing failed (${why})`);
     return false;
   }
 }
@@ -316,7 +389,8 @@ async function take(slot, choice, via, tried, trouble) {
 async function fetchSlot(slot, info) {
   const { photo } = slot;
   const { usable, tried } = usableCandidates(photo, info);
-  const trouble = { network: false };
+  // network: Commons (not the slot) was to blame for a failure; held: it asked a download to slow down.
+  const trouble = { network: false, held: false };
   let via = null;
   let file = null;
   for (const choice of usable) {
@@ -327,7 +401,11 @@ async function fetchSlot(slot, info) {
     }
   }
   const query = searchQuery(photo);
-  if (!via && query && !opts.noSearch) {
+  if (!via && trouble.held) {
+    // Its researched picture exists but Commons asked to slow down: wait for it rather than settle
+    // for a search find (and ask a server that said "slow down" for more).
+    tried.push('Commons asked the download to slow down: tried again next time');
+  } else if (!via && query && !opts.noSearch) {
     let offset;
     let considered = 0;
     for (let page = 0; page < SEARCH_PAGES && !via; page += 1) {
@@ -343,8 +421,9 @@ async function fetchSlot(slot, info) {
           file = choice.title;
           break;
         }
+        if (trouble.held) break;
       }
-      if (choices.length || !nextOffset) break;
+      if (via || trouble.held || choices.length || !nextOffset) break;
       offset = nextOffset;
     }
     if (!via && considered === 0) tried.push(`Commons search "${query}": nothing usable (free licence, ≥ 1600 px, not shown by another slot)`);
@@ -355,10 +434,10 @@ async function fetchSlot(slot, info) {
     if (via === 'search') report.searched += 1;
     delete failures[photo.id];
     // Its chosen file was unusable: the stand-in is kept, and the automatic download tries the file again tomorrow, not on every start.
-    if (missedChosenFile(photo, file) && !opts.dryRun) failures[photo.id] = { at: Date.now(), sig: slotSignature(photo), reason: `chosen file unusable: ${tried[0] ?? ''}` };
+    if (missedChosenFile(photo, file) && !trouble.network && !opts.dryRun) failures[photo.id] = { at: Date.now(), sig: slotSignature(photo), reason: `chosen file unusable: ${tried[0] ?? ''}` };
   } else {
-    report.failed.push({ id: photo.id, manifest: slot.manifest, tried });
-    // Remembered so the automatic download does not search again on every start (unless the network was to blame).
+    report.failed.push({ id: photo.id, manifest: slot.manifest, tried, later: trouble.network });
+    // Remembered so the automatic download does not search again on every start (unless Commons was to blame).
     if (!trouble.network && !opts.dryRun) failures[photo.id] = { at: Date.now(), sig: slotSignature(photo), reason: tried.at(-1) ?? 'nothing usable' };
   }
 }
@@ -371,6 +450,7 @@ async function publish() {
   generated = await publishRecords(journal);
   for (const id of ids) delete journal[id];
   await writeJsonAtomic(JOURNAL_FILE, {});
+  await saveBackup();
   published += ids.length;
   return ids.length;
 }
@@ -385,21 +465,25 @@ try {
       { thumbWidth: DOWNLOAD_WIDTH, signal },
     );
     await pool(batch, DOWNLOADS_AT_ONCE, async (slot) => {
-      if (stopping || offlineError) return;
+      if (stopping || runError) return;
       try {
         await fetchSlot(slot, info);
       } catch (error) {
         if (signal.aborted) return;
-        if (isOfflineError(error)) {
-          offlineError ??= error;
+        // A search request that failed (a failed download was counted already): refused or
+        // throttled ones count towards ending the run.
+        if (!error.endsRun) noteTrouble(error);
+        if (endsRun(error)) {
+          runError ??= error;
           return;
         }
-        report.failed.push({ id: slot.photo.id, manifest: slot.manifest, tried: [`${error.message}`] });
+        // Not the slot's fault: it is tried again next time, not remembered as having no picture.
+        report.failed.push({ id: slot.photo.id, manifest: slot.manifest, tried: [`${error.message}`], later: true });
       }
       finished += 1;
       progress({ batchEnd });
     });
-    if (offlineError) throw offlineError;
+    if (runError) break;
     const count = await publish();
     if (auto && count && !stopping) {
       const first = index === 0 && batch.some(isPriority);
@@ -410,7 +494,8 @@ try {
     progress({ batchEnd, force: true });
   }
 } catch (error) {
-  if (!signal.aborted) offlineError = error;
+  // The imageinfo lookup of a batch failed (after its retries): nothing more can be done this run.
+  if (!signal.aborted) runError = error;
 }
 
 /* ------------------------------------------------------------- the end */
@@ -418,28 +503,24 @@ try {
 await publish().catch((error) => warn(`Could not save photos.generated.json: ${error.message}`));
 if (!opts.dryRun) await writeJsonAtomic(FAILURES_FILE, failures).catch(() => {});
 
-if (opts.prune && !opts.dryRun && only.length === 0 && !offlineError && !stopping) {
-  for (const id of Object.keys(generated)) {
-    if (slotById.has(id)) continue;
-    delete generated[id];
-    await removeOutputs(PUBLIC_DIR, id);
-    console.log(`- pruned ${id}`);
-  }
-  await saveGenerated(generated);
-}
+await prune({ complete: !runError && !stopping });
+await saveBackup();
 
 const have = plan.cached.length + published;
+const noPicture = report.failed.filter((r) => !r.later);
+const later = report.failed.filter((r) => r.later);
 if (stopping) {
   say(`Stopped. ${photos(published)} saved; the rest download next time (\`npm run dev\` or \`npm run photos:fetch\`).`);
   await writeStatus({ state: 'stopped', done: finished, total, published });
-} else if (offlineError) {
-  const offline = isOfflineError(offlineError);
-  const lines = offline ? networkHint(offlineError, { proxy }).split('\n') : [`Commons did not answer properly (${offlineError.message}).`, 'Try again later with `npm run photos:fetch`; the app shows art where a photo is missing until then.'];
-  if (published) lines.unshift(`${photos(published)} saved before the connection dropped.`);
+} else if (runError) {
+  const offline = isOfflineError(runError);
+  const lines = (offline ? networkHint(runError, { proxy }) : requestTrouble(runError) ? stopHint(runError) : [`Commons did not answer properly (${runError.message}).`, 'Try again later with `npm run photos:fetch`; the site shows placeholder art where a photo is missing until then.'].join('\n')).split('\n');
+  if (published) lines.unshift(`${photos(published)} saved before it stopped.`);
   for (const line of lines) warn(line);
-  await writeStatus({ state: 'offline', done: finished, total, published, message: offline ? 'offline' : offlineError.message });
+  const reason = offline ? 'offline' : requestTrouble(runError) === 'refused' ? 'refused' : 'busy';
+  await writeStatus({ state: 'offline', reason, done: finished, total, published, message: offline ? 'offline' : runError.message });
 } else {
-  await writeStatus({ state: 'done', done: finished, total, published, have, missing: report.failed.length });
+  await writeStatus({ state: 'done', done: finished, total, published, have, missing: report.failed.length + plan.waiting.length });
 }
 
 if (!auto) {
@@ -448,31 +529,73 @@ if (!auto) {
   report.failed.sort((a, b) => a.id.localeCompare(b.id));
   for (const r of report.ok) console.log(`✓ ${r.id}  ← ${r.title}${r.via === 'search' ? '  (found by search)' : ''}\n    ${r.note}`);
   for (const r of report.failed) {
-    console.log(`✗ ${r.id}  (${r.manifest})`);
+    console.log(`✗ ${r.id}  (${r.manifest})${r.later ? '  — Commons trouble, tried again next time' : ''}`);
     for (const t of r.tried) console.log(`    ${t}`);
     if (r.tried.length === 0) console.log('    no candidates');
   }
   console.log(`\n${report.ok.length} ${opts.dryRun ? 'usable' : 'fetched'}${report.searched ? ` (${report.searched} found by search)` : ''} · ${plan.cached.length} cached · ${report.failed.length} failed`);
-  if (report.failed.length && !offlineError) {
+  if (noPicture.length && !runError) {
     console.log('Failed photos keep showing the brochure art. Add better candidates or a "query" (or set "file"), then run again;');
     console.log('`npm run photos:candidates -- <manifest>` builds contact sheets to choose from.');
   }
   if (report.searched) console.log('Photos found by search use their Commons title as alt text: check them on #/credits before you publish.');
-} else if (!stopping && !offlineError) {
+} else if (!stopping && !runError) {
   const searched = report.searched ? ` (${report.searched} found by searching Commons)` : '';
-  if (report.failed.length === 0) {
+  if (report.failed.length === 0 && plan.waiting.length === 0) {
     done(`✓ Done: all ${have} real photos are saved in public/photos${searched}.`);
   } else {
     done(`✓ Done: ${have} of ${plan.selected.length} real photos are saved in public/photos${searched}.`);
-    warn(`${photos(report.failed.length)} found no usable picture on Commons and keep the art: ${report.failed.map((r) => r.id).join(', ')}.`);
+    if (noPicture.length) warn(`${photos(noPicture.length)} found no usable picture on Commons and keep the art: ${noPicture.map((r) => r.id).join(', ')}.`);
+    if (later.length) warn(`${photos(later.length)} could not be downloaded just now (Commons was busy or turned them away); the next run tries again: ${later.map((r) => r.id).join(', ')}.`);
+    if (plan.waiting.length) note(`${photos(plan.waiting.length)} found no usable picture last time and were skipped (\`npm run photos:fetch\` tries them again).`);
   }
   note('Credits are in src/data/photos/photos.generated.json; the photos now load from this computer, even offline.');
 }
 
 await finishLock();
-exit(offlineError ? 2 : report.failed.length ? 1 : 0);
+exit(runError ? 2 : report.failed.length ? 1 : 0);
 
 async function finishLock() {
   if (!opts.dryRun) await releaseLock();
 }
 
+/**
+ * The image tools (process.mjs) need sharp, a native module that `npm install` fetches for this
+ * computer: loaded only when there is work for them, and a failure is explained, not thrown —
+ * `npm run build` must still build.
+ */
+async function loadImageTools() {
+  try {
+    return await import('./process.mjs');
+  } catch (error) {
+    const lines = [
+      `The image tool (sharp) could not start on this computer (${String(error?.message ?? error).split('\n')[0]}), so no photo can be resized and saved.`,
+      'Run `npm install` again in this folder (it fetches the version made for this computer), then `npm run photos:fetch`.',
+      'Until then the site shows placeholder art where a photo is missing.',
+    ];
+    for (const line of lines) (auto ? warn : console.error)(line);
+    await writeStatus({ state: 'stopped', reason: 'tools', done: 0, total, published: 0 });
+    await finishLock();
+    return exit(1);
+  }
+}
+
+/** --prune: drop the records and files of ids no manifest lists any more — only after a complete run over every manifest. */
+async function prune({ complete }) {
+  if (!opts.prune || opts.dryRun || only.length || !complete) return;
+  const gone = Object.keys(generated).filter((id) => !slotById.has(id));
+  if (!gone.length) return;
+  const { removeOutputs } = await loadImageTools();
+  for (const id of gone) {
+    delete generated[id];
+    await removeOutputs(PUBLIC_DIR, id);
+    console.log(`- pruned ${id}`);
+  }
+  await saveGenerated(generated);
+}
+
+/** Keep a copy of what is published (BACKUP_FILE), so unzipping a newer copy of the project over this one loses no photos. */
+async function saveBackup() {
+  if (opts.dryRun || !Object.keys(generated).length) return;
+  await writeJsonAtomic(BACKUP_FILE, generated).catch(() => {});
+}

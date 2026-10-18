@@ -44,8 +44,8 @@ Vite 7 · Vitest + Testing Library · ESLint 9. Plain CSS: global tokens/base in
 
 ```
 npm install
-npm run dev       # http://localhost:5173 (+ /playground.html, the brochure-kit workbench)
-npm run build     # static site in dist/ (relative paths, any host)
+npm run dev       # http://localhost:5173 (+ /playground.html) — scripts/dev.mjs: Vite + the photo download
+npm run build     # static site in dist/ (relative paths, any host); prebuild downloads missing photos
 npm test          # vitest: unit, component, and a smoke test of every route (src/App.test.jsx)
 npm run lint      # also lints scripts/*.mjs
 npm run photos:fetch | photos:candidates | photos:import   # scripts/photos (see README "Real photos")
@@ -62,13 +62,16 @@ The command palette panel (`PalettePanel.jsx` with its search index) is a lazy
 chunk prefetched when the browser is idle. Code several routes share gets its
 own lazy chunk: `cover-art`, `Icon` (the named lucide registry), `BrochurePage`,
 `BrochureCard`, and small ones Rollup names after a module inside them
-(`progress`, `pageMeta`, `Switch`). The photo registry (`data/photos`, with
-the manifests, `photos.generated.json` and the live-photo resolver `live.js`)
-and `<Photo>` travel with `<CoverArt>` in the `cover-art` chunk: every route
-that draws one draws the other (the art is each photograph's fallback), so
-Rollup keeps them together (~49 KB gzipped, a third of it the Commons titles
-and search words live photos need); only the tiny live-photos *setting*
-(`data/photos/liveSetting.js`, the footer's switch) is in the entry. The
+(`progress`, `pageMeta`, `Switch`). `<Photo>` travels with `<CoverArt>` in
+the `cover-art` chunk: every route that draws one draws the other (the art is
+each photograph's fallback). The photo registry (`data/photos`, with the
+manifests, `photos.generated.json` and the live-photo resolver `live.js`) is
+its own `photos-[hash].js` chunk, because the lazy photo notice
+(`PhotoNotice`, mounted by AppShell a few seconds in) shares it; the
+`cover-art` chunk imports it, so both load together. Once photos are bundled
+it carries their records (a 24 px LQIP each, ~0.8 KB). Only the tiny
+live-photos *setting* (`data/photos/liveSetting.js`, the footer's switch) is
+in the entry. The
 Studio's photo picker (`PhotoPicker`) is a lazy chunk of its own. Tabi draws
 no maps (there is no map chunk, no geo data and no `map` page type any more:
 photographs of the places lead every page). Two build plugins:
@@ -77,7 +80,12 @@ photographs of the places lead every page). Two build plugins:
 JSON is bundled, and
 `tabi-brochure-outlines` (`scripts/build/brochure-outline.mjs`, tested) serves
 `?outline` imports of `src/data/brochures/*.js` from the source text — no file
-in that folder changes. Keep route-only code out of the entry: a
+in that folder changes. A third, dev-only plugin, `tabi-photo-status`
+(`scripts/build/photo-status.mjs`), serves the background photo download's
+progress (`.cache/photo-fetch/status.json`: state, counts, and why it stopped
+early — `offline`, `refused`, `busy` or `tools`) at `/__tabi/photo-status` and
+pushes each change as the HMR event `tabi:photo-status`. `clearScreen: false`
+keeps Vite from wiping the download's lines in the shared terminal. Keep route-only code out of the entry: a
 top-level call such as `Object.assign(…)` counts as a side effect, so Rollup
 keeps the whole module in the first chunk that imports it — even through the
 `components/ui` barrel. Build prototype-free tables with `dict()`/`byId()`
@@ -110,7 +118,8 @@ src/
                            isRetiredPageType: old `map` pages are dropped), kana.js
                            (hiragana readings for search)
   data/photos/             photo registry: index.js (getPhoto, resolvePhoto, listPhotos, creditsFor, photoIdsIn,
-                           livePhotos), registry.js (pure merge: bundled > live > none; "user:<key>" uploads
+                           livePhotos, bundledCount, subscribePhotos/photosSnapshot, updateBundledPhotos — the
+                           dev server's hot update of photos.generated.json), registry.js (pure merge: bundled > live > none; "user:<key>" uploads
                            from brochure.userPhotos), safeImageSrc.js (the only image URLs an upload may use;
                            also used by sanitize.js), manifest/<brochure>.json
                            (researchers), photos.generated.json (written by scripts/photos/fetch.mjs),
@@ -136,7 +145,9 @@ src/
                            useLivePhotos.js (useLivePhotos, useRequestLivePhotos, useLiveCredits);
                            useLivePhotosSetting.js + LivePhotosToggle (footer, #/credits);
                            MastheadPlate (a page masthead's photograph: the first known id of a preference
-                           list, a vertical word on a hung slip, a seal, place + credit; a band on phones)
+                           list, a vertical word on a hung slip, a seal, place + credit; a band on phones);
+                           PhotoNotice (lazy, from AppShell) + photoNotice.js (pure: when and what): the
+                           once-per-session note explaining placeholder art and how to get the photos
   components/viewer/       flipbook + reader UI (pure maths in spreads/flipMath/layout.js); TripPlanner
                            ("Plan this trip", tripPlan.js), links.js (a brochure's sources and official
                            sites, http(s) only, de-duplicated, with hosts);
@@ -161,9 +172,18 @@ src/
                            brochure at reader and thumbnail size on light or dark paper; audit.js finds
                            clipped, cut-off or off-page text (?section=reader&audit=1, window.__tabiAudit())
   test/setup.js            jsdom polyfills (skipped in `// @vitest-environment node` suites)
-scripts/photos/            fetch.mjs, candidates.mjs, import-local.mjs; lib.mjs (pure, tested with Commons
-                           API fixtures in fixtures/), process.mjs (sharp: WebP widths, LQIP, colour), io.mjs
-scripts/build/             brochure-outline.mjs (the `?outline` Vite plugin + its pure transform, tested)
+scripts/dev.mjs            `npm run dev`: spawns Vite and, 1.2 s later, `fetch.mjs --auto --dev`; Ctrl+C, `q`,
+                           a signal or its parent going away stops both (the download is asked to stop over
+                           IPC — a signal to a child is a hard kill on Windows — and killed after 4 s)
+scripts/photos/            fetch.mjs (the download; `--auto` for dev/prebuild), candidates.mjs, import-local.mjs;
+                           lib.mjs (pure, tested with Commons API fixtures in fixtures/: titles, policy, credits,
+                           search ranking shared with the browser), plan.mjs (pure: which slots, batches, choice,
+                           resume — journal and the published.json copy —, progress), process.mjs (sharp, loaded
+                           only when there is work: WebP widths, LQIP, colour), io.mjs (paths, polite client
+                           with a per-host Retry-After pause, requestTrouble/stopHint for refusals and
+                           throttling, proxy, journal/failures/status/lock/published in .cache/photo-fetch/)
+scripts/build/             brochure-outline.mjs (the `?outline` Vite plugin + its pure transform, tested),
+                           photo-status.mjs (dev-only plugin: the download's progress for PhotoNotice)
 docs/                      REAL_CONTENT.md (the standard), research/<slug>.md (each brochure's fact log;
                            linked from #/credits and published with the build as raw Markdown)
 public/photos/             <id>-<480|960|1600>.webp, committed with photos.generated.json
@@ -378,12 +398,21 @@ stores JPEG ≤ 1600 px at quality 0.82, ≤ 1.2 M characters each, 24 photos an
 3 M characters per brochure; JSON imports keep only inline JPEG/PNG/WebP within
 those caps — `studio/photoUpload.js`). Data flow for
 photos: manifest (`data/photos/manifest/<brochure>.json`: what a photo shows)
-→ `npm run photos:fetch` (Commons API, licence/size policy, sharp) →
+→ the download (`scripts/photos/fetch.mjs`: run by `npm run dev` in the
+background, by `prebuild`, or as `npm run photos:fetch`; Commons API,
+licence/size policy, search fallback, sharp) →
 `public/photos/*.webp` + `photos.generated.json` (size, LQIP, colour,
 credit) → `getPhoto(id)` merges both → `<Photo id>` renders it, or its
 `fallback` while `available` is false. Photo URLs are relative
 (`photos/<id>-<w>.webp`), like every asset (base `./`). A slot with no
-bundled file is shown **live from Wikimedia Commons** instead (next section). Id tables (`CATEGORY_MAP`, `REGION_MAP`, `SEASON_MAP`,
+bundled file is shown **live from Wikimedia Commons** instead (next section).
+In development the registry follows photos.generated.json as the download
+publishes it (after the Home/cover batch, then about every 60 photos):
+`index.js` accepts the JSON's hot update (`import.meta.hot.accept`),
+rebuilds the registry (`updateBundledPhotos`), drops newly bundled slots from
+the live resolver and notifies `subscribePhotos` listeners — `useLivePhotos`
+subscribes through it, so every `<Photo>` swaps art (or a live photo) for the
+local file without a reload. Id tables (`CATEGORY_MAP`, `REGION_MAP`, `SEASON_MAP`,
 `PAGE_TYPES`, `ART_LABELS`, `BLOCKS`, `ICONS`, `SECTION_JP/EN`) have no
 prototype (`data/lookup.js`), so `MAP[userValue]` never finds `constructor`
 or `__proto__`; use `hasKey(MAP, id)` to validate an id.
@@ -520,6 +549,8 @@ const live = useLivePhotos(ids);       // asks for these ids (one batch per tick
                                        //   or `live` as a memo dependency
 useRequestLivePhotos(ids);             // ask without subscribing (a page that knows all its photos)
 const credits = useLiveCredits(b);     // creditsFor(b) that follows live photos (back page, About)
+// useLivePhotos re-renders on live results *and* on bundled photos arriving (subscribePhotos/photosSnapshot
+// in data/photos/index.js), so photos downloaded while the page is open appear without a reload.
 const [on, setOn] = useLivePhotosSetting();   // entry-safe; <LivePhotosToggle /> is the switch
 ```
 
@@ -544,7 +575,9 @@ no build step, no server, no key: the API answers anonymous CORS requests
   rejected; CC BY/BY-SA need a licence link). Search results: right shape for
   the slot's `use` (cover/full portrait or near-square, 0.5–1.1 : 1; wide/spread
   1.4–2.4 : 1, so no panorama strip that the page would crop to a sliver;
-  any = largest), then size, never a file another slot already shows.
+  any = largest), then size, never a file another slot already shows
+  (`rankSearchResults` and `orientationFit` live in `scripts/photos/lib.mjs`,
+  so the download's search fallback picks the same way).
 - *Images.* Only Wikimedia's standard thumbnail steps — 500, 960, 1280, 1920 —
   derived from `thumburl` by swapping its `/<n>px-` segment (or built the way
   Wikimedia names thumbnails when the original is ≤ 1280 px), never a step at
@@ -577,6 +610,19 @@ no build step, no server, no key: the API answers anonymous CORS requests
   photo (`live: true`, no LQIP — the art stays under it until it has faded
   in) > generative art. Vitest never reaches Wikimedia (`index.js` passes no
   `fetch` in test mode); `live.test.js` drives a resolver with a fake one.
+- *Explaining the art.* `live.health()` (`{ asked, ready, failed, loading,
+  waiting, enabled, online, blocked, transport }`) feeds `PhotoNotice`
+  (`components/photo/`, lazy, mounted by AppShell 2.5 s in): when slots on
+  screen lack a photo because live photos are off, the browser is offline,
+  Commons is blocked or every lookup failed (`placeholderReason`), it shows
+  one dismissible note — once per session (`sessionStorage`
+  `tabi:photo-notice`), never in the console — saying the patterned pictures
+  are placeholder art, why, and how to get the photos (Try again, Turn photo
+  loading on, `npm run photos:fetch`). In development it reads the
+  background download's progress from the `tabi-photo-status` plugin
+  instead. It closes itself once every slot it was about has a photo.
+  Bundled search finds (`via: 'search'` in photos.generated.json) take the
+  work's title as alt text, like live ones.
 
 Pages are fixed layouts measured in `cqw`; the host gives them a width and
 adds radius/shadow. Page headings are h2/h3, so the host provides the h1.
@@ -643,7 +689,10 @@ lives inside an `isolation: isolate` container.
   `public/photos/` and `photos.generated.json`, and live photos come only
   from Wikimedia Commons' own servers (thumbnails on upload.wikimedia.org,
   which Wikimedia allows with attribution; `data/photos/live.js`). Never
-  commit placeholder or "test" images there.
+  commit placeholder or "test" images there. `TABI_COMMONS_API` /
+  `TABI_COMMONS_UPLOAD` (`scripts/photos/io.mjs` `routeUrl`) send the
+  download to a fake Commons server for the end-to-end test only — run it
+  in a copy of the project, never in the real one.
 - Storage keys (all via `lib/storage.js`, prefix `tabi:`): `theme`
   (ThemeContext, synced across tabs), `brochures`, `favorites`, `recent`
   (BrochureContext, synced across tabs), `progress` (`{ [brochureId]: page }`,
@@ -662,5 +711,7 @@ lives inside an `isolation: isolate` container.
   sign-up kept) is removed at startup by `main.jsx`.
   Per-tab keys live in sessionStorage: `tabi:library-search`, the
   Library's last query, which the reader's "Library" link returns to
-  (`lib/librarySearch.js`), and `tabi:chunk-reload`, the time of the last
-  automatic reload after a failed chunk (`components/layout/chunkError.js`).
+  (`lib/librarySearch.js`), `tabi:chunk-reload`, the time of the last
+  automatic reload after a failed chunk (`components/layout/chunkError.js`),
+  and `tabi:photo-notice` (the photo notice has been shown this session —
+  `components/photo/photoNotice.js`).

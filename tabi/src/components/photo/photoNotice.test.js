@@ -40,16 +40,24 @@ describe('noticeText — what the notice says', () => {
 
   it('follows the background download of npm run dev instead of sending people to the terminal', () => {
     const running = noticeText('blocked', { download: { state: 'running', done: 42, total: 213 }, bundled: 0, total: 213 });
+    expect(running.title).toBe('Real photos are on their way');
     expect(running.hint).toBe('Your terminal is downloading the real photos right now (42 of 213). They replace the art here by themselves.');
-    expect(noticeText('blocked', { download: { state: 'offline', done: 0, total: 213 } }).hint).toMatch(/couldn’t connect either/);
+    expect(running.action).toBeNull();
+    expect(noticeText('blocked', { download: { state: 'offline', done: 0, total: 213 } }).hint).toMatch(/couldn’t connect either: once you’re online, run npm run photos:fetch/);
+    // Commons answered but turned the terminal's download away: being online is not the problem.
+    expect(noticeText('blocked', { download: { state: 'offline', reason: 'refused', done: 0, total: 213 } }).hint).toMatch(/turned away the download in your terminal.*PHOTOS_CONTACT/);
+    expect(noticeText('blocked', { download: { state: 'offline', reason: 'busy', done: 0, total: 213 } }).hint).toMatch(/was busy/);
+    expect(noticeText('blocked', { download: { state: 'stopped', reason: 'tools', done: 0, total: 213 } }).hint).toMatch(/run npm install again/);
     // Every photo bundled: no command to suggest.
     expect(noticeText('off', { bundled: 213, total: 213 }).hint).toBe('');
   });
 
   it('only trusts a well-formed download status', () => {
-    expect(downloadStatus({ state: 'running', done: 3, total: 9, pid: 1 })).toEqual({ state: 'running', done: 3, total: 9, published: 0 });
+    expect(downloadStatus({ state: 'running', done: 3, total: 9, pid: 1 })).toEqual({ state: 'running', reason: '', done: 3, total: 9, published: 0 });
     expect(downloadStatus({ state: 'hacked' })).toBeNull();
-    expect(downloadStatus({ state: 'done', done: -1, total: 'x' })).toEqual({ state: 'done', done: 0, total: 0, published: 0 });
+    expect(downloadStatus({ state: 'done', done: -1, total: 'x' })).toEqual({ state: 'done', reason: '', done: 0, total: 0, published: 0 });
+    expect(downloadStatus({ state: 'offline', reason: 'refused' }).reason).toBe('refused');
+    expect(downloadStatus({ state: 'offline', reason: 'whatever' }).reason).toBe('');
     expect(downloadStatus(null)).toBeNull();
   });
 });

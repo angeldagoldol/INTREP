@@ -26,6 +26,11 @@ function markShown() {
   }
 }
 
+/** Commands in the text set as code: "run npm run photos:fetch" → run <code>npm run photos:fetch</code>. */
+function withCommands(text) {
+  return text.split(/(npm run [a-z:-]+)/).map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part));
+}
+
 /** Everything the notice depends on, as one comparable string (useSyncExternalStore needs a stable snapshot). */
 function snapshot() {
   const { bundled, total } = bundledCount();
@@ -108,7 +113,7 @@ export default function PhotoNotice() {
           {text.title}
         </p>
         <p className={styles.text}>{text.body}</p>
-        {text.hint && <p className={styles.hint}>{text.hint}</p>}
+        {text.hint && <p className={styles.hint}>{withCommands(text.hint)}</p>}
       </div>
       <button type="button" className={styles.close} onClick={() => setPhase('closed')} aria-label="Dismiss the photo notice">
         <X size={16} aria-hidden="true" />

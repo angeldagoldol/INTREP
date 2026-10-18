@@ -39,18 +39,87 @@ screen with Reload, while the rest of the app keeps working.
 
 ## Getting started
 
+### Real photos — read this first
+
+Tabi shows **real photographs of the real places** (from Wikimedia Commons,
+free licences, credited). Your computer downloads them **once**, the first
+time you start the app; after that they load from your own computer, even
+offline. Step by step, on Windows or macOS:
+
+1. Install **Node.js 22 LTS** from [nodejs.org](https://nodejs.org) (the
+   normal installer; keep the defaults).
+2. Open the project folder in VS Code, then open a terminal:
+   **Terminal → New Terminal**.
+3. Type `npm install` and press Enter. Wait until it finishes.
+4. Type `npm run dev` and press Enter. Open the address it prints,
+   `http://localhost:5173/` (Ctrl+click on Windows, ⌘+click on a Mac).
+5. **The first time, leave the terminal open for a few minutes**: next to the
+   website it downloads about 200 photos and shows how far it has got:
+
+   ```
+   [photos] Downloading real photos of Japan from Wikimedia Commons (first run only)… 213 to get.
+   [photos] [████░░░░░░░░░░░░] 53/213 ✓ saved — the Home page and brochure covers first (the open page updates itself)
+   [photos] [██████░░░░░░░░░░] 74/213 downloaded…
+   …
+   [photos] ✓ Done: all 213 real photos are saved in public/photos.
+   ```
+
+   The page in your browser swaps its patterned placeholder pictures for the
+   photographs as they arrive — no reload needed. From then on `npm run dev`
+   just says `✓ All 213 real photos are on this computer` and starts straight away.
+
+**Still seeing patterned pictures?** Those are placeholder art, and a small
+note in the bottom-left corner of the page says why. What to do:
+
+- **No internet at the time** (the terminal says `Could not reach Wikimedia
+  Commons`): connect, then run `npm run photos:fetch` — or stop the app with
+  Ctrl+C and run `npm run dev` again. It carries on where it stopped; photos
+  already saved are kept.
+- **Behind a proxy** (school or office networks): tell the download where the
+  proxy is, then run it again.
+  macOS/Linux: `HTTPS_PROXY=http://proxy.example:8080 npm run photos:fetch` ·
+  Windows PowerShell: `$env:HTTPS_PROXY="http://proxy.example:8080"; npm run photos:fetch`.
+  It honours `HTTPS_PROXY`, `HTTP_PROXY` and `NO_PROXY`.
+- **Commons turned the download away** (the terminal says `Wikimedia
+  Commons turned the download away (HTTP 403 …)`): Wikimedia wants to know
+  who is downloading. Put your e-mail or website in `PHOTOS_CONTACT` and run
+  it again — macOS/Linux: `PHOTOS_CONTACT=you@example.com npm run photos:fetch` ·
+  Windows PowerShell: `$env:PHOTOS_CONTACT="you@example.com"; npm run photos:fetch`.
+  On a school or office network a filter may be the cause: try another network.
+- **"Could not reach Wikimedia Commons securely"** (`SELF_SIGNED_CERT_IN_CHAIN`):
+  a network filter or antivirus replaces HTTPS certificates. Ask for its
+  certificate file and run `NODE_EXTRA_CA_CERTS=/path/to/cert.pem npm run photos:fetch`
+  (PowerShell: `$env:NODE_EXTRA_CA_CERTS="C:\path\to\cert.pem"; npm run photos:fetch`).
+- **wikimedia.org blocked** on your network: ask for `commons.wikimedia.org`
+  and `upload.wikimedia.org` to be allowed, or add a photo you own with
+  `npm run photos:import` (see "Real photos" below).
+- **"The image tool (sharp) could not start"**: run `npm install` again in
+  the project folder (it fetches the version made for your computer), then
+  `npm run photos:fetch`.
+
+`npm run build` downloads any missing photos first, so a published site
+carries them too; offline it prints the same warning and builds anyway
+(those slots show live photos, or art). Wikimedia likes to know who
+downloads: you can always put your e-mail or website in `PHOTOS_CONTACT`
+(as above, with `npm run dev`). If you unzip a newer copy of the project
+**over** this folder, the photos already in `public/photos` are kept: the
+next `npm run dev` takes them back without downloading them again.
+
+### Commands
+
 Requires Node 20.19+ or 22.12+ (Vite 7).
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
-npm run build      # static site in dist/
+npm run dev        # http://localhost:5173 — and downloads any missing photos in the background
+npm run dev:vite   # just Vite, no photo download
+npm run build      # static site in dist/ (downloads any missing photos first)
 npm run preview    # serve dist/ on http://localhost:4173
 npm test           # vitest run (unit, component and route smoke tests)
 npm run test:watch
 npm run lint       # eslint .
 
-npm run photos:fetch       # bundle + credit the brochure photos (otherwise they load live from Commons)
+npm run photos:fetch       # download + credit every missing photo now (npm run dev and npm run build do it too)
 npm run photos:candidates  # contact sheets of every candidate, for curation
 npm run photos:import      # add a photo you own or licensed (fallback)
 ```
@@ -85,16 +154,19 @@ src/
     ui/                    design-system primitives (Button, IconButton, Modal/Drawer, Hanko…)
     layout/                AppShell, Navbar, Footer, command palette, route transition, search
     brochure/              CoverArt (generative art in art/), BrochurePage (+ blocks/), BrochureCard
-    photo/                 <Photo>: responsive, credited photographs with an art fallback
+    photo/                 <Photo>: responsive, credited photographs with an art fallback; PhotoNotice
     viewer/                Flipbook, reader toolbar, scrubber, thumbnails, overview, print, trip planner
     studio/                editor reducer, panels, fields, preview, publish checks, import/export
   pages/                   Home, Library, Viewer, Studio, Credits, NotFound (route components + sections)
   dev/                     the kit playground
   test/setup.js            jsdom polyfills for Vitest
 scripts/
-  photos/                  fetch.mjs, candidates.mjs, import-local.mjs (+ lib.mjs, process.mjs, io.mjs)
+  dev.mjs                  `npm run dev`: Vite + the photo download in the background
+  photos/                  fetch.mjs, candidates.mjs, import-local.mjs (+ lib.mjs, plan.mjs, process.mjs, io.mjs)
   build/brochure-outline.mjs  the Vite plugin that makes the brochure outlines
+  build/photo-status.mjs   dev-server plugin: the download's progress for the photo notice
 public/photos/             resized photos, <id>-<480|960|1600>.webp (written by the scripts)
+.cache/photo-fetch/        the download's bookkeeping: journal, failures, status, lock, published copy (gitignored)
 docs/REAL_CONTENT.md       the standard for real places, facts and photos
 docs/research/<slug>.md    each brochure's fact log (claim → value → sources → date checked)
 ```
@@ -228,10 +300,11 @@ Photos come from **Wikimedia Commons** under free licences only — CC0,
 public domain, CC BY, CC BY-SA (any version or port). NonCommercial,
 NoDerivatives, "fair use" and unrecognised licences are rejected, and so are
 images under 1600 px on the long edge. Each photo slot shows, in order of
-preference: a photo **bundled** with the site (downloaded once by
-`npm run photos:fetch`, served from `public/photos/`), else the same kind of
-photo shown **live from Wikimedia Commons** by the visitor's browser, else the
-brochure's generative art.
+preference: a photo **bundled** with the site (downloaded once — by the first
+`npm run dev` or `npm run build`, or by `npm run photos:fetch` — and served
+from `public/photos/`), else the same kind of photo shown **live from
+Wikimedia Commons** by the visitor's browser, else the brochure's generative
+art, with a small note that explains it (see "When a photo cannot load").
 
 ### Live photos (no build step)
 
@@ -256,8 +329,8 @@ anonymous requests from any origin.
 - **Fails quietly.** Offline, nothing is asked until the browser is back
   online. If Commons cannot be reached (a network or a Content-Security-Policy
   that blocks it, as in some sandboxed previews), the app tries once and then
-  keeps the art, without filling the console. Switching live photos off stops
-  any lookup already under way.
+  keeps the art, without filling the console — and says so once (below).
+  Switching live photos off stops any lookup already under way.
 - **Privacy.** With live photos, each visitor's browser requests the
   pictures and their metadata from Wikimedia's servers
   (commons.wikimedia.org and upload.wikimedia.org), which see the visitor's
@@ -271,7 +344,8 @@ anonymous requests from any origin.
   bundled.
 - **Bundling instead.** To serve every photo from your own site — no
   third-party requests, the blurred preview while loading, photos that never
-  change under you — run `npm run photos:fetch` (below) and commit
+  change under you — let `npm run dev` / `npm run build` (or
+  `npm run photos:fetch`) download them (below) and commit
   `public/photos/` with `photos.generated.json`. Bundled photos always win
   over live ones, slot by slot, so you can bundle some and leave the rest live.
   A strict CSP needs `connect-src https://commons.wikimedia.org` and
@@ -280,6 +354,19 @@ anonymous requests from any origin.
 Live photos found by search (not one of the researched candidates) use the
 work's title as alt text; check them before you bundle (see "After a fetch"
 below).
+
+### When a photo cannot load
+
+If a slot on screen shows art because its photo could not load — the
+browser is offline, Commons is blocked or unreachable, every lookup failed,
+or **Load photos from Wikimedia Commons** is off — and the photo is not
+bundled, one small note appears in the bottom-left corner (once per browser
+session, `sessionStorage` `tabi:photo-notice`; dismissible; never in the
+console). It says the patterned pictures are placeholder art, why, and how to
+get the photos: connect and **Try again**, **Turn photo loading on**, or run
+`npm run photos:fetch`. During `npm run dev` it follows the background
+download instead ("Your terminal is downloading the real photos right now
+(42 of 213)…"), and it goes away by itself once the photos are there.
 
 ### Bundling photos with the site
 
@@ -291,22 +378,64 @@ below).
    preview and writes a contact sheet per photo to
    `.cache/photo-candidates/<brochure>/<id>.jpg` (gitignored), marked ✓/✗
    with size and licence. Record the winner as `"file"` in the manifest.
-3. `npm run photos:fetch` takes each photo's `file` (or the first candidate
-   that passes), downloads Commons' 1920 px thumbnail (a standard thumbnail
-   step; other widths may be refused), writes WebP at 480/960/1600 px
+3. The download — `npm run photos:fetch`, and automatically `npm run dev`
+   (in the background, `scripts/dev.mjs`) and `npm run build` (`prebuild`),
+   both with `--auto` — tries each slot's `file`, then its `candidates` in
+   order; the first that passes wins. If none does (missing, not free, too
+   small), it searches Commons for the slot's `query` (bitmap files, 20 results
+   a page, a second page if nothing qualifies) and picks with the browser's
+   rule (`rankSearchResults` in `scripts/photos/lib.mjs`, shared with
+   `commons.js`): the right shape for the slot's `use` (cover/full 0.5–1.1 : 1,
+   wide/spread 1.4–2.4 : 1, any = the largest), then size, never a file another
+   slot shows or lists. It downloads Commons' 1920 px thumbnail (a standard
+   thumbnail step; other widths may be refused), writes WebP at 480/960/1600 px
    (quality 72, never upscaled) to `public/photos/`, and records size, a
    24 px blurred preview (LQIP), the dominant colour, the work's title,
    author (the attribution the author asked for, when Commons has one),
-   licence + deed URL and source page in
-   `src/data/photos/photos.generated.json`. API requests go one at a time,
-   follow `continue`, and the registry file is written atomically after each
-   photo (a damaged file stops the run instead of being overwritten). It is cached:
-   photos already fetched are skipped unless `--force`. Other flags:
-   `--only <brochure|photo-id>`, `--dry-run` (check, write nothing),
-   `--list-candidates` (print the Commons links, offline), `--prune` (drop
-   photos no manifest lists). Wikimedia asks for a contact in the
-   User-Agent: set `PHOTOS_CONTACT` (a URL or e-mail) when you run it. Behind
-   an HTTPS proxy, Node's `fetch` needs `NODE_USE_ENV_PROXY=1` (Node ≥ 22.21).
+   licence + deed URL and source page — plus `via: "search"` and the `query`
+   for a search find — in `src/data/photos/photos.generated.json`.
+   - **Order and batches.** The Home page's photos, the Nostalgic Japan
+     mosaic and every brochure cover come first; the registry is published
+     after that batch and then about every 60 photos, so a running dev server
+     takes the photos in a few times (no reload: `index.js` accepts the
+     JSON's hot update), not 213 times. Photos downloaded in between wait in
+     `.cache/photo-fetch/journal.json`; Ctrl+C publishes them, and a run that
+     dies is picked up by the next one. One download runs at a time
+     (`.cache/photo-fetch/lock.json`).
+   - **Once.** Photos already on disk (their record still fits the slot and
+     every width exists) are skipped, so the next `npm run dev` asks the
+     network nothing. `--auto` also leaves a slot that found nothing usable
+     alone for a day (`.cache/photo-fetch/failures.json`); `npm run
+     photos:fetch` always tries again.
+   - **Polite.** A descriptive User-Agent (set `PHOTOS_CONTACT` to a URL or
+     e-mail to add a contact), `maxlag=5`, Retry-After honoured on 429/5xx —
+     by every request to that host, not only the one that was told — API
+     requests one at a time, three image downloads at once, timeouts.
+   - **Offline or blocked.** Two quick tries, then a short explanation;
+     `--auto` exits 0 so `npm run dev` and `npm run build` carry on. When
+     Commons answers but turns downloads away (401/403/407/451) or keeps
+     asking to slow down (429, or no answer in time) five times in a row, the
+     run stops with what to do (`PHOTOS_CONTACT`, another network, later)
+     instead of failing every slot; such slots are not remembered as
+     "nothing usable", and a slot whose researched picture Commons asked to
+     wait for (429, no answer in time) waits for the next run rather than
+     settling for a search find. A
+     certificate error explains `NODE_EXTRA_CA_CERTS`; if sharp cannot load,
+     it says to run `npm install` again (the build still builds).
+   - **Unzipped over.** Everything published is also copied to
+     `.cache/photo-fetch/published.json`; when `photos.generated.json` has
+     been replaced (a newer copy of the project unzipped over this folder),
+     records whose files are still in `public/photos` and still fit their slot
+     are taken back from there, with no download.
+   - **Proxies.** With `HTTPS_PROXY`/`HTTP_PROXY` set it goes through the
+     proxy (undici's `EnvHttpProxyAgent`, which honours `NO_PROXY`); with
+     `NODE_USE_ENV_PROXY=1` (Node ≥ 22.21) Node's own fetch does.
+   - Flags: `--only <brochure|photo-id>`, `--force`, `--dry-run` (check,
+     write nothing), `--list-candidates` (print the Commons links, offline),
+     `--no-search` (candidates only), `--prune` (drop photos no manifest
+     lists). `TABI_SKIP_PHOTOS=1` skips the automatic download.
+     `TABI_COMMONS_API`/`TABI_COMMONS_UPLOAD` exist **only** for the
+     end-to-end test against a fake Commons server; never set them otherwise.
 4. Commit `public/photos/` and `photos.generated.json` with the manifests.
 
 If Commons cannot be reached, `npm run photos:import -- photo.jpg --id <id>
@@ -316,15 +445,18 @@ runs a photo you own or have licensed through the same resizing (add
 
 Until a photo is bundled or found live — or if it fails to load — pages
 show the brochure's generative art in its place, so every brochure always
-renders. **Today no photo is bundled yet** (`photos.generated.json` is
-empty): with an internet connection every slot is shown live from Commons,
-and `#/credits` counts the photographs still to come. After a fetch, check:
+renders. **The repository ships no photos** (`photos.generated.json` is
+`{}`): the first `npm run dev` or `npm run build` on a computer with internet
+downloads them; until then each slot is shown live from Commons, and
+`#/credits` counts the photographs still to come. After a download, check:
 
 - `#/credits` — every downloaded photo listed with author, licence and source;
 - `/playground.html?section=reader&rb=all&audit=1` — no clipped text with the
   real pictures in place, on light and dark paper;
 - each manifest's `caption`/`alt` still describe the file that was chosen
-  (several candidates were picked from search results, not by eye).
+  (several candidates were picked from search results, not by eye) — and
+  above all the photos found by searching Commons (`npm run photos:fetch`
+  lists them as "found by search"): their alt text is the work's title.
 
 **Credits.** Each photo is credited where it appears ("Photo: Author ·
 CC BY-SA 4.0", linking to the Commons file page and the licence deed, in a
@@ -376,8 +508,11 @@ other photo. Removing an upload clears every field that used it.
 
 ## Deploying
 
-`npm run build` writes a fully static site to `dist/`. Two settings make it
-work anywhere without configuration:
+`npm run build` writes a fully static site to `dist/`, after downloading any
+photo not on disk yet (`prebuild`; offline it warns and builds anyway, and a
+host's build machine downloads them each time unless you commit
+`public/photos/` and `photos.generated.json` — or set `TABI_SKIP_PHOTOS=1`).
+Two settings make it work anywhere without configuration:
 
 - **Relative base** (`base: './'` in `vite.config.js`): every asset URL is
   relative, so `dist/` works at a domain root, under a sub-path, or opened

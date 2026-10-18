@@ -51,10 +51,17 @@ writing them. Data shapes are in `src/data/schema.js`.
 
 All photos come from **Wikimedia Commons** under free licences (CC0, public
 domain, CC BY, CC BY-SA). They are downloaded, resized and credited by
-`scripts/photos/fetch.mjs`, or — until they are — shown live from Wikimedia
-Commons by the visitor's browser under the same licence and size policy
-(`src/data/photos/live.js`), using each slot's `candidates` and then its
-`query` (Commons search words), so write a `query` that finds the place.
+`scripts/photos/fetch.mjs` — automatically, the first time anyone runs
+`npm run dev` or `npm run build`, or with `npm run photos:fetch` — or, until
+they are, shown live from Wikimedia Commons by the visitor's browser under
+the same licence and size policy (`src/data/photos/live.js`). Both try each
+slot's `file`, then its `candidates`, then search Commons for its `query`
+with the same rule (the right shape for the slot's `use`, then size, never a
+picture another slot shows; a slot whose researched picture Commons only
+asked the download to wait for waits for the next run instead), so **write a `query`
+that finds the place itself** — a search find is published with your caption, so it has to show
+what the caption says. Check every photo the download reports as "found by
+search" (and #/credits) before you publish.
 
 Each brochure lists its photos in `src/data/photos/manifest/<slug>.json`:
 
@@ -70,6 +77,7 @@ Each brochure lists its photos in `src/data/photos/manifest/<slug>.json`:
         "File:Another candidate.jpg",
         "File:A third candidate.jpg"
       ],
+      "query": "Fushimi Inari-taisha senbon torii",
       "alt": "A tunnel of vermilion torii gates on a forest path",
       "caption": "Senbon Torii at Fushimi Inari Taisha",
       "place": "Fushimi Inari Taisha",
@@ -94,9 +102,12 @@ Each brochure lists its photos in `src/data/photos/manifest/<slug>.json`:
   if relevant). The photographer credit and licence are filled in
   automatically from Commons — never type them by hand.
 - `focus`: CSS `object-position` keeping the subject in frame when cropped.
+- `query`: Commons search words for the place (and season, if it matters),
+  used when no candidate qualifies — e.g. `"Kiyomizu-dera main hall autumn"`.
 - A curation step later downloads every candidate, looks at them and records
   the chosen one as `"file"`. Until a photo is downloaded the app shows the
-  brochure's generative art in its place, so brochures always render.
+  brochure's generative art in its place (and a note explaining it), so
+  brochures always render.
 
 Typical photo budget per brochure: cover 1, intro 1, each `place` page 1,
 each gallery 3–4, plus a full-page photo (`<prefix>-fullpage`, `use: "full"`,

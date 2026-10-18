@@ -72,6 +72,16 @@
   color: var(--ink-3);
 }
 
+.hint code {
+  padding: 0 0.3em;
+  border-radius: var(--radius-xs);
+  background: var(--bg-sunken);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  white-space: nowrap;
+}
+
 .close {
   display: grid;
   place-items: center;

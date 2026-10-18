@@ -38,6 +38,13 @@ export const JOURNAL_FILE = path.join(STATE_DIR, 'journal.json');
 export const FAILURES_FILE = path.join(STATE_DIR, 'failures.json');
 /** What the download is doing, for the dev server's notice (vite.config.js: tabi-photo-status). */
 export const STATUS_FILE = path.join(STATE_DIR, 'status.json');
+/**
+ * A copy of what the download last published in photos.generated.json. Unzipping
+ * a newer copy of the project over this folder replaces that file (with `{}`) but
+ * leaves public/photos and .cache/ alone: the next run takes the photos back from
+ * here instead of downloading them all again.
+ */
+export const BACKUP_FILE = path.join(STATE_DIR, 'published.json');
 /** One download at a time: { pid, at }. */
 export const LOCK_FILE = path.join(STATE_DIR, 'lock.json');
 
@@ -145,17 +152,41 @@ function sleep(ms, signal) {
   });
 }
 
+/** The host a Commons URL names ('upload.wikimedia.org'), for messages and the per-host pause. */
+function hostOf(url) {
+  try {
+    return new URL(url).host;
+  } catch {
+    return 'Commons';
+  }
+}
+
 /**
- * GET with retries on 429/5xx/maxlag (honouring Retry-After) and on network
- * errors, a `timeout` per attempt, and `signal` to stop at once. A request
- * that cannot reach Commons at all is tried twice, not five times, so an
- * offline run ends quickly. Returns the Response (ok) or throws.
+ * When a host said "slow down" (429/503 with Retry-After), every request to
+ * it waits until then — not only the one that was told: three image downloads
+ * run at once, and the other two must not carry on hammering it.
  */
-export async function politeFetch(url, { retries = 4, accept = '*/*', timeout = 30_000, signal } = {}) {
-  const { fetch: doFetch } = await transport();
+const pausedUntil = new Map();
+async function waitForHost(host, signal) {
+  const wait = (pausedUntil.get(host) ?? 0) - Date.now();
+  if (wait > 0) await sleep(wait, signal);
+}
+
+/**
+ * GET with retries on 429/5xx/maxlag (honouring Retry-After, for every request
+ * to that host) and on network errors, a `timeout` per attempt, and `signal`
+ * to stop at once. A request that cannot reach Commons at all is tried twice,
+ * not five times, so an offline run ends quickly. Returns the Response (ok) or
+ * throws; an HTTP error carries `status` and names only the host, not the
+ * whole URL. `fetchImpl` is for tests.
+ */
+export async function politeFetch(url, { retries = 4, accept = '*/*', timeout = 30_000, signal, fetchImpl } = {}) {
+  const doFetch = fetchImpl ?? (await transport()).fetch;
+  const host = hostOf(url);
   let lastError;
   for (let attempt = 0; attempt <= retries; attempt += 1) {
     if (signal?.aborted) throw signal.reason;
+    await waitForHost(host, signal);
     let response;
     try {
       const timer = AbortSignal.timeout(timeout);
@@ -174,12 +205,32 @@ export async function politeFetch(url, { retries = 4, accept = '*/*', timeout = 
     if (response.ok) return response;
     // Release the connection: an unread body keeps the socket busy.
     await response.body?.cancel().catch(() => {});
-    lastError = new Error(`HTTP ${response.status} for ${url}`);
-    lastError.status = response.status;
+    lastError = Object.assign(new Error(`HTTP ${response.status} from ${host}`), { status: response.status, url });
     if (response.status !== 429 && response.status < 500) throw lastError;
-    if (attempt < retries) await sleep(retryDelay(attempt, response.headers.get('retry-after')), signal);
+    if (attempt < retries) {
+      const retryAfter = response.headers.get('retry-after');
+      const delay = retryDelay(attempt, retryAfter);
+      if (retryAfter || response.status === 429) pausedUntil.set(host, Math.max(pausedUntil.get(host) ?? 0, Date.now() + delay));
+      await sleep(delay, signal);
+    }
   }
   throw lastError;
+}
+
+/**
+ * Why a request failed, when the file itself is not to blame — so the slot is
+ * neither given up on nor "remembered" as having no picture:
+ *   'refused'   401/403/407/451: Commons (or a filter on this network) turned the download away
+ *   'throttled' 429, or no answer in time: asked to slow down
+ *   'server'    5xx: trouble on Wikimedia's side
+ * → one of those, or null (a 404, a broken image: the next candidate is tried).
+ */
+export function requestTrouble(error) {
+  const status = Number(error?.status) || 0;
+  if ([401, 403, 407, 451].includes(status)) return 'refused';
+  if (status === 429 || error?.name === 'TimeoutError') return 'throttled';
+  if (status >= 500) return 'server';
+  return null;
 }
 
 // Wikimedia's API etiquette: one request at a time, even while images download in parallel.
@@ -259,9 +310,21 @@ export async function pool(items, limit, fn) {
   await Promise.all(workers);
 }
 
+const CERT_CODES = new Set(['CERT_HAS_EXPIRED', 'SELF_SIGNED_CERT_IN_CHAIN', 'UNABLE_TO_GET_ISSUER_CERT_LOCALLY']);
+
 /** A friendly explanation for a network failure (lines, without a trailing newline). */
 export function networkHint(error, { proxy = 'none' } = {}) {
-  const cause = errorCode(error) || error?.status || error?.message || 'no answer';
+  const code = errorCode(error);
+  const cause = code || error?.status || error?.message || 'no answer';
+  if (CERT_CODES.has(code)) {
+    return [
+      `Could not reach Wikimedia Commons securely (${code}): something on this network (a school or office filter, antivirus) replaces its HTTPS certificate.`,
+      'Ask for its certificate file and point Node at it, then run the download again:',
+      '  macOS/Linux: NODE_EXTRA_CA_CERTS=/path/to/cert.pem npm run photos:fetch',
+      '  Windows PowerShell: $env:NODE_EXTRA_CA_CERTS="C:\\path\\to\\cert.pem"; npm run photos:fetch',
+      'Until then the site shows placeholder art where a photo is missing.',
+    ].join('\n');
+  }
   const lines = [
     `Could not reach Wikimedia Commons (${cause}) — is this computer offline?`,
     'Check the internet connection, then run `npm run photos:fetch` (or restart `npm run dev`) to get the real photos.',
@@ -273,6 +336,39 @@ export function networkHint(error, { proxy = 'none' } = {}) {
     lines.push(`A proxy is set (${redactProxy(proxyFromEnv())}): check that it lets commons.wikimedia.org and upload.wikimedia.org through.`);
   }
   lines.push('If wikimedia.org is blocked on this network, `npm run photos:import` adds a photo you own or licensed.');
+  return lines.join('\n');
+}
+
+/**
+ * What to say when Commons answered but turned the download away (401/403/407/451)
+ * or kept asking it to slow down (429), so the run stopped rather than keep
+ * asking (lines, without a trailing newline).
+ */
+export function stopHint(error) {
+  const status = Number(error?.status) || 0;
+  const from = `HTTP ${status || '?'} from ${hostOf(error?.url ?? '')}`;
+  const kept = 'Photos saved so far are kept; the site shows placeholder art where one is missing until the next run.';
+  if (requestTrouble(error) !== 'refused') {
+    const why =
+      error?.name === 'TimeoutError'
+        ? 'Wikimedia Commons answered too slowly again and again'
+        : status === 429
+          ? `Wikimedia Commons is busy and asked the download to slow down (${from})`
+          : `Wikimedia Commons had trouble answering (${from})`;
+    return [`${why}, so it stopped for now.`, 'Run `npm run photos:fetch` (or restart `npm run dev`) a little later; it carries on where it stopped.', kept].join('\n');
+  }
+  const lines = [`Wikimedia Commons turned the download away (${from}), so it stopped rather than keep asking.`];
+  if (status === 407) {
+    lines.push('The proxy wants a user name and password: put them in HTTPS_PROXY, e.g. http://user:password@proxy.example:8080.');
+  } else {
+    lines.push(
+      'Wikimedia asks downloaders to say who they are: run it again with your e-mail or website in PHOTOS_CONTACT,',
+      '  macOS/Linux: PHOTOS_CONTACT=you@example.com npm run photos:fetch',
+      '  Windows PowerShell: $env:PHOTOS_CONTACT="you@example.com"; npm run photos:fetch',
+      'On a school or office network a filter may block wikimedia.org: try another network, or ask for commons.wikimedia.org and upload.wikimedia.org to be allowed.',
+    );
+  }
+  lines.push(kept);
   return lines.join('\n');
 }
 
@@ -336,12 +432,28 @@ export async function loadGenerated(file = GENERATED_FILE) {
   return json;
 }
 
-/** Write JSON atomically (temp file + rename), so an interrupted run never leaves half a file. */
+/**
+ * Write JSON atomically (temp file + rename), so an interrupted run never
+ * leaves half a file. On Windows a rename fails while another program (the
+ * dev server reading the file, an antivirus scan) has the target open: it is
+ * tried again a few times.
+ */
 export async function writeJsonAtomic(file, value) {
   await mkdir(path.dirname(file), { recursive: true });
   const temp = `${file}.${process.pid}.tmp`;
   await writeFile(temp, `${JSON.stringify(value, null, 2)}\n`);
-  await rename(temp, file);
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      await rename(temp, file);
+      return;
+    } catch (error) {
+      if (attempt >= 8 || !['EPERM', 'EBUSY', 'EACCES'].includes(error.code)) {
+        await unlink(temp).catch(() => {});
+        throw error;
+      }
+      await sleep(50 * (attempt + 1));
+    }
+  }
 }
 
 /** Write the registry atomically, sorted by id so it diffs cleanly. */
@@ -380,10 +492,17 @@ export function processAlive(pid) {
   }
 }
 
-/** Take the download lock (false when another live download holds it); a stale lock is taken over. */
-export async function acquireLock(file = LOCK_FILE) {
+/** A lock not refreshed for this long belongs to a download that died (a crash, a killed terminal). */
+export const LOCK_STALE_MS = 60_000;
+
+/**
+ * Take the download lock (false when another live download holds it). A lock
+ * whose process is gone, or that has not been refreshed (heartbeatLock) for
+ * LOCK_STALE_MS, is taken over.
+ */
+export async function acquireLock(file = LOCK_FILE, { now = Date.now() } = {}) {
   await mkdir(path.dirname(file), { recursive: true });
-  const mine = JSON.stringify({ pid: process.pid, at: Date.now() });
+  const mine = JSON.stringify({ pid: process.pid, at: now });
   try {
     await writeFile(file, mine, { flag: 'wx' });
     return true;
@@ -391,9 +510,16 @@ export async function acquireLock(file = LOCK_FILE) {
     if (error.code !== 'EEXIST') throw error;
   }
   const held = await readJson(file, null);
-  if (held && held.pid !== process.pid && processAlive(held.pid)) return false;
+  const fresh = Number.isFinite(held?.at) && now - held.at < LOCK_STALE_MS;
+  if (held && held.pid !== process.pid && fresh && processAlive(held.pid)) return false;
   await writeFile(file, mine);
   return true;
+}
+
+/** Refresh our lock (a running download calls it every few seconds). */
+export async function heartbeatLock(file = LOCK_FILE) {
+  const held = await readJson(file, null);
+  if (held?.pid === process.pid) await writeFile(file, JSON.stringify({ pid: process.pid, at: Date.now() })).catch(() => {});
 }
 
 /** Give the lock back (only if it is ours). */

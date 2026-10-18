@@ -239,6 +239,29 @@ export function recoverJournal(journal, slots, { exists } = {}) {
   return { records, dropped };
 }
 
+/**
+ * Photos already on this computer that photos.generated.json does not list,
+ * to publish before anything is downloaded: what an interrupted run had
+ * downloaded but not published yet (`journal`), and what an earlier run had
+ * published that the file no longer has (`backup`, io.BACKUP_FILE — unzipping
+ * a newer copy of the project over this folder resets the file to `{}` but
+ * leaves public/photos alone). Each is kept only when its slot still fits it
+ * and its files are on disk, as recoverJournal() checks; the journal is newer
+ * than the backup. With `force` (download again) only the journal counts.
+ *   → { records: { [id]: record }, journal: n, backup: n }
+ */
+export function recoverable({ journal = {}, backup = {}, generated = {}, slots = [], exists, force = false } = {}) {
+  const fromJournal = recoverJournal(journal, slots, { exists }).records;
+  const fromBackup = {};
+  if (!force && isRecord(backup)) {
+    const byId = new Map(slots.map((slot) => [slot.photo.id, slot]));
+    const known = isRecord(generated) ? generated : {};
+    const missing = Object.fromEntries(Object.entries(backup).filter(([id]) => byId.has(id) && !fromJournal[id] && !isCached(byId.get(id), known[id], { exists })));
+    Object.assign(fromBackup, recoverJournal(missing, slots, { exists }).records);
+  }
+  return { records: { ...fromBackup, ...fromJournal }, journal: Object.keys(fromJournal).length, backup: Object.keys(fromBackup).length };
+}
+
 /* --------------------------------------------------------------- progress */
 
 /**
