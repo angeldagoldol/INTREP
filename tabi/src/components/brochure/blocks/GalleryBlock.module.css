@@ -1,0 +1,197 @@
+.gallery {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4cqw;
+}
+
+.count {
+  flex: none;
+  display: flex;
+  align-items: baseline;
+  gap: 1.4cqw;
+  margin: 0 0 0.8cqw;
+  font-family: var(--font-mono);
+  font-size: 1.4cqw;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--b-muted-text);
+}
+
+.count [lang] {
+  font-size: 1.8cqw;
+  letter-spacing: 0.2em;
+  color: var(--b-ink);
+}
+
+/* Each plate spans a frame row and a caption row of the page grid (subgrid),
+   so captions in one row line up and frames share their heights. Plates may
+   run off the side trims (see below), so only the height is clipped. */
+.grid {
+  flex: 1;
+  min-height: 0;
+  overflow-x: visible;
+  overflow-y: clip;
+  display: grid;
+  column-gap: 2.2cqw;
+  margin: 3.4cqw 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grid[data-count='1'] {
+  grid-template: minmax(14cqw, 1fr) auto / minmax(0, 1fr);
+}
+
+/* 1: the plate runs off both side trims. */
+.grid[data-count='1'] .frame {
+  margin-inline: calc(-1 * var(--pad-x));
+}
+
+.grid[data-count='2'] {
+  grid-template: minmax(14cqw, 1fr) auto / minmax(0, 1.2fr) minmax(0, 1fr);
+}
+
+.grid[data-count='3'] {
+  grid-template: minmax(12cqw, 1fr) auto minmax(12cqw, 1fr) auto / minmax(0, 1.45fr) minmax(0, 1fr);
+}
+
+.grid[data-count='4'] {
+  grid-template: minmax(14cqw, 2fr) auto minmax(12cqw, 1fr) auto / repeat(3, minmax(0, 1fr));
+  column-gap: 1.6cqw;
+}
+
+.cell {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* 2: a staggered pair — the second plate drops below the first. */
+.grid[data-count='2'] .cell:nth-child(2) .frame {
+  margin-top: 14cqw;
+}
+
+/* 3: a tall plate beside two, first in reading order, running off the left
+   trim (the outer edge of a left-hand page, into the gutter on a right-hand one). */
+.grid[data-count='3'] .cell:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1 / span 4;
+  grid-template-rows: subgrid;
+}
+
+.grid[data-count='3'] .cell:nth-child(1) .frame {
+  margin-inline-start: calc(-1 * var(--pad-x));
+}
+
+
+.grid[data-count='3'] .cell:nth-child(1) .figure > .frame {
+  grid-row: 1 / span 3;
+}
+
+.grid[data-count='3'] .cell:nth-child(1) .figure > .caption {
+  grid-row: 4;
+}
+
+.grid[data-count='3'] .cell:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.grid[data-count='3'] .cell:nth-child(3) {
+  grid-column: 2;
+  grid-row: 3 / span 2;
+}
+
+/* 4: a wide plate over three, running off both side trims. */
+.grid[data-count='4'] .cell:nth-child(1) {
+  grid-column: 1 / -1;
+  grid-row: 1 / span 2;
+}
+
+.grid[data-count='4'] .cell:nth-child(1) .frame {
+  margin-inline: calc(-1 * var(--pad-x));
+}
+
+.grid[data-count='4'] .cell:nth-child(n + 2) {
+  grid-row: 3 / span 2;
+}
+
+.figure {
+  display: grid;
+  grid-row: 1 / -1;
+  grid-template-rows: subgrid;
+  min-height: 0;
+  margin: 0;
+}
+
+.frame {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--b-ink) 6%, var(--b-paper));
+}
+
+.frame svg {
+  position: absolute;
+  inset: 0;
+}
+
+.frame > .photo {
+  position: absolute;
+  inset: 0;
+}
+
+.caption {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 1.2cqw;
+  padding: calc(1.5cqw * var(--fit, 1)) 0 calc(2.6cqw * var(--fit, 1));
+}
+
+.grid[data-count='3'] .cell:nth-child(3) .caption,
+.grid[data-count='4'] .cell:nth-child(n + 2) .caption,
+.grid[data-count='1'] .caption,
+.grid[data-count='2'] .caption {
+  padding-bottom: 0;
+}
+
+.fig {
+  font-family: var(--font-mono);
+  font-size: calc(1.3cqw * var(--fit, 1));
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: var(--b-accent-text);
+}
+
+.captionText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5cqw;
+  min-width: 0;
+}
+
+.captionLine {
+  font-size: calc(1.75cqw * var(--fit, 1));
+  line-height: 1.38;
+  color: var(--b-ink);
+  text-wrap: pretty;
+}
+
+.credit {
+  font-family: var(--font-mono);
+  font-size: calc(1.05cqw * var(--fit, 1));
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+  color: var(--b-muted-text);
+}

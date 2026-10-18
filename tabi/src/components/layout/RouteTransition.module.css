@@ -1,0 +1,40 @@
+.page {
+  min-height: inherit;
+}
+
+.content {
+  min-height: inherit;
+}
+
+/* Fixed to the viewport, just under the navbar so the bar stays readable. */
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-nav) - 1);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.shu,
+.sumi {
+  position: absolute;
+  inset: -1px 0;
+  transform: translateY(-100%);
+  will-change: transform;
+}
+
+/* Parked off-screen between wipes (RoutePage): drop the layer promotion. */
+.curtain[data-parked] .shu,
+.curtain[data-parked] .sumi {
+  will-change: auto;
+}
+
+.shu {
+  background: var(--wa-shu);
+}
+
+.sumi {
+  display: grid;
+  place-items: center;
+  background: var(--wa-sumi);
+}

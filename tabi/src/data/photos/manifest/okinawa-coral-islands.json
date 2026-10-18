@@ -1,0 +1,201 @@
+{
+  "brochure": "okinawa-coral-islands",
+  "photos": [
+    {
+      "id": "okinawa-kerama-beach",
+      "use": "cover",
+      "candidates": [
+        "File:Furuzamami beach Okinawa Zamami.jpg",
+        "File:JAP Zamami Furuzamami Beach.jpg"
+      ],
+      "query": "Furuzamami Beach Zamami",
+      "alt": "Clear turquoise shallows over white sand on a beach in the Kerama Islands",
+      "caption": "Furuzamami Beach, Zamami Island",
+      "place": "Furuzamami Beach",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "okinawa-shisa",
+      "use": "wide",
+      "candidates": [
+        "File:2013-07-23 Shisa on roof at Taketomijima.jpg",
+        "File:Shisa Okinawa.jpg",
+        "File:Shisa on a roof.jpg"
+      ],
+      "query": "Shisa on roof Okinawa",
+      "alt": "A ceramic shīsā lion-dog guarding a red-tiled roof",
+      "caption": "A shīsā on a red-tiled roof, Okinawa",
+      "place": "Okinawa",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "okinawa-shureimon",
+      "use": "wide",
+      "candidates": [
+        "File:Naha Shuri Castle02s5s3200.jpg",
+        "File:Shureimon, 2017-09-03.jpg",
+        "File:Shurei-mon 2023.jpg",
+        "File:Shureimon 20150211.jpg"
+      ],
+      "query": "Shureimon Shuri Castle Naha",
+      "alt": "The red-lacquered, double-roofed Shureimon gate with its gold-lettered plaque",
+      "caption": "Shureimon, the gate to Shuri Castle",
+      "place": "Shuri Castle",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-zamami",
+      "use": "wide",
+      "candidates": [
+        "File:View from Zamami Island.jpg",
+        "File:Cliffs at Chishi observatory, Zamami.jpg",
+        "File:View from Zamami Island 2.jpg",
+        "File:Okinawa kerama islands.jpg"
+      ],
+      "query": "Zamami Island view Kerama Islands",
+      "alt": "Green islands rising from clear turquoise water, seen from a hilltop",
+      "caption": "The Kerama Islands from Zamami",
+      "place": "Zamami Island",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-churaumi-kuroshio",
+      "use": "wide",
+      "candidates": [
+        "File:Churaumi Aquarium main tank 'Kuroshio Sea'.jpg",
+        "File:Whale Shark - Churaumi aquarium, Okinawa, Japan.jpg",
+        "File:Main tank of the Kuroshio Sea in Okinawa Churaumi Aquarium.JPG"
+      ],
+      "query": "Churaumi Aquarium Kuroshio Sea whale shark",
+      "alt": "A whale shark swimming past the vast blue viewing window of the Kuroshio Sea tank",
+      "caption": "The Kuroshio Sea tank, Okinawa Churaumi Aquarium",
+      "place": "Okinawa Churaumi Aquarium",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "okinawa-sefa-utaki",
+      "use": "any",
+      "candidates": [
+        "File:Side view of Sangui (Triangle Rock) with Shikiyodayuru-Amaganubi and Amadayuru-Ashikanubi in Sefa-Utaki.JPG",
+        "File:Sefa Utaki 2009 (7462).jpg"
+      ],
+      "query": "Sefa-utaki Sangui",
+      "alt": "Two huge rock slabs leaning together to form a triangular passage in the forest",
+      "caption": "Sangūi, the rock gap at Sēfa-utaki",
+      "place": "Sēfa-utaki",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-tsuboya",
+      "use": "any",
+      "candidates": [
+        "File:Tsuboya Pottery Museum03s5s3200.jpg",
+        "File:Tsuboya Pottery Museum06n4272.jpg",
+        "File:Tsuboya Yachimun Street.jpg",
+        "File:JP-47 Naha Tsuboya-Yachimun-dori street.jpg"
+      ],
+      "query": "Tsuboya Yachimun Naha",
+      "alt": "A stone-paved lane lined with pottery shops and old walls",
+      "caption": "Tsuboya Yachimun-dōri, the pottery street of Naha",
+      "place": "Tsuboya, Naha",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-kokusai-dori",
+      "use": "any",
+      "candidates": [
+        "File:Kokusai-dori08s3s4440.jpg",
+        "File:Kokusai-dori01ss4272.jpg",
+        "File:Kokusai-dori02ss3200.jpg"
+      ],
+      "query": "Kokusai-dori Naha",
+      "alt": "A long shopping street lined with palm trees and shop signs",
+      "caption": "Kokusai-dōri, Naha’s main street",
+      "place": "Kokusai-dōri, Naha",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-bise-fukugi",
+      "use": "any",
+      "candidates": [
+        "File:Bise Fukugi Tree Road 01.JPG",
+        "File:Bise Fukugi Tree Road 02.JPG",
+        "File:Fukugi Path Motobu.jpg",
+        "File:Fukugi trees at Bise Village, Okinawa.jpg"
+      ],
+      "query": "Bise Fukugi Tree Road Motobu",
+      "alt": "A sandy lane through a tunnel of tall, dense fukugi trees",
+      "caption": "Fukugi-tree lanes of Bise, near Churaumi",
+      "place": "Bise, Motobu",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-spread",
+      "use": "spread",
+      "candidates": [
+        "File:Zamami Island, Japan (Panorama).jpg",
+        "File:Aharen Beach On Tokashiki Island 2009 (7373).JPG",
+        "File:Aharen Beach On Tokashiki Island 2009 (7384).jpg"
+      ],
+      "query": "Zamami Island panorama Kerama",
+      "alt": "A wide view of turquoise reef water, white sand and green hills in the Kerama Islands",
+      "caption": "Kerama blue: reef, sand and island hills in the Kerama archipelago, an hour by boat from Naha",
+      "place": "Kerama Islands",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "okinawa-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Naha Okinawa Japan Shuri-Castle-02.jpg",
+        "File:Naha Shuri Castle16s5s3200.jpg",
+        "File:Naha Shuri Castle22s5s3200.jpg"
+      ],
+      "query": "Shuri Castle gate Naha",
+      "alt": "A vermilion-lacquered Ryūkyū gate with a tiled roof set in the stone walls of Shuri Castle",
+      "caption": "Through the vermilion gates of Shuri Castle, seat of the Ryūkyū kings, Naha",
+      "place": "Shuri Castle",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-nostalgia-kinjocho",
+      "use": "any",
+      "candidates": [
+        "File:Kinjocho ishidatami-michi Shuri Naha01n4272.jpg",
+        "File:Kinjocho ishidatami-michi Shuri Naha04n4272.jpg"
+      ],
+      "query": "Kinjocho ishidatami-michi Shuri",
+      "alt": "A worn limestone-paved lane sloping between old stone walls and trees",
+      "caption": "Shuri Kinjō-chō — a stone-paved road laid in 1522, winding down from Shuri Castle",
+      "place": "Shuri Kinjō-chō stone-paved road, Naha",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "okinawa-nostalgia-nakamura-house",
+      "use": "any",
+      "candidates": [
+        "File:Nakamura House Kitanakagusuku23n3104.jpg",
+        "File:Nakamura House Kitanakagusuku19n3000.jpg"
+      ],
+      "query": "Nakamura House Kitanakagusuku",
+      "alt": "A low Okinawan farmhouse with a red-tiled roof behind walls of grey coral stone",
+      "caption": "Nakamura House, Kitanakagusuku — an 18th-century farmhouse of red tiles and coral-stone walls",
+      "place": "Nakamura House, Kitanakagusuku",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-nostalgia-taketomi",
+      "use": "wide",
+      "candidates": [
+        "File:Village in Taketomi Island - located at southwest Japan.jpg",
+        "File:Taketomi Island01s3s7000.jpg",
+        "File:Taketomi Island05s5s4592.jpg"
+      ],
+      "query": "Taketomi Island village",
+      "alt": "Low houses with red-tiled roofs behind coral-stone walls along sandy village lanes",
+      "caption": "Taketomi Island, Yaeyama — red-tiled houses, coral-stone walls and white-sand lanes",
+      "place": "Taketomi Island",
+      "focus": "50% 55%"
+    }
+  ]
+}

@@ -1,0 +1,640 @@
+.about {
+  padding-block: var(--section-y) calc(var(--section-y) * 0.6);
+  border-top: 1px solid var(--line);
+}
+
+/* With a photo plate, the plate opens the section edge to edge. */
+.about[data-plate] {
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* --- Full-bleed photo plate ----------------------------------------- */
+.plate {
+  position: relative;
+  height: clamp(300px, 44vw, 660px);
+  margin: 0 0 var(--section-y);
+  overflow: hidden;
+  background: var(--bg-sunken);
+  isolation: isolate;
+}
+
+.plateMedia {
+  position: absolute;
+  inset: -8% 0;
+  will-change: transform;
+}
+
+.platePhoto {
+  position: absolute;
+  inset: 0;
+}
+
+/* A soft ink scrim at the foot, for the caption. */
+.plateShade {
+  position: absolute;
+  inset: auto 0 0;
+  height: 46%;
+  background: linear-gradient(to top, rgb(12 10 8 / 0.72), rgb(12 10 8 / 0.28) 55%, transparent);
+  pointer-events: none;
+}
+
+/* 題簽: the title slip of a Japanese book, pasted on the photo's top right. */
+.plateSlip {
+  position: absolute;
+  top: clamp(1.25rem, 3vw, 2.75rem);
+  right: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
+  padding: 0.9rem 0.55rem;
+  background: var(--wa-kinari);
+  color: var(--wa-sumi);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.18), 0 8px 24px rgb(0 0 0 / 0.18);
+  outline: 1px solid rgb(27 26 23 / 0.5);
+  outline-offset: -4px;
+}
+
+.plateSlipText {
+  font-size: clamp(1.25rem, 0.9rem + 1.2vw, 2rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.12em;
+}
+
+.plateCaption {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1rem;
+  padding-bottom: clamp(1rem, 2.4vw, 2rem);
+  color: var(--wa-kinari);
+}
+
+.plateKicker {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.plateKicker [lang] {
+  font-family: var(--font-jp);
+  letter-spacing: 0.2em;
+}
+
+.plateText {
+  flex: 1 1 16rem;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.plateCredit {
+  flex: 0 1 auto;
+  max-width: 100%;
+  font-size: var(--fs-2xs);
+  color: rgb(243 238 228 / 0.85);
+}
+
+.plateCredit a {
+  color: inherit;
+}
+
+/* --- Story + colophon facts ------------------------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(140px, 0.32fr) minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+.aside {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .aside {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding-top: var(--space-2);
+    border-right: 1px solid var(--line);
+  }
+}
+
+.bigJp {
+  font-size: clamp(4rem, 3rem + 3vw, 6.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+
+.seal {
+  margin-top: auto;
+}
+
+.main {
+  max-width: 54rem;
+}
+
+.eyebrowJp {
+  font-family: var(--font-jp);
+  letter-spacing: 0.12em;
+  text-transform: none;
+  color: var(--ink-3);
+}
+
+.heading {
+  margin-top: var(--space-4);
+  font-size: var(--fs-2xl);
+  line-height: 1.05;
+  max-width: 20ch;
+}
+
+.body {
+  display: grid;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.summary {
+  max-width: 44rem;
+  font-size: var(--fs-md);
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+}
+
+.tag::before {
+  content: '#';
+  margin-right: 0.15em;
+  color: var(--accent);
+}
+
+/* Colophon table: hairline grid of facts. */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+  margin: 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.fact {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: var(--space-4) var(--space-4) var(--space-4) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 760px) {
+  .facts {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  }
+}
+
+.fact dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.fact dd {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5em;
+  font-size: var(--fs-base);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.factJp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+.factsValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--ink-2);
+}
+
+.factsValue svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+.factsValue[data-checked] {
+  color: var(--ink);
+}
+
+.factsValue[data-checked] svg {
+  color: var(--success);
+}
+
+.seasons {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.season {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--ink-3);
+  opacity: 0.6;
+}
+
+.season[data-best] {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--season) 22%, transparent);
+  color: color-mix(in srgb, var(--season) 55%, var(--ink));
+  opacity: 1;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--season) 55%, transparent);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (max-width: 479.98px) {
+  .actions > * {
+    flex: 1 1 100%;
+  }
+}
+
+/* --- Sources & credits (奥付) ----------------------------------------- */
+.colophon {
+  margin-top: clamp(3.5rem, 2rem + 5vw, 6.5rem);
+}
+
+.colophonHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 2px solid var(--ink);
+}
+
+.colophonTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  font-size: var(--fs-xl);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.colophonJp {
+  font-family: var(--font-jp);
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+
+.allCredits {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.45em;
+  transition: color var(--dur-2) var(--ease-out), text-decoration-color var(--dur-2) var(--ease-out);
+}
+
+.allCredits svg {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.allCredits:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.allCredits:hover svg {
+  transform: translateX(3px);
+}
+
+.colophonGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.colophonGrid > * {
+  min-width: 0;
+  padding-block: var(--space-6);
+}
+
+.colophonGrid > * + * {
+  border-top: 1px solid var(--line);
+}
+
+/* Tablet: the status across the top, sources | photographs below. */
+@media (min-width: 760px) {
+  .colophonGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .colophonGrid > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .colophonGrid > :nth-child(2) {
+    padding-right: var(--space-6);
+  }
+
+  .colophonGrid > :nth-child(3) {
+    padding-left: var(--space-6);
+    border-left: 1px solid var(--line);
+  }
+}
+
+/* Desktop: three ruled columns. */
+@media (min-width: 1180px) {
+  .colophonGrid {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.1fr) minmax(0, 1.1fr);
+  }
+
+  .colophonGrid > :first-child {
+    grid-column: auto;
+    padding-right: var(--space-6);
+  }
+
+  .colophonGrid > * + * {
+    padding-left: var(--space-6);
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+}
+
+/* Fact-check status: a seal stamped in vermilion, or an empty dashed ring. */
+.status {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.stamp {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 50%;
+  font-family: var(--font-jp);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink-3);
+  transform: rotate(-6deg);
+}
+
+.status[data-checked] .stamp {
+  border: 0;
+  background: var(--wa-shu);
+  color: var(--wa-kinari);
+  /* Uneven ink, like a real seal. */
+  box-shadow:
+    inset 0 0 0 3px color-mix(in srgb, var(--wa-shu) 80%, black),
+    inset 0 0 0 5px var(--wa-kinari),
+    inset 0 0 0 6.5px var(--wa-shu);
+}
+
+.statusText {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.statusLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.statusLabel svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--ink-3);
+}
+
+.status[data-checked] .statusLabel svg {
+  color: var(--success);
+}
+
+.statusNote {
+  max-width: 38ch;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.block {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.blockTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.blockJp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.blockCount {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.blockEmpty,
+.pending {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.pending {
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+}
+
+.sources,
+.credits {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.source {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.15rem 0.25rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.sourceNum {
+  grid-row: span 2;
+  padding-top: 0.2em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+.sourceLabel {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  transition: color var(--dur-2) var(--ease-out), text-decoration-color var(--dur-2) var(--ease-out);
+}
+
+.sourceHost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+  overflow-wrap: anywhere;
+}
+
+.sourceHost svg {
+  flex: none;
+  width: 12px;
+  height: 12px;
+}
+
+.source:hover .sourceLabel {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.credit {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--bg-sunken);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.thumb > * {
+  position: absolute;
+  inset: 0;
+}
+
+.creditText {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.creditWhat {
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.creditLine {
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}

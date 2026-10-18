@@ -1,0 +1,96 @@
+.agenda {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.line {
+  --time-w: 12cqw;
+  --rail-w: 7cqw;
+  --dot: 3.2cqw;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 5.5cqw 0 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+}
+
+.stop {
+  position: relative;
+  /* Stops share the height but never shrink below their text, so a long
+     day overflows the line (and the fit pass shrinks it) instead of overlapping. */
+  flex: 1 0 auto;
+  display: grid;
+  grid-template-columns: var(--time-w) var(--rail-w) minmax(0, 1fr);
+  align-items: start;
+}
+
+/* Track segment from this station down to the next one. */
+.stop:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--dot) / 2);
+  left: calc(var(--time-w) + var(--rail-w) / 2 - 0.5cqw);
+  width: 1cqw;
+  height: 100%;
+  background: var(--b-accent2);
+}
+
+.time {
+  padding-top: 0.5cqw;
+  font-family: var(--font-mono);
+  font-size: calc(2cqw * var(--fit, 1));
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--b-accent-text);
+}
+
+.station {
+  position: relative;
+  justify-self: center;
+  width: var(--dot);
+  height: var(--dot);
+  border: 0.75cqw solid var(--b-ink);
+  border-radius: 50%;
+  background: var(--b-paper);
+}
+
+/* Terminal stations are solid, as on a route map. */
+.stop:first-child .station,
+.stop:last-child .station {
+  background: var(--b-ink);
+  box-shadow: 0 0 0 0.7cqw var(--b-paper), 0 0 0 1cqw var(--b-ink);
+}
+
+.copy {
+  min-height: 0;
+  padding-bottom: calc(2.2cqw * var(--fit, 1));
+}
+
+.title {
+  margin: 0;
+  font-family: var(--b-font);
+  font-size: calc(3.1cqw * var(--fit, 1));
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--b-ink);
+}
+
+[data-typeface='sans'] .title {
+  font-weight: 650;
+}
+
+.text {
+  margin: 0.8cqw 0 0;
+  font-size: calc(2.1cqw * var(--fit, 1));
+  text-wrap: pretty;
+  line-height: 1.45;
+  color: var(--b-body);
+}

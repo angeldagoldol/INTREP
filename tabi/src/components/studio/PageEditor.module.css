@@ -1,0 +1,92 @@
+.editor {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.head {
+  position: sticky;
+  top: var(--studio-sticky-top, 0px);
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.typeIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.headText {
+  min-width: 0;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.of {
+  color: var(--ink-3);
+}
+
+.jp {
+  margin-left: auto;
+  font-family: var(--font-jp);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: none;
+  color: var(--accent);
+}
+
+.title {
+  margin-top: 2px;
+  font-size: var(--fs-lg);
+  line-height: 1.1;
+}
+
+.description {
+  margin-top: 2px;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.body {
+  padding: var(--space-5) var(--space-5) var(--space-8);
+}
+
+.empty {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--space-3);
+  min-height: 60%;
+  padding: var(--space-7) var(--space-5);
+  color: var(--ink-3);
+  text-align: center;
+}
+
+.emptyJp {
+  font-family: var(--font-jp);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--line-strong);
+  writing-mode: vertical-rl;
+}

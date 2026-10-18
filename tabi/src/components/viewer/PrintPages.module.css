@@ -1,0 +1,28 @@
+.print {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  .print {
+    display: block;
+  }
+
+  /* A-series pages fill an A4 sheet exactly (1 : 1.414). */
+  .sheet {
+    width: 100%;
+    overflow: hidden;
+    break-after: page;
+    break-inside: avoid;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .sheet:last-child {
+    break-after: auto;
+  }
+}

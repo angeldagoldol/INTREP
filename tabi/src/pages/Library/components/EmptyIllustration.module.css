@@ -1,0 +1,53 @@
+.art {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.enso,
+.ensoDry {
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+}
+
+.enso {
+  stroke-width: 9;
+  opacity: 0.9;
+}
+
+/* Dry-brush echo of the stroke. */
+.ensoDry {
+  stroke-width: 2.5;
+  stroke-dasharray: 2 5 14 4;
+  opacity: 0.4;
+}
+
+.panel {
+  fill: var(--surface);
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.lines,
+.stand {
+  fill: none;
+  stroke: var(--ink-3);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.lines {
+  stroke-dasharray: 3 4;
+  opacity: 0.7;
+}
+
+.stand {
+  stroke: var(--ink-2);
+  stroke-width: 2;
+}
+
+.leaf {
+  fill: var(--accent);
+}

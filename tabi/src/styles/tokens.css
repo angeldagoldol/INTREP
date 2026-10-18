@@ -1,0 +1,176 @@
+/* ==========================================================================
+   Tabi 旅 design tokens
+   Visual language: Japanese print culture meets a modern editorial magazine.
+   Washi paper, sumi ink, vermilion seals, indigo dye, generous ma (negative
+   space) and visible paper grain.
+   Every component reads from these variables — never hard-code a colour.
+   ========================================================================== */
+
+:root {
+  /* --- Wa-iro: traditional Japanese colours (shared by both themes) ---- */
+  --wa-shu: #e8442b; /* 朱 vermilion — torii gates, seals */
+  --wa-beni: #c4283b; /* 紅 crimson */
+  --wa-ai: #1d4f7a; /* 藍 indigo dye */
+  --wa-kon: #1b2a4a; /* 紺 deep navy */
+  --wa-sora: #58a6c9; /* 空 sky */
+  --wa-sakura: #f2a7b8; /* 桜 cherry blossom */
+  --wa-momiji: #d9542c; /* 紅葉 autumn maple */
+  --wa-matcha: #6f8a3c; /* 抹茶 matcha */
+  --wa-kin: #c79a3b; /* 金 gold leaf */
+  --wa-fuji: #8a7fc1; /* 藤 wisteria */
+  --wa-yamabuki: #f4a516; /* 山吹 golden yellow */
+  --wa-sumi: #1b1a17; /* 墨 ink */
+  --wa-kinari: #f3eee4; /* 生成 unbleached washi */
+
+  /* --- Paper theme (light) ---------------------------------------------- */
+  --bg: #f3eee4;
+  --bg-elevated: #faf7f1;
+  --bg-sunken: #e9e2d4;
+  --surface: #fffdf8;
+  --surface-2: #f7f2e9;
+  --ink: #16140f;
+  --ink-2: #4b463d;
+  --ink-3: #6b6457;
+  --line: rgb(22 20 15 / 0.12);
+  --line-strong: rgb(22 20 15 / 0.26);
+  /* Edge of text fields and selects, where the border is the only cue that
+     a box takes input: 3:1 against --bg and --surface (WCAG 1.4.11). */
+  --control-border: rgb(22 20 15 / 0.5);
+  --accent: #c4321c; /* deep shu vermilion: AA as text on the paper (4.7:1) and under --accent-ink */
+  --accent-ink: #fff9f2; /* text that sits on --accent */
+  --accent-soft: rgb(196 50 28 / 0.1);
+  --accent-2: var(--wa-ai);
+  --highlight: #f9d77e;
+  --success: #0b8a4d;
+  --danger: #b8321f; /* error text: 5.2:1 on --bg, 5.6:1 on --bg-elevated */
+  --focus: #1d4f7a;
+  --overlay: rgb(22 20 15 / 0.45);
+  --shadow-color: 40 28 12;
+  --grain-opacity: 0.08;
+  --grain-blend: multiply;
+  --page-paper: #fffdf8; /* default brochure paper when a theme omits one */
+  color-scheme: light;
+
+  /* --- Typography ------------------------------------------------------- */
+  /* Latin glyphs come from the first family; kanji/kana fall through to the
+     Japanese family, so mixed strings like "Kyoto 京都" just work.
+     'Tabi Macrons' (base.css) only covers ā ē ī ō ū so "Tōhoku" keeps its
+     macron on top of the letter in Fraunces. */
+  --font-display: 'Tabi Macrons', 'Fraunces', 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
+  --font-sans: 'Geist', 'Zen Kaku Gothic New', 'Hiragino Sans', 'Yu Gothic', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-jp: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --fs-2xs: 0.6875rem;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: clamp(1.0625rem, 0.99rem + 0.3vw, 1.25rem);
+  --fs-lg: clamp(1.25rem, 1.1rem + 0.65vw, 1.625rem);
+  --fs-xl: clamp(1.6rem, 1.3rem + 1.4vw, 2.5rem);
+  --fs-2xl: clamp(2.1rem, 1.5rem + 2.8vw, 3.75rem);
+  --fs-3xl: clamp(2.75rem, 1.7rem + 5vw, 6rem);
+  --fs-display: clamp(3.25rem, 1.2rem + 9.2vw, 10.5rem);
+
+  --lh-tight: 0.95;
+  --lh-snug: 1.15;
+  --lh-base: 1.6;
+  --tracking-tight: -0.035em;
+  --tracking-wide: 0.14em;
+  /* Fraunces' space is narrow at opsz 144, and the tight tracking above
+     takes a little more from it, so display type opens its word gaps back
+     up (h1–h6 in base.css, .display slightly more). */
+  --word-space-heading: 0.07em;
+  --word-space-display: 0.09em;
+
+  /* --- Space (4px base, fluid section rhythm) --------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --section-y: clamp(4.5rem, 3rem + 7vw, 10rem);
+
+  /* --- Layout ----------------------------------------------------------- */
+  --container: 1320px;
+  --container-narrow: 860px;
+  --gutter: clamp(1rem, 0.4rem + 2.6vw, 2.5rem);
+  /* Side padding of full-bleed tool bars (reader toolbar, Studio top bar) and
+     of the navbar above them, so all of them share one edge. */
+  --tool-gutter: max(12px, calc(var(--gutter) * 0.6));
+  --nav-h: 72px;
+
+  /* --- Shape ------------------------------------------------------------ */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  /* --- Elevation -------------------------------------------------------- */
+  --shadow-xs: 0 1px 1px rgb(var(--shadow-color) / 0.06);
+  --shadow-sm: 0 1px 2px rgb(var(--shadow-color) / 0.08), 0 2px 6px rgb(var(--shadow-color) / 0.06);
+  --shadow-md: 0 2px 4px rgb(var(--shadow-color) / 0.06), 0 8px 24px rgb(var(--shadow-color) / 0.1);
+  --shadow-lg: 0 4px 8px rgb(var(--shadow-color) / 0.06), 0 18px 48px rgb(var(--shadow-color) / 0.16);
+  --shadow-xl: 0 10px 20px rgb(var(--shadow-color) / 0.08), 0 40px 90px rgb(var(--shadow-color) / 0.22);
+  /* A printed sheet lying on a desk: tight contact shadow + long soft one. */
+  --shadow-page: 0 1px 1px rgb(var(--shadow-color) / 0.12), 0 6px 14px rgb(var(--shadow-color) / 0.1),
+    0 30px 60px -12px rgb(var(--shadow-color) / 0.28);
+  /* Hard offset shadow, like a misregistered woodblock print. */
+  --shadow-offset: 6px 6px 0 var(--ink);
+
+  /* --- Motion ----------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-spring: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1);
+  --dur-1: 120ms;
+  --dur-2: 220ms;
+  --dur-3: 420ms;
+  --dur-4: 700ms;
+
+  /* --- Layers ----------------------------------------------------------- */
+  --z-base: 1;
+  --z-raised: 10;
+  --z-nav: 50;
+  --z-drawer: 80;
+  --z-modal: 90;
+  --z-toast: 100;
+  --z-grain: 1000;
+}
+
+/* --- Ink theme (dark) ---------------------------------------------------- */
+[data-theme='dark'] {
+  --bg: #0d0c0a;
+  --bg-elevated: #15130f;
+  --bg-sunken: #080706;
+  --surface: #1a1813;
+  --surface-2: #211e18;
+  --ink: #f3eee4;
+  --ink-2: #c7c0b2;
+  --ink-3: #958d7e;
+  --line: rgb(243 238 228 / 0.1);
+  --line-strong: rgb(243 238 228 / 0.24);
+  --control-border: rgb(243 238 228 / 0.4);
+  --accent: #ff5a3c;
+  --accent-ink: #140b06;
+  --accent-soft: rgb(255 90 60 / 0.15);
+  --accent-2: var(--wa-sora);
+  --highlight: #f9d77e;
+  --success: #3ccf8a;
+  --danger: #ff6b5e;
+  --focus: #7cc4e8;
+  --overlay: rgb(0 0 0 / 0.6);
+  --shadow-color: 0 0 0;
+  --grain-opacity: 0.11;
+  --grain-blend: overlay;
+  --page-paper: #fbf7ef;
+  --shadow-offset: 6px 6px 0 var(--accent);
+  color-scheme: dark;
+}

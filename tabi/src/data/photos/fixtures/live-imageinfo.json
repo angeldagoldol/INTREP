@@ -1,0 +1,182 @@
+{
+  "batchcomplete": true,
+  "query": {
+    "normalized": [
+      { "fromencoded": false, "from": "File:Torii_path_at_dawn.jpg", "to": "File:Torii path at dawn.jpg" }
+    ],
+    "pages": [
+      {
+        "pageid": 9001,
+        "ns": 6,
+        "title": "File:Torii path at dawn.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 5123456,
+            "width": 4000,
+            "height": 2667,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Torii_path_at_dawn.jpg/1280px-Torii_path_at_dawn.jpg",
+            "thumbwidth": 1280,
+            "thumbheight": 853,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Torii_path_at_dawn.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Torii_path_at_dawn.jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=9001",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": { "value": "Torii path at dawn", "source": "mediawiki-metadata", "hidden": "" },
+              "Artist": { "value": "<a href=\"//commons.wikimedia.org/wiki/User:Jane_Example\" title=\"User:Jane Example\">Jane</a>", "source": "commons-desc-page" },
+              "Credit": { "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>", "source": "commons-desc-page", "hidden": "" },
+              "LicenseShortName": { "value": "CC BY-SA 4.0", "source": "commons-desc-page", "hidden": "" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by-sa/4.0", "source": "commons-desc-page", "hidden": "" },
+              "License": { "value": "cc-by-sa-4.0", "source": "commons-templates", "hidden": "" },
+              "UsageTerms": { "value": "Creative Commons Attribution-Share Alike 4.0", "source": "commons-desc-page", "hidden": "" },
+              "AttributionRequired": { "value": "true", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9002,
+        "ns": 6,
+        "title": "File:Pagoda portrait.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 2345678,
+            "width": 1200,
+            "height": 1800,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Pagoda_portrait.jpg",
+            "thumbwidth": 1200,
+            "thumbheight": 1800,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Pagoda_portrait.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Pagoda_portrait.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "<bdi>Tarō Yamada</bdi> &amp; friends", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC0", "source": "commons-desc-page", "hidden": "" },
+              "LicenseUrl": { "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en", "source": "commons-desc-page", "hidden": "" },
+              "License": { "value": "cc0", "source": "commons-templates", "hidden": "" },
+              "AttributionRequired": { "value": "false", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9003,
+        "ns": 6,
+        "title": "File:Maple noncommercial.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 5000,
+            "height": 3333,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Maple_noncommercial.jpg/1280px-Maple_noncommercial.jpg",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Maple_noncommercial.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Maple_noncommercial.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "Someone", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC BY-NC-SA 2.0", "source": "commons-desc-page", "hidden": "" },
+              "License": { "value": "cc-by-nc-sa-2.0", "source": "commons-templates", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9004,
+        "ns": 6,
+        "title": "File:Tiny shrine.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 1024,
+            "height": 768,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Tiny_shrine.jpg",
+            "thumbwidth": 1024,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Tiny_shrine.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Tiny_shrine.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "Someone", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC BY 4.0", "source": "commons-desc-page", "hidden": "" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by/4.0", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9005,
+        "ns": 6,
+        "title": "File:Map of Kyoto.svg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 2400,
+            "height": 1800,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Map_of_Kyoto.svg/1280px-Map_of_Kyoto.svg.png",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Map_of_Kyoto.svg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Map_of_Kyoto.svg",
+            "mime": "image/svg+xml",
+            "extmetadata": {
+              "LicenseShortName": { "value": "CC BY-SA 3.0", "source": "commons-desc-page", "hidden": "" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by-sa/3.0", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9006,
+        "ns": 6,
+        "title": "File:Scan of a print.tif",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 6000,
+            "height": 4000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Scan_of_a_print.tif/lossy-page1-1280px-Scan_of_a_print.tif.jpg",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Scan_of_a_print.tif",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Scan_of_a_print.tif",
+            "mime": "image/tiff",
+            "extmetadata": {
+              "LicenseShortName": { "value": "Public domain", "source": "commons-desc-page", "hidden": "" },
+              "License": { "value": "pd", "source": "commons-templates", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9007,
+        "ns": 6,
+        "title": "File:No licence at all.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 4000,
+            "height": 3000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/No_licence_at_all.jpg/1280px-No_licence_at_all.jpg",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/No_licence_at_all.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:No_licence_at_all.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": { "Artist": { "value": "Someone", "source": "commons-desc-page" } }
+          }
+        ]
+      },
+      {
+        "ns": 6,
+        "title": "File:Does not exist anywhere.jpg",
+        "missing": true,
+        "known": false,
+        "imagerepository": ""
+      },
+      {
+        "title": "File:Bad<title>.jpg",
+        "invalidreason": "The requested page title contains invalid characters: \"<\".",
+        "invalid": true
+      }
+    ]
+  }
+}

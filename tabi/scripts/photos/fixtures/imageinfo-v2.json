@@ -1,0 +1,179 @@
+{
+  "batchcomplete": true,
+  "query": {
+    "normalized": [
+      { "fromencoded": false, "from": "File:Example_torii_gates.jpg", "to": "File:Example torii gates.jpg" }
+    ],
+    "redirects": [
+      { "from": "File:Old name of the pagoda.jpg", "to": "File:Example pagoda at dusk.jpg" }
+    ],
+    "pages": [
+      {
+        "pageid": 101,
+        "ns": 6,
+        "title": "File:Example torii gates.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 6123456,
+            "width": 4000,
+            "height": 6000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Example_torii_gates.jpg/2048px-Example_torii_gates.jpg",
+            "thumbwidth": 2048,
+            "thumbheight": 3072,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Example_torii_gates.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Example_torii_gates.jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=101",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": { "value": "Example torii gates", "source": "mediawiki-metadata", "hidden": "" },
+              "Artist": {
+                "value": "<bdi><a href=\"//commons.wikimedia.org/wiki/User:Example_Photographer\" title=\"User:Example Photographer\">Example&nbsp;Photographer</a></bdi>",
+                "source": "commons-desc-page"
+              },
+              "Credit": { "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>", "source": "commons-desc-page", "hidden": "" },
+              "LicenseShortName": { "value": "CC BY-SA 4.0", "source": "commons-desc-page", "hidden": "" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by-sa/4.0", "source": "commons-desc-page", "hidden": "" },
+              "License": { "value": "cc-by-sa-4.0", "source": "commons-templates", "hidden": "" },
+              "UsageTerms": { "value": "Creative Commons Attribution-Share Alike 4.0", "source": "commons-desc-page", "hidden": "" },
+              "AttributionRequired": { "value": "true", "source": "commons-desc-page", "hidden": "" },
+              "Copyrighted": { "value": "True", "source": "commons-desc-page", "hidden": "" },
+              "Restrictions": { "value": "", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 102,
+        "ns": 6,
+        "title": "File:Example pagoda at dusk.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 2345678,
+            "width": 3000,
+            "height": 2000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Example_pagoda_at_dusk.jpg/2048px-Example_pagoda_at_dusk.jpg",
+            "thumbwidth": 2048,
+            "thumbheight": 1365,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Example_pagoda_at_dusk.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Example_pagoda_at_dusk.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/example/\">Example Flickr User</a> from Tōkyō, Japan", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC BY 2.0", "source": "commons-desc-page", "hidden": "" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by/2.0", "source": "commons-desc-page", "hidden": "" },
+              "License": { "value": "cc-by-2.0", "source": "commons-templates", "hidden": "" },
+              "AttributionRequired": { "value": "true", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 103,
+        "ns": 6,
+        "title": "File:Example noncommercial maple.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 3456789,
+            "width": 5000,
+            "height": 3333,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Example_noncommercial_maple.jpg/2048px-Example_noncommercial_maple.jpg",
+            "thumbwidth": 2048,
+            "thumbheight": 1365,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Example_noncommercial_maple.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Example_noncommercial_maple.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "Someone", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC BY-NC-SA 2.0", "source": "commons-desc-page", "hidden": "" },
+              "License": { "value": "cc-by-nc-sa-2.0", "source": "commons-templates", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 104,
+        "ns": 6,
+        "title": "File:Example small shrine.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 234567,
+            "width": 1200,
+            "height": 800,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/1/12/Example_small_shrine.jpg",
+            "thumbwidth": 1200,
+            "thumbheight": 800,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/1/12/Example_small_shrine.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Example_small_shrine.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "<span lang=\"en\">Unknown author</span>", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC0", "source": "commons-desc-page", "hidden": "" },
+              "LicenseUrl": { "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en", "source": "commons-desc-page", "hidden": "" },
+              "License": { "value": "cc0", "source": "commons-templates", "hidden": "" },
+              "AttributionRequired": { "value": "false", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 105,
+        "ns": 6,
+        "title": "File:Example woodblock print of a mountain.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 9876543,
+            "width": 2560,
+            "height": 1720,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Example_woodblock_print_of_a_mountain.jpg/2048px-Example_woodblock_print_of_a_mountain.jpg",
+            "thumbwidth": 2048,
+            "thumbheight": 1376,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Example_woodblock_print_of_a_mountain.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Example_woodblock_print_of_a_mountain.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "<div class=\"fn value\">\n<a href=\"https://en.wikipedia.org/wiki/Example_Printmaker\" class=\"extiw\">Example Printmaker</a> (1760&#8211;1849)\n</div>", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "Public domain", "source": "commons-desc-page", "hidden": "" },
+              "License": { "value": "pd", "source": "commons-templates", "hidden": "" },
+              "AttributionRequired": { "value": "false", "source": "commons-desc-page", "hidden": "" },
+              "Copyrighted": { "value": "False", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 106,
+        "ns": 6,
+        "title": "File:Example map of Kyoto.svg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 123456,
+            "width": 4096,
+            "height": 4096,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Example_map_of_Kyoto.svg/2048px-Example_map_of_Kyoto.svg.png",
+            "thumbwidth": 2048,
+            "thumbheight": 2048,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/5/56/Example_map_of_Kyoto.svg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Example_map_of_Kyoto.svg",
+            "mime": "image/svg+xml",
+            "extmetadata": {
+              "LicenseShortName": { "value": "CC BY-SA 3.0", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      },
+      {
+        "ns": 6,
+        "title": "File:Does not exist anywhere.jpg",
+        "missing": true,
+        "known": false,
+        "imagerepository": ""
+      }
+    ]
+  }
+}

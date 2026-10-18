@@ -1,0 +1,19 @@
+.section {
+  padding-block: var(--section-y);
+}
+
+.shelf {
+  margin-top: clamp(2rem, 1rem + 3vw, 4rem);
+}
+
+.empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-7);
+  padding-block: var(--space-6);
+  border-block: 1px dashed var(--line-strong);
+  color: var(--ink-2);
+}

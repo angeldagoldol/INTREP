@@ -1,0 +1,95 @@
+.phrases {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: 5cqw minmax(0, 1fr) 26cqw;
+  column-gap: 2.6cqw;
+  margin: 4.4cqw 0 0;
+  font-family: var(--font-mono);
+  font-size: 1.3cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--b-muted-text);
+}
+
+.legend > span:first-child {
+  grid-column: 1 / 3;
+}
+
+.legend [lang='ja'] {
+  font-family: var(--font-jp);
+  letter-spacing: 0.3em;
+}
+
+.list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 1.4cqw 0 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+}
+
+.item:last-child {
+  border-bottom: var(--hair) solid var(--b-rule);
+}
+
+.item {
+  /* Rows share the height but never shrink below their text (see fit.js). */
+  flex: 1 0 auto;
+  padding: calc(1.6cqw * var(--fit, 1)) 0;
+  display: grid;
+  grid-template-columns: 5cqw minmax(0, 1fr) 26cqw;
+  column-gap: 2.6cqw;
+  align-items: center;
+  border-top: var(--hair) solid var(--b-rule);
+}
+
+.num {
+  align-self: center;
+  font-size: 2.8cqw;
+  line-height: 1;
+  color: var(--b-accent-text);
+}
+
+.say {
+  min-width: 0;
+}
+
+.jp {
+  margin: 0;
+  font-size: calc(var(--fs, 4.2cqw) * var(--fit, 1));
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: var(--b-ink);
+  /* Break between phrases (文節), not mid-word, where the browser can. */
+  word-break: auto-phrase;
+  overflow-wrap: anywhere;
+}
+
+.romaji {
+  margin: 0.7cqw 0 0;
+  font-family: var(--font-mono);
+  font-size: calc(1.7cqw * var(--fit, 1));
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  color: var(--b-accent-text);
+}
+
+.meaning {
+  margin: 0;
+  padding-left: 2.4cqw;
+  border-left: var(--hair) solid var(--b-rule);
+  font-size: 2cqw;
+  line-height: 1.4;
+  /* Even lines: no opening quote or single word left alone at a line end. */
+  text-wrap: balance;
+  color: var(--b-body);
+}

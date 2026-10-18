@@ -1,0 +1,362 @@
+/* The whole section takes a wash of the open season's colour. */
+.section {
+  --season: var(--wa-sakura);
+  position: relative;
+  padding-block: var(--section-y);
+  background: color-mix(in srgb, var(--season) 14%, var(--bg));
+  transition: background-color 0.9s var(--ease-out);
+}
+
+.panels {
+  display: flex;
+  gap: clamp(0.5rem, 0.3rem + 0.6vw, 0.875rem);
+  height: clamp(30rem, 22rem + 16vw, 38rem);
+  margin-top: clamp(2rem, 1rem + 3vw, 4rem);
+}
+
+.panel {
+  --pad: clamp(1.25rem, 0.9rem + 1vw, 2rem);
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--c);
+  color: var(--fg);
+  cursor: pointer;
+  container-type: inline-size;
+}
+
+/* A collapsed column narrower than this (tablets and small laptops) has no
+   room for the kana beside the kanji, so it shows the kanji alone; the
+   reading appears as the season opens. */
+@container (max-width: 9.5rem) {
+  .kana {
+    display: none;
+  }
+}
+
+.panel[data-active] {
+  flex-grow: 4.2;
+  cursor: default;
+}
+
+/* --- Motif: a big emblem cropped by the panel's corner ------------------- */
+.motifWrap {
+  position: absolute;
+  right: -4.5rem;
+  bottom: -4.5rem;
+  width: clamp(15rem, 9rem + 16vw, 27rem);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+.motif {
+  width: 100%;
+  height: 100%;
+  opacity: 0.17;
+  transition: opacity var(--dur-4) var(--ease-out);
+}
+
+.panel[data-active] .motif {
+  opacity: 0.26;
+  animation: motif-turn 60s linear infinite;
+}
+
+:global([data-motion='paused']) .panel[data-active] .motif {
+  animation-play-state: paused;
+}
+
+@keyframes motif-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Head: kanji, kana reading, name ------------------------------------- */
+.heading {
+  font: inherit;
+  letter-spacing: normal;
+}
+
+.trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--pad);
+  border-radius: 18px;
+  color: inherit;
+  text-align: left;
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: -8px;
+}
+
+.glyphs {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.kanji {
+  font-family: var(--font-jp);
+  font-size: clamp(4.25rem, 2.6rem + 4.4vw, 8rem);
+  font-weight: 600;
+  line-height: 0.92;
+}
+
+.kana {
+  padding-top: 0.5rem;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+}
+
+.name {
+  display: grid;
+  gap: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.label {
+  font-weight: 600;
+}
+
+/* 'MAR–MAY' stays on one line, even in a collapsed panel. */
+.months {
+  white-space: nowrap;
+}
+
+.now {
+  align-self: flex-start;
+  margin-inline: var(--pad);
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--fg);
+  color: var(--c);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* --- Photo plate (open panel, once its photo is downloaded) -------------- */
+/* Desktop: a full-height plate filling the panel's right side; the colour
+   column keeps the type. The panel clips it, so it opens with the panel. */
+.panel[data-photo] {
+  --plate: 54%;
+}
+
+.plate {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--plate);
+  overflow: hidden;
+  /* The credit chip sits top-right, clear of the caption. */
+  --photo-chip-top: 0.85rem;
+  --photo-chip-right: 0.85rem;
+  --photo-chip-bottom: auto;
+}
+
+/* A hairline of the season's ink where colour meets photograph. */
+.plate::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--fg) 30%, transparent);
+  pointer-events: none;
+}
+
+.panel[data-photo][data-active] > .heading,
+.panel[data-photo][data-active] > .detail {
+  width: calc(100% - var(--plate));
+}
+
+/* The caption is printed on the photograph, over a soft fall of shadow. */
+.plateCaption {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 3.5rem var(--pad) var(--pad);
+  background: linear-gradient(to top, rgb(14 12 10 / 0.62), rgb(14 12 10 / 0.28) 55%, transparent);
+  color: rgb(255 252 245 / 0.94);
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
+  text-wrap: balance;
+  pointer-events: none;
+}
+
+/* Beside a photograph the column is narrower: the line steps down a size. */
+.panel[data-photo] .line {
+  font-size: var(--fs-lg);
+  line-height: 1.15;
+}
+
+/* --- Detail (open panel only) ------------------------------------------- */
+.detail {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+  max-width: 36rem;
+  margin-top: auto;
+  padding: var(--pad);
+}
+
+.motifName {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.line {
+  max-width: 30ch;
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-xl);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 46px;
+  padding: 0 1.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--fg);
+  color: var(--c);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.link svg {
+  width: 1.1em;
+  height: 1.1em;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.link:active {
+  transform: scale(0.97);
+}
+
+.link:focus-visible {
+  outline-color: var(--fg);
+}
+
+/* --- Tablet: tighter; phone: stacked rows --------------------------------- */
+@media (max-width: 1080px) {
+  .panel[data-active] {
+    flex-grow: 3.2;
+  }
+
+  /* Room for the type beside the photograph. */
+  .panel[data-active][data-photo] {
+    flex-grow: 5;
+  }
+
+  .panel[data-photo] {
+    --plate: 46%;
+  }
+
+  .line {
+    font-size: var(--fs-lg);
+  }
+}
+
+
+@media (max-width: 760px) {
+  .panels {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .panel {
+    flex: none;
+    min-height: 0;
+  }
+
+  .trigger {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .kanji {
+    font-size: 3rem;
+  }
+
+  .kana {
+    padding-top: 0;
+  }
+
+  .now {
+    position: absolute;
+    top: calc(var(--pad) + 0.6rem);
+    right: var(--pad);
+    margin: 0;
+  }
+
+  .motifWrap {
+    right: -3rem;
+    bottom: -3rem;
+    width: 11rem;
+  }
+
+  /* Phones: the photograph is a band between the heading and the text. */
+  .plate {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    aspect-ratio: 3 / 2;
+    margin: 0 var(--pad) var(--space-5);
+    border-radius: 10px;
+  }
+
+  .plate::after {
+    display: none;
+  }
+
+  .panel[data-photo][data-active] > .heading,
+  .panel[data-photo][data-active] > .detail {
+    width: auto;
+  }
+
+  .detail {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .line {
+    font-size: var(--fs-lg);
+  }
+}

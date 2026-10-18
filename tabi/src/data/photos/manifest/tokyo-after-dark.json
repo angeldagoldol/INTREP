@@ -1,0 +1,212 @@
+{
+  "brochure": "tokyo-after-dark",
+  "photos": [
+    {
+      "id": "tokyo-tower-night",
+      "use": "cover",
+      "candidates": [
+        "File:Tokyo Tower, Minato City.jpg",
+        "File:2019 Tokyo Tower at night 01.jpg",
+        "File:Tokyo Tower at night 20141224, 001.jpg"
+      ],
+      "alt": "Tokyo Tower's steel lattice lit up against the night sky above the city",
+      "caption": "Tokyo Tower at night, Minato",
+      "place": "Tokyo Tower",
+      "focus": "50% 40%",
+      "query": "Tokyo Tower at night"
+    },
+    {
+      "id": "tokyo-shibuya-crossing",
+      "use": "wide",
+      "candidates": [
+        "File:Shibuya Crossing at night (14738088849).jpg",
+        "File:2025 Shibuya Crossing at night.jpg",
+        "File:Shibuya Crossing Tokyo At Night (150285427).jpeg"
+      ],
+      "alt": "Crowds streaming across the Shibuya scramble at night, seen from above between lit-up screens and storefronts",
+      "caption": "Shibuya Crossing at night",
+      "place": "Shibuya Crossing",
+      "focus": "50% 55%",
+      "query": "Shibuya Crossing at night"
+    },
+    {
+      "id": "tokyo-shibuya-sky",
+      "use": "wide",
+      "candidates": [
+        "File:Shibuya Sky Observation Deck (53415730632).jpg",
+        "File:Shibuya Scramble Square - SHIBUYA SKY 12.jpg",
+        "File:Shibuya Scramble Square SHIBUYA SKY (52651897177).jpg"
+      ],
+      "alt": "The open-air rooftop deck of Shibuya Sky with Tokyo's skyline stretching beyond the glass",
+      "caption": "Shibuya Sky, on the roof of Shibuya Scramble Square",
+      "place": "Shibuya Sky",
+      "focus": "50% 50%",
+      "query": "Shibuya Sky observation deck"
+    },
+    {
+      "id": "tokyo-golden-gai",
+      "use": "any",
+      "candidates": [
+        "File:2024-10-20 Shinjuku Golden Gai at night.jpg",
+        "File:Golden Gai, Kabukicho, Shinjuku (42385146670).jpg",
+        "File:Golden Gai, Kabukicho, Shinjuku (30325593928).jpg"
+      ],
+      "alt": "A narrow lane of tiny bars with glowing signs and lanterns in Shinjuku Golden Gai",
+      "caption": "Shinjuku Golden Gai at night",
+      "place": "Shinjuku Golden Gai",
+      "focus": "50% 50%",
+      "query": "Shinjuku Golden Gai night"
+    },
+    {
+      "id": "tokyo-sensoji-night",
+      "use": "wide",
+      "candidates": [
+        "File:Sensoji at night 7.jpg",
+        "File:Hozomon and pagoda, Sensoji Temple, Asakusa, Tokyo.jpg"
+      ],
+      "alt": "Sensō-ji's Hōzōmon gate and five-storey pagoda illuminated against the night sky",
+      "caption": "Sensō-ji's Hōzōmon and pagoda, lit after dark",
+      "place": "Sensō-ji",
+      "focus": "50% 50%",
+      "query": "Hozomon Sensoji pagoda at night"
+    },
+    {
+      "id": "tokyo-omoide-yokocho",
+      "use": "any",
+      "candidates": [
+        "File:Omoide Yokocho, Shinjuku (42384563020).jpg",
+        "File:Shinjuku-West Omoide-Yokocho.jpg",
+        "File:Japanese Fish Market (Unsplash).jpg"
+      ],
+      "alt": "Lanterns and small yakitori counters crowding a narrow alley in Omoide Yokochō",
+      "caption": "Omoide Yokochō, Shinjuku",
+      "place": "Omoide Yokochō",
+      "focus": "50% 50%",
+      "query": "Omoide Yokocho Shinjuku"
+    },
+    {
+      "id": "tokyo-kaminarimon",
+      "use": "any",
+      "candidates": [
+        "File:Sensoji at night 8.jpg",
+        "File:Senso-ji Kaminarimon 201503a.jpg",
+        "File:Kaminari mon.jpg"
+      ],
+      "alt": "The giant red paper lantern hanging in the Kaminarimon gate of Sensō-ji",
+      "caption": "Kaminarimon, Sensō-ji's Thunder Gate",
+      "place": "Kaminarimon, Sensō-ji",
+      "focus": "50% 50%",
+      "query": "Kaminarimon Sensoji lantern"
+    },
+    {
+      "id": "tokyo-skytree-night",
+      "use": "any",
+      "candidates": [
+        "File:Tokyo Skytree at night (Iki).jpg",
+        "File:Tokyo Skytree at night (Miyabi).jpg",
+        "File:Tokyo Sky Tree at night.JPG"
+      ],
+      "alt": "Tokyo Skytree rising into the night sky, lit along its full height",
+      "caption": "Tokyo Skytree at night, Sumida",
+      "place": "Tokyo Skytree",
+      "focus": "50% 45%",
+      "query": "Tokyo Skytree at night"
+    },
+    {
+      "id": "tokyo-shibuya-street",
+      "use": "any",
+      "candidates": [
+        "File:Shibuya Crossing.jpg",
+        "File:Shibuya Crossing at night during Coronavirus.jpg"
+      ],
+      "alt": "Pedestrians crossing Shibuya's scramble at street level beneath bright screens at night",
+      "caption": "The scramble at street level, Shibuya",
+      "place": "Shibuya Crossing",
+      "focus": "50% 60%",
+      "query": "Shibuya scramble crossing night street level"
+    },
+    {
+      "id": "tokyo-spread",
+      "use": "spread",
+      "candidates": [
+        "File:Minato City, Tokyo, Japan.jpg",
+        "File:Tokyo Tower At Night 2016 05 13 (159537587).jpeg",
+        "File:Tokyo cityscape at night from Roppongi Hills; September 2008.jpg",
+        "File:Tokyo Tower from Roppongi Hills Mori Tower 20130814.jpg"
+      ],
+      "alt": "Tokyo's skyline stretching to the horizon around the lit orange-and-white Tokyo Tower as evening falls",
+      "caption": "Evening falls over Minato: Tokyo Tower glows among the towers of Roppongi and Azabudai",
+      "place": "Tokyo Tower, Minato",
+      "focus": "50% 55%",
+      "query": "Tokyo skyline night Tokyo Tower from Roppongi Hills"
+    },
+    {
+      "id": "tokyo-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Kabukicho red gate and colorful neon street signs at night, Shinjuku, Tokyo, Japan.jpg",
+        "File:Colorful neon street signs in Kabukichō, Shinjuku, Tokyo.jpg",
+        "File:Colorful illuminated facades of buildings at night, with green, blue and pink lights, Kabukicho, Shinjuku, Tokyo.jpg"
+      ],
+      "alt": "The red Kabukichō Ichiban-gai gateway arch glowing beneath a wall of colourful neon signs at night",
+      "caption": "Neon hour in Shinjuku: the red gate of Kabukichō Ichiban-gai after dark",
+      "place": "Kabukichō, Shinjuku",
+      "focus": "50% 45%",
+      "query": "Kabukicho Ichiban-gai arch neon night"
+    },
+    {
+      "id": "tokyo-nostalgia-yanaka",
+      "use": "wide",
+      "candidates": [
+        "File:Yūyake Dandan.jpg",
+        "File:Yanaka Ginza shopping street (4041690725).jpg",
+        "File:Twilight Yanaka, Tokyo.jpg"
+      ],
+      "alt": "Steps leading down to a narrow street of small, low-rise shops in Yanaka",
+      "caption": "Yūyake Dandan, Yanaka — the “sunset steps” down to Yanaka Ginza",
+      "place": "Yūyake Dandan and Yanaka Ginza",
+      "focus": "50% 55%",
+      "query": "Yanaka Ginza Yuyake Dandan"
+    },
+    {
+      "id": "tokyo-nostalgia-denboin-dori",
+      "use": "wide",
+      "candidates": [
+        "File:2018-09-24 Denboin Street, Asakusa.jpg",
+        "File:Denboin Street, Asakusa, Tokyo.jpg",
+        "File:08 Denpoin-dori, Asakusa (Tòquio), decoració pictòrica a les portes de les botigues.jpg"
+      ],
+      "alt": "A pedestrian street of low shops with tiled roofs and hanging signboards in Asakusa",
+      "caption": "Denbōin-dōri, Asakusa — Edo-style shopfronts west of Nakamise",
+      "place": "Denbōin-dōri, Asakusa",
+      "focus": "50% 50%",
+      "query": "Denpoin Street Asakusa"
+    },
+    {
+      "id": "tokyo-nostalgia-hanayashiki",
+      "use": "any",
+      "candidates": [
+        "File:Asakusa Hanayashiki -01.jpg",
+        "File:Asakusa Hanayashiki -03.jpg"
+      ],
+      "alt": "The small, old-fashioned rides of Hanayashiki amusement park packed among Asakusa’s buildings",
+      "caption": "Hanayashiki, Asakusa — rides in a garden first opened in 1853",
+      "place": "Hanayashiki, Asakusa",
+      "focus": "50% 45%",
+      "query": "Asakusa Hanayashiki"
+    },
+    {
+      "id": "tokyo-nostalgia-shibamata",
+      "use": "any",
+      "candidates": [
+        "File:Taishakuten Sando -02.jpg",
+        "File:Shibamata street.jpg"
+      ],
+      "alt": "A narrow approach street lined with low, old-fashioned shops leading to Taishakuten temple in Shibamata",
+      "caption": "Taishakuten Sandō, Shibamata — the dango-shop street of the Tora-san films",
+      "place": "Shibamata Taishakuten Sandō",
+      "focus": "50% 50%",
+      "query": "Shibamata Taishakuten Sando"
+    }
+  ]
+}

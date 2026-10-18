@@ -1,0 +1,99 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--fs-sm);
+  font-weight: 560;
+}
+
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: 46px;
+  padding: 6px 8px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  cursor: text;
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+
+.box:hover {
+  border-color: var(--ink-3);
+}
+
+.box:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.tokens {
+  display: contents;
+  list-style: none;
+}
+
+.token {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 30px;
+  padding: 0 4px 0 10px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-sunken);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+}
+
+.hash {
+  color: var(--accent);
+}
+
+.remove {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-left: 2px;
+  border-radius: 50%;
+  color: var(--ink-2);
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out);
+}
+
+.remove:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.input {
+  flex: 1;
+  min-width: 8ch;
+  height: 32px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  font-size: var(--fs-base);
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--ink-3);
+}
+
+.hint {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}

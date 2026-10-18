@@ -1,0 +1,29 @@
+.fallback {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+.glyph {
+  font-size: 34cqw;
+  line-height: 1;
+  color: var(--b-accent);
+  opacity: 0.16;
+}
+
+.heading {
+  max-width: 64cqw;
+  margin-top: -6cqw;
+}
+
+.note {
+  max-width: 54cqw;
+  margin: 2.4cqw 0 0;
+  font-size: 2.2cqw;
+  line-height: 1.5;
+  color: var(--b-muted-text);
+}

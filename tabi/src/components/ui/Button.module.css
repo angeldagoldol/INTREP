@@ -1,0 +1,188 @@
+.button {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--bg);
+  --btn-fill: var(--accent);
+  --btn-fill-fg: var(--accent-ink);
+  --btn-border: transparent;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  height: var(--btn-h, 44px);
+  padding-inline: var(--btn-px, 1.25rem);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: var(--btn-fs, var(--fs-sm));
+  font-weight: 560;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color var(--dur-3) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
+}
+
+/* Ink fill that rises from the bottom on hover. */
+.button::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--btn-fill);
+  transform: translateY(101%);
+  border-top-left-radius: 50% 40%;
+  border-top-right-radius: 50% 40%;
+  transition:
+    transform 0.55s var(--ease-out),
+    border-radius 0.55s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .button:hover:not(:disabled)::before {
+    transform: translateY(0);
+    border-radius: inherit;
+  }
+
+  .button:hover:not(:disabled) {
+    color: var(--btn-fill-fg);
+    border-color: var(--btn-fill);
+  }
+
+  .button:hover:not(:disabled) .roll > span,
+  .button:hover:not(:disabled) .roll::after {
+    transform: translateY(-100%);
+  }
+
+  .button:hover:not(:disabled) .iconRight {
+    transform: translateX(3px);
+  }
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.button:disabled {
+  opacity: 0.45;
+}
+
+.primary {
+  /* defaults above */
+}
+
+.accent {
+  --btn-bg: var(--accent);
+  --btn-fg: var(--accent-ink);
+  --btn-fill: var(--ink);
+  --btn-fill-fg: var(--bg);
+}
+
+.secondary {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-border: var(--line-strong);
+  --btn-fill: var(--ink);
+  --btn-fill-fg: var(--bg);
+}
+
+.ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-fill: var(--accent-soft);
+  --btn-fill-fg: var(--ink);
+}
+
+.sm {
+  --btn-h: 36px;
+  --btn-px: 0.95rem;
+  --btn-fs: var(--fs-xs);
+}
+
+.md {
+  --btn-h: 44px;
+  --btn-px: 1.25rem;
+}
+
+.lg {
+  --btn-h: 58px;
+  --btn-px: 1.75rem;
+  --btn-fs: var(--fs-base);
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.25;
+  vertical-align: top;
+}
+
+.roll > span,
+.roll::after {
+  display: block;
+  transition: transform 0.5s var(--ease-out);
+}
+
+/* The rolled-in copy is decoration: the empty alt text keeps it out of the
+   accessible name (otherwise every button reads "Publish Publish"). The
+   first declaration is the fallback for engines without alt-text support. */
+.roll::after {
+  content: attr(data-text);
+  content: attr(data-text) / '';
+  position: absolute;
+  inset: 100% 0 auto;
+}
+
+.icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.icon svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.loading .label,
+.loading .icon {
+  opacity: 0;
+}
+
+.spinner {
+  position: absolute;
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

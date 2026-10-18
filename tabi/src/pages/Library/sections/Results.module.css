@@ -1,0 +1,62 @@
+.results {
+  padding-block: clamp(1.75rem, 1rem + 2vw, 3rem) var(--section-y);
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  min-height: 34px;
+  margin: var(--space-4) 0 clamp(1.75rem, 1rem + 2vw, 3rem);
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.count strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.of {
+  color: var(--ink-3);
+}
+
+.cards {
+  position: relative; /* anchor for cards popping out while they exit */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr));
+  gap: clamp(2.5rem, 1.5rem + 2.5vw, 4rem) clamp(1.25rem, 0.75rem + 1.8vw, 2.75rem);
+}
+
+.list {
+  display: grid;
+  border-top: 1px solid var(--line-strong);
+}
+
+/* Phones: two covers side by side, like a shop shelf. */
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--space-4);
+  }
+}
+
+/* Keyboard focus never parks a card under the navbar + sticky filter bar. */
+.cards > * {
+  scroll-margin-top: calc(var(--nav-h) + 9rem);
+}
+
+/* The "fold your own" tile that fills the grid's last row. */
+.createItem {
+  min-width: 0;
+}

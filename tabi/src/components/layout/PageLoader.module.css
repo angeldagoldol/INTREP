@@ -1,0 +1,66 @@
+.loader {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-4);
+  min-height: min(70vh, 640px);
+  padding: var(--space-8) var(--gutter);
+  animation: appear 0.5s var(--ease-out) 0.25s both;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.enso {
+  width: 84px;
+  height: 84px;
+  overflow: visible;
+}
+
+.guide {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.stroke,
+.dry {
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stroke {
+  stroke-width: 6;
+}
+
+/* Thin offset trail: the dry edge of a brush running out of ink. */
+.dry {
+  stroke: color-mix(in srgb, var(--ink) 45%, transparent);
+  stroke-width: 1.5;
+}
+
+.label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.jp {
+  font-family: var(--font-jp);
+  letter-spacing: 0.2em;
+  text-transform: none;
+  color: var(--accent);
+}

@@ -1,0 +1,27 @@
+/* The live-photos switch: a labelled Switch with one line of small print.
+   Colours come from the surrounding theme (the footer is always "sumi"). */
+.toggle {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 34rem;
+}
+
+.switch {
+  justify-self: start;
+  text-align: start;
+  color: var(--ink);
+}
+
+.switch:focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 4px;
+  border-radius: var(--radius-pill, 999px);
+}
+
+.note {
+  margin: 0;
+  color: var(--ink-2, currentColor);
+  font-size: var(--fs-xs, 0.78rem);
+  line-height: 1.5;
+  text-wrap: pretty;
+}

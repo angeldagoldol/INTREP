@@ -1,0 +1,189 @@
+{
+  "brochure": "naoshima-art-islands",
+  "photos": [
+    {
+      "id": "naoshima-yellow-pumpkin",
+      "use": "cover",
+      "candidates": [
+        "File:Benesse House beach, Naoshima island - Jul 23, 2009.jpg",
+        "File:150505 Benesse House Oval Naoshima Kagawa pref Japan02s3.jpg"
+      ],
+      "query": "Benesse House beach Naoshima",
+      "alt": "Calm Seto Inland Sea water along the shore below Benesse House on the south coast of Naoshima",
+      "caption": "The shore below Benesse House, Naoshima",
+      "place": "Benesse House, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-inland-sea",
+      "use": "wide",
+      "candidates": [
+        "File:瀬戸内の夕日２ - panoramio.jpg",
+        "File:Naoshima (7046724589).jpg",
+        "File:Naoshima Islands, Naoshima Kagawa Aerial photograph.2007.jpg"
+      ],
+      "query": "Naoshima Seto Inland Sea view",
+      "alt": "Calm water and low wooded islands of the Seto Inland Sea under a soft sky",
+      "caption": "The Seto Inland Sea from Naoshima",
+      "place": "Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-chichu",
+      "use": "wide",
+      "candidates": [
+        "File:150505 Chichu Art Museum Naoshima Island Kagawa pref Japan01s3.jpg",
+        "File:Chichu art museum02s2560.jpg",
+        "File:Chichu art museum01s2560.jpg"
+      ],
+      "query": "Chichu Art Museum Naoshima",
+      "alt": "Bare concrete walls of the Chichu Art Museum set into a green hillside",
+      "caption": "Chichu Art Museum by Tadao Ando",
+      "place": "Chichu Art Museum",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-benesse-house",
+      "use": "wide",
+      "candidates": [
+        "File:150505 Benesse House Museum Naoshima Kagawa pref Japan01b3s5.jpg",
+        "File:Benesse house01s3200.jpg",
+        "File:The Bennesse House in Naoshima Island - panoramio.jpg"
+      ],
+      "query": "Benesse House Museum Naoshima",
+      "alt": "Tadao Ando’s concrete and glass museum building on a hillside above the sea",
+      "caption": "Benesse House Museum, Naoshima",
+      "place": "Benesse House Museum",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-teshima-art-museum",
+      "use": "wide",
+      "candidates": [
+        "File:Teshima Museum Ryue Nishizawa Rei Naito 1.JPG",
+        "File:Teshimakarato, Tonosho, Shozu District, Kagawa Prefecture 761-4662, Japan - panoramio.jpg"
+      ],
+      "query": "Teshima Art Museum Nishizawa",
+      "alt": "A low white concrete shell curving out of green rice terraces near the sea",
+      "caption": "Teshima Art Museum among the rice terraces",
+      "place": "Teshima Art Museum",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "naoshima-red-pumpkin",
+      "use": "any",
+      "candidates": [
+        "File:Miyanoura port02s3872.jpg",
+        "File:Ferry Asahi.jpg",
+        "File:Shikoku Kisen Seto.JPG"
+      ],
+      "query": "Shikoku Kisen ferry Naoshima",
+      "alt": "A Shikoku Kisen car ferry at the quay on a calm, sunny day",
+      "caption": "The island ferry, lifeline of the Inland Sea, at Miyanoura",
+      "place": "Miyanoura Port, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-honmura",
+      "use": "any",
+      "candidates": [
+        "File:Art house project in Naoshima, Ishibashi (石橋、直島 家プロジェクト) PC193299.JPG",
+        "File:Art house project in Naoshima, Kadoya(角屋、直島 家プロジェクト) PC182309.JPG",
+        "File:Art house project in Naoshima, Minami-dera(南寺、直島 家プロジェクト) PC193351.JPG"
+      ],
+      "query": "Art House Project Naoshima Honmura",
+      "alt": "Old wooden houses with dark charred-cedar walls on a quiet village lane",
+      "caption": "Art House Project, Honmura",
+      "place": "Honmura, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-i-love-yu",
+      "use": "any",
+      "candidates": [
+        "File:Naoshima Bath I♥湯 直島銭湯 PC193562.JPG"
+      ],
+      "query": "Naoshima Bath I♥湯",
+      "alt": "The collaged, tile-covered facade of a small public bathhouse",
+      "caption": "I♥湯, Shinro Ohtake’s bathhouse",
+      "place": "Miyanoura, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-miyanoura-port",
+      "use": "any",
+      "candidates": [
+        "File:Miyanoura port08s3200.jpg",
+        "File:Miyanoura port01s3200.jpg"
+      ],
+      "query": "Miyanoura port Naoshima",
+      "alt": "The ferry quay and harbour of Miyanoura on a calm day",
+      "caption": "Miyanoura port, Naoshima",
+      "place": "Miyanoura Port, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-spread",
+      "use": "spread",
+      "candidates": [
+        "File:Agricultural fields on Teshima.jpg",
+        "File:Teshimakarato, Tonosho, Shozu District, Kagawa Prefecture 761-4662, Japan - panoramio.jpg"
+      ],
+      "query": "Teshima terraced rice field Karato",
+      "alt": "Green terraced rice fields stepping down a hillside on Teshima",
+      "caption": "Karato, Teshima: terraced rice fields brought back to life for the Setouchi Triennale, autumn",
+      "place": "Karato, Teshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Naoshima Hachiman shrine (26658386982).jpg",
+        "File:Naoshima Hachiman shrine (26658404002).jpg",
+        "File:Naoshima Hachiman shrine (26684766561).jpg",
+        "File:Torii Schrein, Naoshima,.jpg"
+      ],
+      "query": "Naoshima Hachiman shrine",
+      "alt": "A Shinto shrine and its approach among trees on Naoshima",
+      "caption": "Naoshima’s Hachiman shrine, the old island guardian above the village",
+      "place": "Hachiman Shrine, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-nostalgia-inujima",
+      "use": "wide",
+      "candidates": [
+        "File:Inujima Seirensho Art Museum (8917482919).jpg",
+        "File:Inujima Seirensho Art Museum (8917498557).jpg"
+      ],
+      "query": "Inujima copper refinery ruins",
+      "alt": "Weathered ruins and chimneys of an old copper refinery on a small island",
+      "caption": "Inujima, Okayama — the ruins of a copper refinery, now the Seirensho Art Museum",
+      "place": "Inujima Seirensho, Inujima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-nostalgia-megijima",
+      "use": "wide",
+      "candidates": [
+        "File:Megijima Port and Takamatsu (8760506382).jpg"
+      ],
+      "query": "Megijima port Takamatsu",
+      "alt": "The small harbour of Megijima, with the city of Takamatsu across the water",
+      "caption": "Megijima, nicknamed Onigashima (Ogre Island) — its harbour looks across to Takamatsu",
+      "place": "Megijima, Takamatsu",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-nostalgia-ogijima",
+      "use": "any",
+      "candidates": [],
+      "query": "男木島 集落",
+      "alt": "Houses of a small island village in the Seto Inland Sea",
+      "caption": "Ogijima — a tiny island of Takamatsu, home to fewer than 200 people",
+      "place": "Ogijima, Takamatsu",
+      "focus": "50% 50%"
+    }
+  ]
+}

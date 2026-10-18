@@ -1,0 +1,253 @@
+{
+  "brochure": "nostalgic-japan",
+  "photos": [
+    {
+      "id": "nostalgic-ginzan",
+      "use": "cover",
+      "candidates": [
+        "File:Ginzan Onsen (32165662644).jpg",
+        "File:Yamagata-Ginzan Onsen-m.jpg",
+        "File:Ginzan Onsen 01.jpg"
+      ],
+      "alt": "Snow on the roofs and railings of multi-storey wooden inns facing each other across a narrow river",
+      "caption": "Ginzan Onsen, Yamagata — Taishō-era wooden inns along the Ginzan River on a snowy day",
+      "place": "Ginzan Onsen, Obanazawa, Yamagata",
+      "focus": "50% 55%",
+      "query": "Ginzan Onsen snow wooden inns Obanazawa"
+    },
+    {
+      "id": "nostalgic-spread",
+      "use": "spread",
+      "candidates": [
+        "File:161015 At Kurashiki Bikan historical quarter Kurashiki Okayama pref Japan01s3.jpg",
+        "File:080727 At Kurashiki Bikan historical quarter Kurashiki Okayama pref Japan01s3.jpg",
+        "File:Kurashiki Bikan historical quarter 20190324.jpg"
+      ],
+      "alt": "A calm canal lined with willows, stone banks and white-walled storehouses with dark tiled roofs",
+      "caption": "Kurashiki Bikan Historical Quarter, Okayama — white-walled storehouses and willows along the Kurashiki River",
+      "place": "Kurashiki Bikan Historical Quarter, Okayama",
+      "focus": "50% 50%",
+      "query": "Kurashiki Bikan historical quarter Kurashiki River willows storehouses"
+    },
+    {
+      "id": "nostalgic-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Yasaka-dori early morning with street lanterns and the Tower of Yasaka (Hokan-ji Temple), Kyoto, Japan.jpg",
+        "File:Yasaka Pagoda (24554839319).jpg",
+        "File:Pagode in Yasaka - Pagoda in Yasaka (3774886132).jpg",
+        "File:Yasaka Pagode.jpg"
+      ],
+      "alt": "An empty sloping street of wooden houses and street lanterns in early light, with a five-storey pagoda rising at its end",
+      "caption": "Yasaka-dōri, Kyoto — street lanterns at dawn below the five-storey pagoda of Hōkan-ji",
+      "place": "Yasaka Pagoda (Hōkan-ji), Higashiyama, Kyoto",
+      "focus": "50% 40%",
+      "query": "Yasaka-dori street Yasaka Pagoda Hokan-ji Kyoto morning"
+    },
+    {
+      "id": "nostalgic-tsumago",
+      "use": "wide",
+      "candidates": [
+        "File:Tsumago-juku 1.jpg",
+        "File:Tsumago-juku 3.jpg",
+        "File:Tsumago-juku, Nagiso, Nagano, Japan (3599669155).jpg",
+        "File:Tsumago 2009 4.JPG"
+      ],
+      "alt": "A narrow old street lined with dark wooden two-storey houses with latticed fronts and deep eaves",
+      "caption": "Tsumago-juku, Nagano — the 42nd post town of the Nakasendō, kept by its residents’ rule: don’t sell, don’t rent, don’t destroy",
+      "place": "Tsumago-juku, Nagiso, Nagano",
+      "focus": "50% 55%",
+      "query": "Tsumago-juku Nakasendo street wooden houses"
+    },
+    {
+      "id": "nostalgic-shibamata",
+      "use": "wide",
+      "candidates": [
+        "File:Taishakuten Sando -01.jpg",
+        "File:Taishakuten Sando -02.jpg",
+        "File:Shibamata street.jpg"
+      ],
+      "alt": "A short shopping street of low wooden shop fronts and hanging signs leading to a temple gate",
+      "caption": "Shibamata, Tokyo — the shop-lined approach to Taishakuten temple, known for kusa dango",
+      "place": "Shibamata Taishakuten sandō, Katsushika, Tokyo",
+      "focus": "50% 55%",
+      "query": "Shibamata Taishakuten sando street"
+    },
+    {
+      "id": "nostalgic-shimonada",
+      "use": "wide",
+      "candidates": [
+        "File:Shimonada Station platform 20160917.jpg",
+        "File:Shimonada Station 201507(2).JPG",
+        "File:Shimonada Station - panoramio.jpg",
+        "File:Shimonada Station 201507(4).JPG"
+      ],
+      "alt": "A single small railway platform with a simple shelter, open to the sea and the sky beyond",
+      "caption": "Shimonada Station, Ehime — a small country station on the JR Yosan Line, beside the Seto Inland Sea",
+      "place": "Shimonada Station, Iyo, Ehime",
+      "focus": "50% 50%",
+      "query": "Shimonada Station platform Iyo Sea"
+    },
+    {
+      "id": "nostalgic-ouchi",
+      "use": "wide",
+      "candidates": [
+        "File:Ouchi-juku, Fukushima 01.jpg",
+        "File:Ouchijuku 1.JPG",
+        "File:Ja-fukushima-ohuchijuku-7.jpg"
+      ],
+      "alt": "Houses with thick thatched roofs lining both sides of a broad unpaved village street",
+      "caption": "Ōuchi-juku, Fukushima — thatched houses on the main street of a post town on the old Aizu-Nishi Kaidō",
+      "place": "Ōuchi-juku, Shimogō, Fukushima",
+      "focus": "50% 50%",
+      "query": "Ouchi-juku thatched roof street Shimogo"
+    },
+    {
+      "id": "nostalgic-kawagoe",
+      "use": "wide",
+      "candidates": [
+        "File:TokiNoKane Kawagoe 2013Feb.JPG",
+        "File:Kawagoe Toki no Kane 5.jpg",
+        "File:Tokinokane-2006-03-20 1.jpg",
+        "File:Kurazukuri Street in Little Edo.jpg"
+      ],
+      "alt": "A tall wooden bell tower rising above the tiled roofs of old clay-walled shop-houses",
+      "caption": "Toki no Kane, Kawagoe — the Bell of Time over the kurazukuri storehouse street of “Little Edo”",
+      "place": "Toki no Kane, Kawagoe, Saitama",
+      "focus": "50% 40%",
+      "query": "Toki no Kane Kawagoe bell tower"
+    },
+    {
+      "id": "nostalgic-kurashiki",
+      "use": "wide",
+      "candidates": [
+        "File:Kurashiki Bikan historical quarter 20190324-2.jpg",
+        "File:Kurashiki Bikan Historical Quarter 倉敷美觀地區 - panoramio (2).jpg"
+      ],
+      "alt": "White plaster storehouse walls and old merchant houses beside the stone-banked Kurashiki River",
+      "caption": "Kurashiki Bikan Historical Quarter — merchants’ storehouses along the canal",
+      "place": "Kurashiki Bikan Historical Quarter, Okayama",
+      "focus": "50% 50%",
+      "query": "Kurashiki Bikan historical quarter white wall storehouse namako"
+    },
+    {
+      "id": "nostalgic-narai",
+      "use": "wide",
+      "candidates": [
+        "File:Nakasendo Narai-juku08n4272.jpg",
+        "File:Narai post town.JPG",
+        "File:Narai, Shiojiri, Nagano Prefecture 399-6303, Japan - panoramio.jpg"
+      ],
+      "alt": "A long, straight street of dark wooden inns and houses with overhanging upper floors",
+      "caption": "Narai-juku, Nagano — the 34th of the Nakasendō’s 69 post towns, on the old Kiso road",
+      "place": "Narai-juku, Shiojiri, Nagano",
+      "focus": "50% 55%",
+      "query": "Narai-juku Nakasendo street Shiojiri"
+    },
+    {
+      "id": "nostalgic-higashi-chaya",
+      "use": "any",
+      "candidates": [
+        "File:Higashi Chaya district, Kanazawa (3810720612).jpg",
+        "File:Higashi chaya gai005.jpg",
+        "File:Higashi chaya gai003.jpg"
+      ],
+      "alt": "A stone-paved lane between two-storey wooden teahouses with fine vertical lattices",
+      "caption": "Higashi Chaya, Kanazawa — teahouses with fine wooden lattices, in a district laid out in 1820",
+      "place": "Higashi Chaya district, Kanazawa, Ishikawa",
+      "focus": "50% 50%",
+      "query": "Higashi Chaya district Kanazawa teahouses street"
+    },
+    {
+      "id": "nostalgic-kakunodate",
+      "use": "any",
+      "candidates": [
+        "File:Bukeyashiki Street in Kakunodate 20060506.jpg",
+        "File:Bukeyashiki Street in Kakunodate 20120108b.jpg"
+      ],
+      "alt": "A wide street lined with black wooden fences and the gates of samurai houses, under tall trees",
+      "caption": "Kakunodate, Akita — black wooden fences and weeping cherries on the samurai residence street",
+      "place": "Bukeyashiki Street, Kakunodate, Semboku, Akita",
+      "focus": "50% 50%",
+      "query": "Kakunodate Bukeyashiki street samurai houses"
+    },
+    {
+      "id": "nostalgic-uchiko",
+      "use": "any",
+      "candidates": [
+        "File:Uchiko1,Uchiko-town,Japan.JPG",
+        "File:Uchiko Wikivoyage banners.jpg"
+      ],
+      "alt": "A gently curving street of old merchant houses with cream plaster walls and tiled roofs",
+      "caption": "Yōkaichi-Gokoku, Uchiko — merchant houses of a town that grew rich on wax and paper",
+      "place": "Yōkaichi-Gokoku, Uchiko, Ehime",
+      "focus": "50% 50%",
+      "query": "Uchiko Yokaichi Gokoku historic street"
+    },
+    {
+      "id": "nostalgic-bungotakada",
+      "use": "wide",
+      "candidates": ["File:Bungotakada showa no machi.JPG"],
+      "alt": "An old shop front on a retro shopping street, with a small vintage three-wheeled truck parked in front",
+      "caption": "Bungotakada, Ōita — Shōwa no Machi, a shopping street brought back to its 1950s–60s look",
+      "place": "Shōwa no Machi, Bungotakada, Ōita",
+      "focus": "50% 55%",
+      "query": "Bungotakada Showa no Machi shopping street"
+    },
+    {
+      "id": "nostalgic-onomichi",
+      "use": "wide",
+      "candidates": [
+        "File:Senkoji Onomichi16s3872.jpg",
+        "File:Senkoji Temple 千光寺 - panoramio (1).jpg",
+        "File:千光寺 Senko-ji Temple - panoramio.jpg",
+        "File:Onomichi City Hiroshima Prefecture.jpg"
+      ],
+      "alt": "A temple hall among rocks and trees on a hillside, high above the rooftops of a seaside town",
+      "caption": "Onomichi, Hiroshima — Senkō-ji temple on the hillside above the town and the Onomichi Channel",
+      "place": "Senkō-ji, Onomichi, Hiroshima",
+      "focus": "50% 45%",
+      "query": "Onomichi Senkoji temple hillside view"
+    },
+    {
+      "id": "nostalgic-ginzan-lamps",
+      "use": "wide",
+      "candidates": [
+        "File:Ginzan Onsen - Inns (銀山温泉 - 旅館松本, 昭和館, 銀山川, 八木橋商店, 旅籠いとうや, 能登屋旅館, 旅館永澤平八, かじか庵, 旅館藤屋) (2015-03-07 by Eiji Kikuta @Pixabay 1366873).jpg",
+        "File:Ginzan Onsen Noto-ya Ryokan with a sign of founder, Kido Sasaemon, in Hanazawa, Yamagata (山形県銀山温泉 能登屋旅館 と 創業者・木戸佐左エ門の大看板) (2015-03-07 by Eiji Kikuta @Pixabay 1366872).jpg"
+      ],
+      "alt": "Lit windows of tall wooden inns reflected in a river at dusk, with lamps along the banks",
+      "caption": "Ginzan Onsen, Yamagata — gas lamps light the wooden inns along the river after dark",
+      "place": "Ginzan Onsen, Obanazawa, Yamagata",
+      "focus": "50% 50%",
+      "query": "Ginzan Onsen inns evening gas lamps"
+    },
+    {
+      "id": "nostalgic-otaru",
+      "use": "wide",
+      "candidates": [
+        "File:Otaru Canal 20140817.jpg",
+        "File:220721 Former Masuda Warehouse Otaru Hokkaido Japan01s3.jpg",
+        "File:Otaru Canal HDR2.jpg"
+      ],
+      "alt": "A canal with a stone-paved walkway on one bank and a row of old warehouses along the water",
+      "caption": "Otaru Canal, Hokkaidō — old warehouses along the canal of a historic port town",
+      "place": "Otaru Canal, Otaru, Hokkaidō",
+      "focus": "50% 50%",
+      "query": "Otaru Canal warehouses"
+    },
+    {
+      "id": "nostalgic-omihachiman",
+      "use": "wide",
+      "candidates": [
+        "File:Omihachiman City Hachimanbori.JPG",
+        "File:Omihachiman nishikawa house01s3200.jpg"
+      ],
+      "alt": "A stone-walled canal with white-walled storehouses and trees along its banks",
+      "caption": "Ōmi-Hachiman, Shiga — the Hachimanbori canal, dug in 1585 to link the merchant town with Lake Biwa",
+      "place": "Hachimanbori, Ōmi-Hachiman, Shiga",
+      "focus": "50% 50%",
+      "query": "Hachimanbori canal Omihachiman storehouses"
+    }
+  ]
+}

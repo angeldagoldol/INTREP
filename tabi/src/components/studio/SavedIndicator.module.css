@@ -1,0 +1,63 @@
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.indicator[data-state='saved'] .mark {
+  background: color-mix(in srgb, var(--success) 18%, transparent);
+  color: var(--success);
+}
+
+.indicator[data-state='error'] {
+  color: var(--danger);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-3);
+}
+
+.indicator[data-state='saving'] .dot {
+  background: var(--accent);
+  animation: breathe 1s var(--ease-in-out) infinite alternate;
+}
+
+@keyframes breathe {
+  from {
+    transform: scale(0.7);
+    opacity: 0.5;
+  }
+
+  to {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.indicator[data-compact] .text {
+  display: none;
+}

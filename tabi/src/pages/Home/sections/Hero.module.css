@@ -1,0 +1,346 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - var(--nav-h));
+  overflow: clip;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-6) clamp(1.5rem, 3.4vw, 4rem);
+  padding-block: clamp(1rem, 4vh, 3rem);
+}
+
+/* The copy column is a size container so the headline always fits its two lines. */
+.copy {
+  position: relative;
+  z-index: 2;
+  container-type: inline-size;
+}
+
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em 0.9em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.kickerNum {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.4em;
+  height: 2.4em;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.kickerJp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--ink);
+}
+
+/* "Japan, folded / into pages." — 5em wide keeps exactly these two lines. */
+.title {
+  font-family: var(--font-headline, var(--font-display));
+  max-width: 5em;
+  margin-top: clamp(1.25rem, 3vh, 2.25rem);
+  font-size: min(22cqi, 10.5rem);
+  font-weight: 380;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+}
+
+.folded {
+  color: var(--accent);
+}
+
+.pitch {
+  max-width: 36ch;
+  margin-top: clamp(1.25rem, 3.4vh, 2.25rem);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+/* --- 日本 / 旅 spine ---------------------------------------------------- */
+.spine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  align-self: center;
+}
+
+.nihon,
+.tabi {
+  font-size: clamp(2rem, 1rem + 1.6vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.1em;
+}
+
+.nihon {
+  color: var(--ink);
+}
+
+.tabi {
+  color: var(--accent);
+}
+
+.spineRule {
+  width: 1px;
+  height: clamp(2rem, 6vh, 4rem);
+  background: var(--line-strong);
+}
+
+.spineCaption {
+  margin-top: var(--space-2);
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* --- Meta strip ---------------------------------------------------------- */
+.metaWrap {
+  position: relative;
+  z-index: 1;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--line-strong);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em 0.9em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.facts b {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--ink-3);
+}
+
+.cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  min-height: 44px;
+  padding: 0 1rem 0 0.4rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  transition:
+    color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out);
+}
+
+.cue:hover {
+  color: var(--ink);
+  background: var(--accent-soft);
+}
+
+.cueIcon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+}
+
+.cueIcon svg {
+  width: 14px;
+  height: 14px;
+  animation: cue-bob 2.2s var(--ease-in-out) infinite;
+}
+
+:global([data-motion='paused']) .cueIcon svg {
+  animation: none;
+}
+
+.cueJp {
+  font-family: var(--font-jp);
+  letter-spacing: 0.2em;
+  color: var(--ink-3);
+}
+
+.metaEnd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2) var(--space-5);
+  justify-self: end;
+}
+
+@keyframes cue-bob {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* --- Tablet & phone: stack ---------------------------------------------- */
+@media (max-width: 960px) {
+  .hero {
+    min-height: 0;
+  }
+
+  .inner {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: var(--space-6) var(--space-5);
+  }
+
+  .title {
+    font-size: min(22cqi, 8.5rem);
+  }
+
+  .meta {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .cue {
+    display: none;
+  }
+
+  /* The spine tucks into the stage's top-right corner, beside the sun. */
+  .inner {
+    grid-template-areas: 'copy' 'stage';
+  }
+
+  .copy {
+    grid-area: copy;
+  }
+
+  .stage,
+  .spine {
+    grid-area: stage;
+  }
+
+  .stage {
+    justify-self: center;
+    width: min(100%, 36rem);
+  }
+
+  .spine {
+    z-index: 2;
+    align-self: start;
+    justify-self: end;
+    gap: var(--space-2);
+  }
+
+  .nihon,
+  .tabi {
+    font-size: clamp(1.25rem, 0.8rem + 2vw, 2rem);
+  }
+
+  .spineRule {
+    height: 1.25rem;
+  }
+
+  .spineCaption {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .meta {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  .facts {
+    gap: 0.35em 0.6em;
+    letter-spacing: 0.06em;
+  }
+
+  .metaEnd {
+    justify-content: space-between;
+    justify-self: stretch;
+    column-gap: var(--space-3);
+  }
+
+  /* Line the control's disc up with the facts above it. */
+  .motion {
+    margin-left: -0.4rem;
+  }
+
+  .ctas > * {
+    flex: 1 1 100%;
+  }
+
+  .ctas :global(a) {
+    width: 100%;
+  }
+}
+
+/* --- Photo credits under the tri-fold ----------------------------------- */
+.stage {
+  position: relative;
+}
+
+.credits {
+  justify-content: end;
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 960px) {
+  .credits {
+    justify-content: center;
+  }
+}

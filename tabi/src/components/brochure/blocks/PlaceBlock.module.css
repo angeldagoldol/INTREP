@@ -1,0 +1,231 @@
+/* One real place: a photograph to the trim, the name, the story, the facts. */
+.place {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* The photograph runs off the top trim and both sides (the page has no
+   running head), as tall as the text leaves room for (--media, placeLayout). */
+.media {
+  position: relative;
+  flex: none;
+  height: var(--media, 66cqw);
+  margin: calc(-1 * var(--pad-top)) calc(-1 * var(--pad-x)) 4cqw;
+  /* Credit chip at the foot of the outer side. */
+  --photo-credit-size: 1.12cqw;
+  --photo-chip-left: auto;
+  --photo-chip-right: var(--pad-x);
+  --photo-chip-bottom: 2.2cqw;
+}
+
+[data-side='verso'] .media {
+  --photo-chip-left: var(--pad-x);
+  --photo-chip-right: auto;
+}
+
+.media :global([data-state]) small {
+  max-width: 64cqw;
+}
+
+.media > .photo {
+  position: absolute;
+  inset: 0;
+}
+
+/* 短冊: the Japanese name on a paper slip hung from the top trim, on the
+   page's outer side. */
+.slip {
+  position: absolute;
+  top: 0;
+  left: var(--pad-x);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  max-height: calc(var(--media, 66cqw) - 12cqw);
+  padding: 3.6cqw 1.7cqw 2.8cqw;
+  overflow: hidden;
+  background: var(--b-paper);
+  box-shadow:
+    inset 0 0 0 0.5cqw var(--b-paper),
+    inset 0 0 0 calc(0.5cqw + var(--hair)) var(--b-rule-strong),
+    0 0.8cqw 3cqw color-mix(in srgb, var(--b-shade) 26%, transparent);
+}
+
+.slip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.9cqw;
+  background: var(--b-accent);
+}
+
+[data-side='recto'] .slip {
+  left: auto;
+  right: var(--pad-x);
+}
+
+.slipLine {
+  display: block;
+}
+
+/* A second column starts a little lower, as on a hand-lettered sign. */
+.slipLine + .slipLine {
+  padding-inline-start: 1.2em;
+}
+
+.slipText {
+  font-size: var(--jp, 4.4cqw);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  color: var(--b-ink);
+}
+
+/* Kicker on the left, the place's coordinates in small type on the right. */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6cqw 3cqw;
+  margin-bottom: 2cqw;
+}
+
+.meta .kicker {
+  margin: 0;
+}
+
+.coords {
+  margin: 0 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 1.3cqw;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--b-muted-text);
+}
+
+/* The bleeding photograph covers the outer margin: no vertical section name there. */
+.header {
+  margin-bottom: 3cqw;
+}
+
+.name {
+  font-size: var(--fs, 6.6cqw);
+}
+
+.columns {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4.6cqw;
+  padding-top: 3.2cqw;
+  border-top: var(--hair) solid var(--b-rule);
+}
+
+.columns[data-aside] {
+  grid-template-columns: var(--cols, minmax(0, 1.5fr) minmax(0, 1fr));
+}
+
+.copy {
+  min-height: 0;
+  overflow: hidden;
+  font-size: calc(2.35cqw * var(--fit, 1));
+  line-height: 1.6;
+  color: var(--b-body);
+  hyphens: auto;
+  text-wrap: pretty;
+}
+
+.copy p {
+  margin: 0;
+}
+
+.copy p + p {
+  margin-top: 0.85em;
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2.6cqw * var(--fit, 1));
+  min-height: 0;
+  overflow: hidden;
+}
+
+.facts {
+  margin: 0;
+}
+
+.fact {
+  padding: calc(1.05cqw * var(--fit, 1)) 0 calc(1.1cqw * var(--fit, 1));
+  border-bottom: var(--hair) solid var(--b-rule);
+}
+
+.fact:first-child {
+  padding-top: 0.2cqw;
+}
+
+.fact dt {
+  font-family: var(--font-mono);
+  font-size: calc(1.3cqw * var(--fit, 1));
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--b-accent-text);
+}
+
+.fact dd {
+  margin: 0.45cqw 0 0;
+  font-size: calc(2cqw * var(--fit, 1));
+  line-height: 1.38;
+  color: var(--b-ink);
+  text-wrap: pretty;
+}
+
+.site {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5cqw;
+  margin: 0;
+}
+
+.siteLabel {
+  font-family: var(--font-mono);
+  font-size: calc(1.3cqw * var(--fit, 1));
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--b-muted-text);
+}
+
+.siteLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6cqw;
+  align-self: flex-start;
+  font-size: calc(2cqw * var(--fit, 1));
+  font-weight: 600;
+  color: var(--b-ink);
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, 0.18cqw);
+  text-underline-offset: 0.45cqw;
+  text-decoration-color: var(--b-accent);
+  overflow-wrap: anywhere;
+}
+
+.siteLink svg {
+  flex: none;
+  width: 2cqw;
+  height: 2cqw;
+  color: var(--b-accent-text);
+}
+
+a.siteLink:hover {
+  color: var(--b-accent-text);
+}

@@ -1,0 +1,145 @@
+.section {
+  position: relative;
+  padding-block: clamp(2.5rem, 1.5rem + 3vw, 4.5rem) clamp(1rem, 0.5rem + 1vw, 2rem);
+  overflow: clip;
+}
+
+/* "02 — WORDS TO TRAVEL WITH ─────── 言葉", the same running head as the
+   other sections, so it reads as an opener rather than a stray eyebrow. */
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: clamp(1.75rem, 1.25rem + 1.2vw, 2.5rem);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.num {
+  color: var(--accent);
+}
+
+.num::after {
+  content: '—';
+  margin-left: var(--space-3);
+  color: var(--ink-3);
+}
+
+.labelText {
+  white-space: nowrap;
+}
+
+.line {
+  flex: 1;
+  min-width: var(--space-6);
+  height: 1px;
+  background: var(--line-strong);
+  transform-origin: 0 50%;
+}
+
+.labelJp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+/* Two strips of "tape", slightly askew and overlapping. The column is
+   minmax(0, 1fr) so each marquee is as wide as the page, not as wide as its
+   track: under reduced motion that is what makes the strip scrollable. */
+.bands {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.band {
+  position: relative;
+  width: calc(100% + 8rem);
+  margin-inline: -4rem;
+  padding-block: clamp(0.85rem, 0.6rem + 0.8vw, 1.35rem);
+}
+
+.ink {
+  z-index: 2;
+  background: var(--ink);
+  color: var(--bg);
+  transform: rotate(-1.3deg);
+  box-shadow: var(--shadow-md);
+}
+
+.shu {
+  z-index: 1;
+  margin-top: 1rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  transform: rotate(-0.5deg);
+}
+
+.word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  white-space: nowrap;
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: clamp(1.75rem, 1.2rem + 1.9vw, 3rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+
+.gloss {
+  display: grid;
+  gap: 0.2rem;
+  line-height: 1.1;
+}
+
+.romaji {
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-md);
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+}
+
+.meaning {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ink .meaning {
+  opacity: 0.8;
+}
+
+.sun {
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-left: 1.65rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.ink .sun {
+  background: var(--accent);
+  opacity: 1;
+}
+
+/* Reduced motion: the still strip starts on the container's left edge (the
+   band overhangs the page by 4rem each side) and scrolls by hand. */
+@media (prefers-reduced-motion: reduce) {
+  .tape {
+    padding-inline: calc(4rem + max(var(--gutter), (100% - 8rem - var(--container)) / 2));
+    scroll-padding-inline: calc(4rem + var(--gutter));
+    scrollbar-color: color-mix(in srgb, currentColor 45%, transparent) transparent;
+  }
+}

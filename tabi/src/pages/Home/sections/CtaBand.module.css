@@ -1,0 +1,162 @@
+.section {
+  padding-block: 0 var(--section-y);
+}
+
+.card {
+  --sheet: var(--surface-2);
+  --wave: color-mix(in srgb, var(--ink) 9%, var(--sheet));
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(1.5rem, 1rem + 3vw, 4.5rem);
+  overflow: hidden;
+  padding: clamp(2rem, 1rem + 4.5vw, 6rem) clamp(1.25rem, 0.5rem + 4vw, 5.5rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--sheet);
+}
+
+/* 青海波 seigaiha: opaque layers so each row of waves hides the one behind. */
+.pattern {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--sheet);
+  background-image:
+    radial-gradient(circle at 100% 150%, var(--sheet) 24%, var(--wave) 24% 28%, var(--sheet) 28% 36%, var(--wave) 36% 40%, transparent 40%),
+    radial-gradient(circle at 0 150%, var(--sheet) 24%, var(--wave) 24% 28%, var(--sheet) 28% 36%, var(--wave) 36% 40%, transparent 40%),
+    radial-gradient(circle at 50% 100%, var(--wave) 10%, var(--sheet) 10% 23%, var(--wave) 23% 30%, var(--sheet) 30% 43%, var(--wave) 43% 50%, var(--sheet) 50% 63%, var(--wave) 63% 71%, transparent 71%),
+    radial-gradient(circle at 100% 50%, var(--wave) 5%, var(--sheet) 5% 15%, var(--wave) 15% 20%, var(--sheet) 20% 29%, var(--wave) 29% 34%, var(--sheet) 34% 44%, var(--wave) 44% 49%, transparent 49%),
+    radial-gradient(circle at 0 50%, var(--wave) 5%, var(--sheet) 5% 15%, var(--wave) 15% 20%, var(--sheet) 20% 29%, var(--wave) 29% 34%, var(--sheet) 34% 44%, var(--wave) 44% 49%, transparent 49%);
+  background-size: 64px 32px;
+  mask-image: linear-gradient(100deg, #000 8%, transparent 46%, transparent 74%, #000 100%);
+  -webkit-mask-image: linear-gradient(100deg, #000 8%, transparent 46%, transparent 74%, #000 100%);
+}
+
+.seal {
+  display: grid;
+  place-items: center;
+  width: clamp(7.5rem, 5rem + 7vw, 12rem);
+  aspect-ratio: 1;
+}
+
+/* The seal is drawn at 168px and scaled to its slot. */
+.seal > span {
+  transform: scale(var(--seal-scale, 1)) rotate(-6deg);
+}
+
+.copy {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+}
+
+.running {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.num {
+  color: var(--accent);
+}
+
+.num::after {
+  content: '—';
+  margin-left: 0.9em;
+  color: var(--ink-3);
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.title {
+  font-family: var(--font-headline, var(--font-display));
+  max-width: 13ch;
+  font-size: clamp(2.4rem, 1.2rem + 4vw, 5.5rem);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+}
+
+.title :global(.serif-italic) {
+  color: var(--accent);
+}
+
+.text {
+  max-width: 46ch;
+  font-size: var(--fs-md);
+  color: var(--ink-2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.vertical {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  padding-inline: var(--space-2);
+  border-left: 1px solid var(--line-strong);
+  font-size: clamp(1.25rem, 0.9rem + 1vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  color: var(--ink);
+}
+
+@media (max-width: 1100px) {
+  .seal {
+    --seal-scale: 0.8;
+  }
+}
+
+@media (max-width: 900px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .seal {
+    --seal-scale: 0.6;
+    grid-column: 1 / -1;
+    justify-self: start;
+    width: 7rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vertical {
+    display: none;
+  }
+
+  .actions > * {
+    flex: 1 1 100%;
+  }
+
+  .actions :global(a) {
+    width: 100%;
+  }
+}

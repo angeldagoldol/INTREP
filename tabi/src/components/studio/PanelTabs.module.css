@@ -1,0 +1,84 @@
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  position: relative;
+  flex: 1;
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  min-width: 0;
+  min-height: 52px;
+  padding: 0.55rem 0.4rem 0.6rem;
+  color: var(--ink-3);
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.tab[aria-selected='true'] {
+  color: var(--ink);
+}
+
+.tab:focus-visible {
+  outline-offset: -2px;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.icon {
+  display: inline-grid;
+}
+
+.icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.badge {
+  min-width: 1.5em;
+  padding: 0.05em 0.4em;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-size: 0.95em;
+  text-align: center;
+  letter-spacing: 0;
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+
+.tab[aria-selected='true'] .jp {
+  color: var(--accent);
+}
+
+.indicator {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ink);
+}

@@ -1,0 +1,84 @@
+.petals {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  container-type: size;
+}
+
+.petal {
+  position: absolute;
+  top: 0;
+  left: var(--x);
+  width: var(--size);
+  animation: petal-fall var(--dur) linear var(--delay) infinite;
+  will-change: transform;
+}
+
+.sway {
+  display: block;
+  animation: petal-sway var(--sway) ease-in-out var(--delay) infinite alternate;
+}
+
+.sway svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  animation: petal-flutter calc(var(--sway) * 1.35) ease-in-out var(--delay) infinite alternate;
+}
+
+.petal path {
+  fill: var(--wa-sakura);
+}
+
+.petal[data-tone='1'] path {
+  fill: color-mix(in srgb, var(--wa-sakura) 55%, #fff);
+}
+
+.petal[data-tone='2'] path {
+  fill: color-mix(in srgb, var(--wa-sakura) 78%, var(--wa-beni));
+}
+
+.petals[data-paused] * {
+  animation-play-state: paused;
+}
+
+@keyframes petal-fall {
+  from {
+    transform: translate3d(0, -8cqh, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(var(--drift), 108cqh, 0) rotate(var(--spin));
+  }
+}
+
+@keyframes petal-sway {
+  from {
+    transform: translateX(-16px);
+  }
+  to {
+    transform: translateX(16px);
+  }
+}
+
+@keyframes petal-flutter {
+  from {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(62deg) rotateY(38deg);
+  }
+}
+
+/* Fewer petals on small screens. */
+@media (max-width: 640px) {
+  .petal:nth-child(2n) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .petals {
+    display: none;
+  }
+}

@@ -1,0 +1,33 @@
+.hanko {
+  --hanko-ink: var(--wa-shu);
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--hanko-size);
+  height: var(--hanko-size);
+  border: calc(var(--hanko-size) * 0.06) solid var(--hanko-ink);
+  color: var(--hanko-ink);
+  font-family: var(--font-jp);
+  font-weight: 800;
+  line-height: 1;
+  transform: rotate(-4deg);
+  /* Uneven ink: stamps never print perfectly. */
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23f)'/%3E%3C/svg%3E");
+  mask-size: 120px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23f)'/%3E%3C/svg%3E");
+  -webkit-mask-size: 120px;
+}
+
+.square {
+  border-radius: calc(var(--hanko-size) * 0.08);
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.inner {
+  writing-mode: vertical-rl;
+  font-size: calc(var(--hanko-size) * 0.62 / max(1, var(--hanko-chars) * 0.75));
+  letter-spacing: 0;
+}

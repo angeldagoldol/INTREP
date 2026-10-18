@@ -1,0 +1,263 @@
+.toolbar {
+  position: relative;
+  z-index: calc(var(--z-nav) - 2);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 60px;
+  padding: 8px var(--tool-gutter);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-elevated);
+}
+
+@media (min-width: 760px) {
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: var(--space-5);
+    min-height: 64px;
+  }
+}
+
+/* Tablets: the action group is wide, so a centred counter would leave the
+   title a sliver. Let the title column take the free space instead. */
+@media (min-width: 760px) and (max-width: 1099.98px) {
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: var(--space-4);
+  }
+}
+
+.start {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.back {
+  flex: none;
+  padding-inline: 0.7rem 0.9rem;
+}
+
+.back svg {
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .back:hover svg {
+    transform: translateX(-3px);
+  }
+}
+
+@media (max-width: 1099.98px) {
+  .back {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+  }
+
+  .backLabel {
+    display: none;
+  }
+}
+
+.rule {
+  flex: none;
+  width: 1px;
+  height: 28px;
+  margin-inline: var(--space-1);
+  background: var(--line-strong);
+}
+
+@media (max-width: 759.98px) {
+  .rule {
+    display: none;
+  }
+}
+
+.titleBlock {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.seal {
+  flex: none;
+}
+
+@media (max-width: 479.98px) {
+  .seal {
+    display: none;
+  }
+}
+
+.titleText {
+  min-width: 0;
+}
+
+.title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55em;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.98rem, 0.9rem + 0.35vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.titleMain {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.titleJp {
+  flex: none;
+  font-family: var(--font-jp);
+  font-size: 0.82em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+/* Below 1100px the seal already carries the kanji: give the title its room. */
+@media (max-width: 1099.98px) {
+  .titleJp {
+    display: none;
+  }
+}
+
+.org {
+  margin-top: 2px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--ink-3);
+}
+
+/* --- Page indicator --------------------------------------------------- */
+.indicator {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-width: 9.5rem;
+  text-align: center;
+}
+
+.count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45em;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.roll {
+  position: relative;
+  display: inline-grid;
+  overflow: hidden;
+  padding-block: 2px;
+}
+
+.now {
+  grid-area: 1 / 1;
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.total {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.caption {
+  max-width: 22rem;
+  overflow: hidden;
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--ink-3);
+}
+
+/* --- Actions ---------------------------------------------------------- */
+.end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+}
+
+/* Pressed toggles stay inked even under the kit's hover tint. */
+.end > .toggle[aria-pressed='true'],
+.end > .toggle[aria-pressed='true']:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.favorite .heart {
+  display: inline-grid;
+}
+
+.favorite[data-saved] {
+  color: var(--accent);
+}
+
+.favorite[data-saved] svg {
+  fill: currentColor;
+}
+
+.zoom {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  margin-inline: 4px;
+  padding-inline: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+}
+
+.zoomValue {
+  min-width: 3.4rem;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+  transition: background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+
+.zoomValue:hover:not(:disabled) {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.zoomValue:disabled {
+  cursor: default;
+}
+
+.plan {
+  margin-left: var(--space-2);
+}
+
+@media (max-width: 759.98px) {
+  .plan {
+    margin-left: 4px;
+    --btn-px: 0.85rem;
+  }
+}

@@ -1,0 +1,273 @@
+/* Sized from the nearest container (the hero stage): one panel is ~a third of it. */
+.scene {
+  --w: min(33cqi, 236px);
+  --h: calc(var(--w) * 1.414);
+  position: relative;
+  width: var(--w);
+  height: var(--h);
+  perspective: 1800px;
+  perspective-origin: 50% 35%;
+}
+
+.enter,
+.object,
+.middle {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.flap {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* Hinges sit on the middle panel's edges. */
+.left {
+  right: 100%;
+  transform-origin: 100% 50%;
+}
+
+.right {
+  left: 100%;
+  transform-origin: 0 50%;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--p-paper);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.middle > .face {
+  box-shadow:
+    0 1px 1px rgb(30 18 8 / 0.16),
+    0 24px 50px -18px rgb(30 18 8 / 0.45);
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+/* Light falls from the front: a flap turned away from it darkens. */
+.shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgb(34 20 10 / 0.55), rgb(34 20 10 / 1));
+}
+
+.shadeRight {
+  background: linear-gradient(270deg, rgb(34 20 10 / 0.55), rgb(34 20 10 / 1));
+}
+
+/* Contact shadow on the "desk" under the sheet. */
+.floor {
+  position: absolute;
+  left: -110%;
+  right: -110%;
+  bottom: -16%;
+  height: 16%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(var(--shadow-color) / 0.32), transparent);
+  transform-origin: 50% 50%;
+}
+
+/* --- Inside panels ------------------------------------------------------ */
+.panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 60% minmax(0, 1fr);
+  container-type: inline-size;
+  background: var(--p-paper);
+  color: var(--p-ink);
+  font-family: var(--font-sans);
+}
+
+.art {
+  position: relative;
+  overflow: hidden;
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  /* The photo's own credit is printed under the hero, not on the panel. */
+  --photo-color: var(--p-muted);
+}
+
+/* A breath of ink where the photograph meets the paper, as in print. */
+.plateEdge {
+  position: absolute;
+  inset: auto 0 0;
+  height: 18%;
+  background: linear-gradient(to top, rgb(34 20 10 / 0.18), transparent);
+  pointer-events: none;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4cqi;
+  min-height: 0;
+  padding: 5.5cqi 7.5cqi 5cqi;
+}
+
+.kicker {
+  font-family: var(--font-jp);
+  font-size: 4.4cqi;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  line-height: 1;
+  color: var(--p-accent);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 10cqi;
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.body {
+  font-size: 4cqi;
+  line-height: 1.45;
+  color: var(--p-muted);
+}
+
+.folio {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 2.4cqi;
+  border-top: max(0.5px, 0.35cqi) solid color-mix(in srgb, var(--p-ink) 22%, transparent);
+  font-family: var(--font-mono);
+  font-size: 3.3cqi;
+  letter-spacing: 0.14em;
+  color: var(--p-muted);
+}
+
+/* --- Front cover (outside of the left flap) ------------------------------ */
+.cover {
+  position: absolute;
+  inset: 0;
+  container-type: inline-size;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--p-ink) 7%, transparent), transparent 9%),
+    var(--p-paper);
+  color: var(--p-ink);
+}
+
+.coverMast {
+  position: absolute;
+  top: 8cqi;
+  left: 9cqi;
+  font-family: var(--font-mono);
+  font-size: 4cqi;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--p-muted);
+}
+
+.coverSun {
+  position: absolute;
+  top: 27cqi;
+  left: 12cqi;
+  width: 56cqi;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--p-accent);
+}
+
+.coverJp {
+  position: absolute;
+  top: 20cqi;
+  right: 9cqi;
+  font-size: 12.5cqi;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  color: var(--p-ink);
+}
+
+.coverEn {
+  position: absolute;
+  left: 9cqi;
+  bottom: 11cqi;
+  font-family: var(--font-display);
+  font-size: 9.5cqi;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.coverSeal {
+  position: absolute;
+  right: 9cqi;
+  bottom: 11cqi;
+  display: grid;
+  place-items: center;
+  width: 13cqi;
+  height: 13cqi;
+  border: 1cqi solid var(--p-accent);
+  border-radius: 1.2cqi;
+  font-family: var(--font-jp);
+  font-size: 8cqi;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--p-accent);
+  transform: rotate(-5deg);
+}
+
+/* --- Back panel (outside of the right flap) ------------------------------ */
+.backPanel {
+  position: absolute;
+  inset: 0;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2.4cqi;
+  padding: 10cqi 9cqi;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 7cqi, color-mix(in srgb, var(--p-ink) 6%, transparent) 7cqi calc(7cqi + 1px)),
+    var(--p-paper);
+  color: var(--p-ink);
+}
+
+.backJp {
+  font-family: var(--font-jp);
+  font-size: 11cqi;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--p-accent);
+}
+
+.backEn {
+  font-family: var(--font-display);
+  font-size: 6cqi;
+  font-style: italic;
+  line-height: 1.1;
+}
+
+.backRule {
+  width: 18cqi;
+  height: max(1px, 0.5cqi);
+  background: var(--p-ink);
+}
+
+.backSmall {
+  font-family: var(--font-mono);
+  font-size: 3.6cqi;
+  letter-spacing: 0.12em;
+  color: var(--p-muted);
+}

@@ -1,0 +1,105 @@
+/* The page is a size container: everything inside is measured in cqw
+   (1% of the page width), so layout and type scale together. Physical cqw
+   rather than logical cqi: inside vertical 縦書き text, cqi would resolve
+   against the vertical axis, which this inline-size container does not track. */
+.page {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.414;
+  container-type: inline-size;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--b-paper);
+  color: var(--b-ink);
+  font-family: var(--font-sans);
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+
+  /* Derived inks (resolved per use, so cqw refers to this page). */
+  --hair: max(0.5px, 0.16cqw);
+  --b-rule: color-mix(in srgb, var(--b-ink) 20%, transparent);
+  --b-rule-strong: color-mix(in srgb, var(--b-ink) 34%, transparent);
+  --b-body: color-mix(in srgb, var(--b-ink) 86%, var(--b-paper));
+  /* Focus rings follow the page's own ink, so they show on any paper. */
+  --focus: var(--b-ink);
+}
+
+/* Washi: a whisper of fibre and a soft vignette, cheap enough for thumbnails. */
+.page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 40%, transparent 62%, color-mix(in srgb, var(--b-ink) 7%, transparent)),
+    linear-gradient(90deg, color-mix(in srgb, var(--b-ink) 4%, transparent), transparent 6%);
+  /* A faint trim line keeps dark pages defined on dark backgrounds. */
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--b-ink) 9%, transparent);
+}
+
+/* A photo page is the photograph: no washi vignette over the picture. Half of
+   a spread drops the trim line too, so nothing but the gutter crosses it. */
+.page[data-type='photo']::after {
+  background: none;
+}
+
+.page[data-spread-half]::after {
+  box-shadow: none;
+}
+
+.sheet {
+  /* Page margins, also read by blocks that bleed a photo to the trim. */
+  --pad-top: 7cqw;
+  --pad-x: 8.5cqw;
+  --pad-bottom: 5.5cqw;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+  font-size: 2.4cqw;
+  line-height: 1.5;
+}
+
+.bleed {
+  display: block;
+  padding: 0;
+}
+
+/* A page whose photograph runs off the top trim (place): no running head row. */
+.headless {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.bleed > .body {
+  position: absolute;
+  inset: 0;
+}
+
+.body {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.body > * {
+  flex: 1;
+  min-height: 0;
+}
+
+/* While copy is fitted (blocks/fit.js), measure the layout as it rests:
+   entrance transforms in flight must not count as overflow. */
+.page[data-fitting] [data-fit],
+.page[data-fitting] [data-fit] * {
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  rotate: none !important;
+}
+
+.page :focus-visible {
+  outline: max(2px, 0.3cqw) solid var(--focus);
+  outline-offset: max(2px, 0.4cqw);
+}

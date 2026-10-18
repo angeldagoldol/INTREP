@@ -1,0 +1,26 @@
+.tilt {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    rgb(255 255 255 / 0.22),
+    transparent 45%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.tilt:hover .glare {
+  opacity: 1;
+}

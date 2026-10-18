@@ -1,0 +1,168 @@
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.timeRow {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.priceRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.statRow {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) 4.5rem;
+  align-items: start;
+  gap: var(--space-2);
+}
+
+.artRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.labelled {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.miniLabel {
+  font-size: var(--fs-sm);
+  font-weight: 560;
+  line-height: var(--lh-base);
+  color: var(--ink);
+}
+
+.thumb {
+  display: block;
+  width: 46px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow:
+    0 0 0 1px var(--line-strong),
+    var(--shadow-sm);
+}
+
+.thumb svg {
+  width: 100%;
+  height: 100%;
+}
+
+.artCard {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+}
+
+.artCard .thumb {
+  width: 76px;
+}
+
+.artMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.artName {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  line-height: 1.2;
+}
+
+.artName span {
+  font-family: var(--font-jp);
+  font-size: 0.8em;
+  color: var(--ink-3);
+}
+
+.artActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.artHint {
+  font-size: var(--fs-xs);
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+
+/* Place name and its Japanese name side by side; the Japanese box is narrower. */
+.nameRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.factRow {
+  display: grid;
+  gap: 2px;
+}
+
+/* The fact's label, set as the page prints it: small mono capitals on a hairline. */
+.factLabel input {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 1px dashed var(--line-strong);
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.factLabel input::placeholder {
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.factLabel input:focus {
+  border-bottom: 1px solid var(--ink);
+  box-shadow: none;
+  color: var(--ink);
+}
+
+.listNote {
+  flex-basis: 100%;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+@media (max-width: 380px) {
+  .nameRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

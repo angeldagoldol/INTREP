@@ -1,0 +1,178 @@
+.features {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+  /* Rows share the height but never shrink below their text (see fit.js). */
+  grid-template-rows: repeat(var(--rows, 2), minmax(auto, 1fr));
+  column-gap: 5.5cqw;
+  margin: 5cqw 0 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+}
+
+.grid[data-columns='1'] {
+  --cols: 1;
+  --num: 4.6cqw;
+}
+
+.grid[data-rows='3'] {
+  --num: 4.4cqw;
+}
+
+/* Three rows of cells: a little less air and type. */
+.grid[data-rows='3'] .copy {
+  padding-top: 2.2cqw;
+}
+
+.grid[data-rows='3'] {
+  --text: 2.3cqw;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 6cqw minmax(0, 1fr);
+  /* The copy row never shrinks below its text, so a crowded grid overflows
+     (and is fitted) rather than letting one cell run into the next. */
+  grid-template-rows: auto 1fr;
+  column-gap: 2.4cqw;
+  padding: 2.4cqw 0 calc(2.4cqw * var(--fit, 1));
+  border-top: var(--hair) solid var(--b-rule);
+}
+
+.num {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: var(--num, 6cqw);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--b-accent-text);
+}
+
+.icon {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  width: 6.4cqw;
+  height: 6.4cqw;
+  border: var(--hair) solid var(--b-rule);
+  border-radius: 50%;
+  color: var(--b-ink);
+}
+
+.icon svg {
+  width: 3.2cqw;
+  height: 3.2cqw;
+  stroke-width: 1.6;
+}
+
+.copy {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  padding-top: calc(3cqw * var(--fit, 1));
+}
+
+.title {
+  margin: 0;
+  font-family: var(--b-font);
+  font-size: calc(var(--title, 3.2cqw) * var(--fit, 1));
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--b-ink);
+}
+
+[data-typeface='sans'] .title {
+  font-weight: 650;
+}
+
+.text {
+  margin: calc(1.2cqw * var(--fit, 1)) 0 0;
+  font-size: calc(var(--text, 2.45cqw) * var(--fit, 1));
+  line-height: 1.48;
+  color: var(--b-body);
+}
+
+/* One column: icon rail on the left, copy beside it. */
+.grid[data-columns='1'] .item {
+  grid-template-columns: 6cqw 9cqw minmax(0, 1fr);
+  grid-template-rows: auto;
+  align-items: start;
+  padding-top: 3cqw;
+}
+
+.grid[data-columns='1'] .icon {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.grid[data-columns='1'] .copy {
+  grid-column: 3;
+  grid-row: 1;
+  padding-top: 0.6cqw;
+}
+
+.grid[data-columns='1'] {
+  --title: 3.8cqw;
+  --text: 2.6cqw;
+}
+
+/* With photos: a small plate per item, its numeral set on the photograph. */
+.thumb {
+  position: relative;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: block;
+  height: 13cqw;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--b-ink) 6%, var(--b-paper));
+}
+
+.thumb > svg,
+.thumb > .photo {
+  position: absolute;
+  inset: 0;
+}
+
+.thumbNum {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 5.4cqw;
+  height: 5.4cqw;
+  background: var(--b-paper);
+  font-size: 2.8cqw;
+  font-weight: 600;
+  color: var(--b-accent-text);
+}
+
+.grid[data-photos] .item {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.grid[data-photos][data-columns='1'] .item {
+  grid-template-columns: 30cqw minmax(0, 1fr);
+  column-gap: 4cqw;
+}
+
+.grid[data-photos][data-columns='1'] .thumb {
+  grid-column: 1;
+  height: 100%;
+  min-height: 14cqw;
+}
+
+.grid[data-photos][data-columns='1'] .copy {
+  grid-column: 2;
+}

@@ -1,0 +1,128 @@
+.iconButton {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--ib-size, 40px);
+  height: var(--ib-size, 40px);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+
+.iconButton svg {
+  width: var(--ib-icon, 18px);
+  height: var(--ib-icon, 18px);
+}
+
+.iconButton:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.iconButton:disabled {
+  opacity: 0.35;
+}
+
+.sm { --ib-size: 32px; --ib-icon: 16px; }
+.md { --ib-size: 40px; --ib-icon: 18px; }
+.lg { --ib-size: 52px; --ib-icon: 22px; }
+
+.ghost:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.outline {
+  border-color: var(--line-strong);
+}
+
+.outline:hover:not(:disabled) {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.solid {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.solid:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.accent:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* Pressed toggles. Two classes + :not() so it outranks `.ghost:hover` and
+   friends: a pressed button must never turn invisible under the pointer. */
+.iconButton.active:not(:disabled),
+.iconButton.active:hover:not(:disabled) {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* --- CSS-only tooltip --------------------------------------------------- */
+/* The bubble is only generated (content: …) while hovered or focused, so a
+   hidden tooltip never widens the page: an invisible one next to the screen
+   edge used to cause horizontal scroll on phones. It fades in with a short
+   keyframe animation (delayed on hover so sweeping across a toolbar stays
+   quiet). */
+.iconButton[data-tooltip]::after {
+  position: absolute;
+  z-index: var(--z-raised);
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.iconButton[data-side='bottom']::after { top: calc(100% + 8px); left: 50%; transform: translateX(-50%); --tt-from: 0 -4px; }
+.iconButton[data-side='top']::after { bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); --tt-from: 0 4px; }
+.iconButton[data-side='left']::after { right: calc(100% + 8px); top: 50%; transform: translateY(-50%); --tt-from: 4px 0; }
+.iconButton[data-side='right']::after { left: calc(100% + 8px); top: 50%; transform: translateY(-50%); --tt-from: -4px 0; }
+
+@media (hover: hover) {
+  .iconButton[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    animation: tooltip-in var(--dur-2) var(--ease-out) 350ms both;
+  }
+}
+
+.iconButton[data-tooltip]:focus-visible::after {
+  content: attr(data-tooltip);
+  animation: tooltip-in var(--dur-2) var(--ease-out) both;
+}
+
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    translate: var(--tt-from, 0 0);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}

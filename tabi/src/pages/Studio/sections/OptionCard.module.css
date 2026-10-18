@@ -1,0 +1,125 @@
+.item {
+  min-width: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out),
+    transform var(--dur-3) var(--ease-out);
+}
+
+.card:hover,
+.card:focus-within {
+  border-color: var(--ink-3);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+.card:focus-within {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.art {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+  border-right: 1px solid var(--line);
+  background-color: var(--bg-sunken);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+}
+
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2em 0.6em;
+  font-size: var(--fs-xl);
+  line-height: 1.05;
+}
+
+.choose {
+  text-align: left;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.choose::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.choose:focus-visible {
+  outline: none;
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: 0.55em;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.text {
+  max-width: 34ch;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: auto;
+  padding-top: var(--space-3);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+
+.cta svg {
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.card:hover .cta svg,
+.card:focus-within .cta svg {
+  transform: translateX(4px);
+}
+
+@media (max-width: 559.98px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .art {
+    min-height: 170px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .body {
+    padding: var(--space-5);
+  }
+}

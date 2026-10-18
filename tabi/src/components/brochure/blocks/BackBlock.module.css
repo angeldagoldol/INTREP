@@ -1,0 +1,180 @@
+.back {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 33% minmax(0, 1fr);
+}
+
+.band {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 0.9cqw solid var(--b-accent);
+}
+
+.band > * {
+  position: absolute;
+  inset: 0;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(2cqw * var(--fit, 1));
+  min-height: 0;
+  overflow: hidden;
+  padding: 6cqw 8cqw 6.4cqw;
+}
+
+.title {
+  font-size: calc(var(--fs, 6.6cqw) * var(--fit, 1));
+}
+
+.body {
+  max-width: 68cqw;
+  margin-top: 0.4cqw;
+  font-size: calc(2.35cqw * var(--fit, 1));
+}
+
+.tagline {
+  margin: 0.4cqw 0 0;
+  font-family: var(--font-mono);
+  font-size: calc(1.5cqw * var(--fit, 1));
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--b-accent-text);
+}
+
+.sectionTitle {
+  display: flex;
+  gap: 1.6cqw;
+  align-items: baseline;
+  margin: 0 0 calc(1.2cqw * var(--fit, 1));
+  font-family: var(--font-mono);
+  font-size: calc(1.3cqw * var(--fit, 1));
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--b-muted-text);
+}
+
+.sectionTitle span:first-child {
+  font-size: calc(2cqw * var(--fit, 1));
+  letter-spacing: 0.3em;
+  color: var(--b-ink);
+}
+
+/* 奥付: the colophon printed on the last page of a Japanese book. */
+.colophon {
+  margin-top: auto;
+  padding-top: calc(2.2cqw * var(--fit, 1));
+  border-top: 0.35cqw solid var(--b-ink);
+}
+
+.colophonBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 5cqw;
+}
+
+.rows {
+  display: grid;
+  margin: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 22cqw minmax(0, 1fr);
+  gap: 2cqw;
+  padding: calc(0.95cqw * var(--fit, 1)) 0;
+  border-top: var(--hair) solid var(--b-rule);
+}
+
+.row dt {
+  display: flex;
+  gap: 1.2cqw;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: calc(1.25cqw * var(--fit, 1));
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--b-muted-text);
+}
+
+.row dt span {
+  font-size: calc(1.65cqw * var(--fit, 1));
+  letter-spacing: 0.1em;
+  color: var(--b-ink);
+}
+
+.row dd {
+  margin: 0;
+  font-size: calc(1.8cqw * var(--fit, 1));
+  line-height: 1.4;
+  color: var(--b-ink);
+  overflow-wrap: anywhere;
+}
+
+.sealWrap {
+  padding-bottom: 0.6cqw;
+}
+
+.content .seal {
+  --hanko-size: 12cqw !important;
+  --hanko-ink: var(--b-accent);
+}
+
+/* 写真: every photograph's credit, small, in two columns. */
+.credits {
+  padding-top: calc(1.6cqw * var(--fit, 1));
+  border-top: var(--hair) solid var(--b-rule-strong);
+}
+
+.creditList {
+  columns: 2;
+  column-gap: 4cqw;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.creditList li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.9cqw;
+  padding: calc(0.35cqw * var(--fit, 1)) 0;
+  break-inside: avoid;
+  font-size: calc(1.15cqw * var(--fit, 1));
+  line-height: 1.4;
+}
+
+.creditPlace {
+  font-weight: 600;
+  color: var(--b-ink);
+}
+
+.credit {
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: calc(1.05cqw * var(--fit, 1));
+  letter-spacing: 0.02em;
+  color: var(--b-muted-text);
+}
+
+/* A printer's colour bar along the foot of the page. */
+.proof {
+  position: absolute;
+  right: 8cqw;
+  bottom: 2.6cqw;
+  display: flex;
+  border: var(--hair) solid var(--b-rule);
+}
+
+.proof span {
+  width: 2cqw;
+  height: 1.2cqw;
+}

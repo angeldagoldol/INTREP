@@ -1,0 +1,165 @@
+/* A photograph pinned up beside a page's masthead, inside printer's crop marks. */
+.plate {
+  position: relative;
+  align-self: stretch;
+  display: grid;
+  align-content: end;
+  width: clamp(15rem, 5rem + 17vw, 25rem);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  --mark: linear-gradient(var(--ink-3), var(--ink-3));
+  background:
+    var(--mark) top left / 14px 1px no-repeat,
+    var(--mark) top left / 1px 14px no-repeat,
+    var(--mark) top right / 14px 1px no-repeat,
+    var(--mark) top right / 1px 14px no-repeat,
+    var(--mark) bottom left / 14px 1px no-repeat,
+    var(--mark) bottom left / 1px 14px no-repeat,
+    var(--mark) bottom right / 14px 1px no-repeat,
+    var(--mark) bottom right / 1px 14px no-repeat;
+}
+
+.figure {
+  display: grid;
+  gap: var(--space-5);
+  margin: 0;
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-xs);
+  background: var(--bg-sunken);
+  box-shadow: var(--shadow-md);
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* 短冊: the Japanese word on a paper slip hung from the top edge, as on the place pages. */
+.slip {
+  position: absolute;
+  top: 0;
+  right: var(--space-4);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  padding: 1.15rem 0.5rem 0.8rem;
+  background: var(--bg);
+  box-shadow:
+    inset 0 0 0 3px var(--bg),
+    inset 0 0 0 4px var(--line-strong),
+    0 6px 18px color-mix(in srgb, var(--wa-sumi) 24%, transparent);
+}
+
+.slip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent);
+}
+
+.slipText {
+  font-size: clamp(1.35rem, 0.9rem + 1vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+/* The seal stamped half off the picture's lower corner. */
+.seal {
+  position: absolute;
+  left: calc(var(--space-3) * -1);
+  bottom: calc(var(--space-3) * -1);
+  z-index: 1;
+}
+
+.caption {
+  display: grid;
+  gap: 0.35rem;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.note em {
+  display: block;
+  margin-bottom: 0.1em;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-style: italic;
+  color: var(--ink);
+}
+
+.place {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.credit {
+  font-size: var(--fs-2xs);
+}
+
+/* Phones: a wide band under the masthead's copy, the place and credit over its foot. */
+@media (max-width: 760px) {
+  .plate {
+    width: auto;
+    padding: 0;
+    background: none;
+  }
+
+  .figure {
+    position: relative;
+    gap: 0;
+  }
+
+  .frame {
+    aspect-ratio: 5 / 2;
+  }
+
+  .slip {
+    right: var(--space-3);
+    padding: 0.8rem 0.35rem 0.55rem;
+  }
+
+  .slipText {
+    font-size: var(--fs-base);
+  }
+
+  .seal {
+    top: calc(var(--space-2) * -1);
+    bottom: auto;
+    left: calc(var(--space-2) * -1);
+  }
+
+  .caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    gap: 0.1rem;
+    padding: 2rem 3.25rem 0.55rem var(--space-3);
+    border-radius: 0 0 var(--radius-xs) var(--radius-xs);
+    background: linear-gradient(to top, rgb(18 14 10 / 0.78), rgb(18 14 10 / 0.42) 55%, transparent);
+    color: rgb(255 248 236 / 0.86);
+  }
+
+  .place {
+    color: #fff8ec;
+  }
+
+  .note {
+    display: none;
+  }
+}

@@ -1,0 +1,24 @@
+.viewer {
+  position: relative;
+}
+
+/* 終 (owari): the end mark of a story, with a way back to the book. */
+.end {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-6) var(--space-9);
+}
+
+.endMark {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  font-family: var(--font-jp);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink-2);
+}

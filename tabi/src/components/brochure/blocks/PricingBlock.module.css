@@ -1,0 +1,163 @@
+.pricing {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5cqw;
+}
+
+.plans {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 0.35cqw solid var(--b-ink);
+}
+
+.plan {
+  position: relative;
+  padding: calc(3cqw * var(--fit, 1)) 0 calc(3.2cqw * var(--fit, 1));
+  border-bottom: var(--hair) solid var(--b-rule-strong);
+}
+
+/* The recommended line: a tinted band reaching into the margins. */
+.plan[data-highlight] {
+  margin-inline: -3cqw;
+  padding-inline: 3cqw;
+  background: var(--b-soft);
+  border-bottom-color: transparent;
+}
+
+.line {
+  display: flex;
+  align-items: baseline;
+  gap: 2cqw;
+}
+
+.name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6cqw 1.6cqw;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--b-font);
+  font-size: calc(3.5cqw * var(--fit, 1));
+  font-weight: 450;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--b-ink);
+  text-wrap: balance;
+}
+
+[data-typeface='sans'] .name {
+  font-weight: 650;
+}
+
+.tag {
+  flex: none;
+  padding: 0.5cqw 1cqw 0.45cqw;
+  border-radius: 0.4cqw;
+  background: var(--b-accent);
+  color: var(--b-on-accent);
+  font-family: var(--font-jp);
+  font-size: calc(1.45cqw * var(--fit, 1));
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  white-space: nowrap;
+  translate: 0 -0.5cqw;
+}
+
+/* Dotted leader from the name to the price, as on a printed menu. */
+.leader {
+  flex: 1 1 4cqw;
+  min-width: 4cqw;
+  height: 0;
+  border-bottom: max(1px, 0.3cqw) dotted var(--b-rule-strong);
+  translate: 0 -0.8cqw;
+}
+
+.price {
+  flex: none;
+  margin: 0;
+  font-family: var(--b-font);
+  font-size: calc(4.8cqw * var(--fit, 1));
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+  color: var(--b-ink);
+}
+
+.plan[data-highlight] .price {
+  color: var(--b-accent-on-soft);
+}
+
+.period {
+  margin: calc(1cqw * var(--fit, 1)) 0 0;
+  font-family: var(--font-mono);
+  font-size: calc(1.4cqw * var(--fit, 1));
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--b-muted-text);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: calc(0.7cqw * var(--fit, 1)) 4cqw;
+  margin: calc(2cqw * var(--fit, 1)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.features[data-many] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.features li {
+  position: relative;
+  padding-left: 2.4cqw;
+  font-size: calc(1.95cqw * var(--fit, 1));
+  line-height: 1.42;
+  color: var(--b-body);
+  text-wrap: pretty;
+}
+
+.features li::before {
+  content: '';
+  position: absolute;
+  left: 0.2cqw;
+  top: 0.68em;
+  width: 1.1cqw;
+  height: max(1px, 0.25cqw);
+  background: var(--b-accent);
+}
+
+.note {
+  display: block;
+  margin: auto 0 0;
+  padding-top: calc(3cqw * var(--fit, 1));
+  font-size: calc(1.8cqw * var(--fit, 1));
+  line-height: 1.5;
+  color: var(--b-muted-text);
+  text-wrap: pretty;
+}
+
+.mark {
+  margin-right: 0.8cqw;
+  font-family: var(--font-jp);
+  color: var(--b-accent-text);
+}

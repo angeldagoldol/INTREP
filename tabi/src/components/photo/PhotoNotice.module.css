@@ -1,0 +1,112 @@
+/* The photo notice: a small paper slip in the bottom-left corner (toasts use
+   the bottom-right), above the page but below modals' scrims. */
+.notice {
+  position: fixed;
+  left: max(var(--gutter), env(safe-area-inset-left));
+  bottom: max(var(--gutter), env(safe-area-inset-bottom));
+  z-index: var(--z-toast);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-2) var(--space-3);
+  width: min(380px, calc(100vw - var(--gutter) * 2));
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+  animation: rise var(--dur-3) var(--ease-out) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice {
+    animation-name: fade;
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.body {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.text,
+.hint {
+  margin: 2px 0 0;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.hint {
+  margin-top: var(--space-2);
+  color: var(--ink-3);
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--ink-2);
+}
+
+.close:hover {
+  background: var(--bg-sunken);
+  color: var(--ink);
+}
+
+.close:focus-visible,
+.action:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.actions {
+  grid-column: 2 / -1;
+}
+
+.action {
+  padding: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media print {
+  .notice {
+    display: none;
+  }
+}

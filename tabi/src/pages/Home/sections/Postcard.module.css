@@ -1,0 +1,311 @@
+/* A hagaki on the desk. Left, the message half: the translation and its
+   romaji. Right, the address half: stamp, postmark and postcode boxes along
+   the top, the original poem running vertically where an address would,
+   and the sender underneath. */
+.card {
+  --pad: clamp(1.25rem, 0.8rem + 1.6vw, 2.5rem);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'message frank'
+    'message poem'
+    'romaji  from';
+  column-gap: 0;
+  margin: 0;
+  min-height: 100%;
+  padding: var(--pad);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 3%, transparent), transparent 18%),
+    var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+}
+
+/* The address half is ruled off from the message half, as on a real card. */
+.franking,
+.poem,
+.from {
+  margin-left: var(--pad);
+  padding-left: var(--pad);
+  border-left: 1px solid var(--line-strong);
+}
+
+/* --- Message half: the translation ------------------------------------- */
+.message {
+  grid-area: message;
+  display: grid;
+  align-content: center;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+}
+
+.en {
+  font-family: var(--font-headline, var(--font-display));
+  font-size: clamp(1.4rem, 0.95rem + 1.35vw, 2.2rem);
+  font-weight: 360;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.enLine {
+  display: block;
+}
+
+/* The second phrase steps in, as haiku are often set in translation. */
+.enLine:nth-child(2) {
+  padding-left: 1em;
+}
+
+.credit {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.romaji {
+  grid-area: romaji;
+  align-self: end;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-sm);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* --- Address half: franking -------------------------------------------- */
+.franking {
+  grid-area: frank;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding-bottom: var(--space-4);
+}
+
+/* Perforated edge: the paper shows through the holes around the art. */
+.stamp {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: none;
+  width: clamp(3.9rem, 3rem + 2vw, 5.25rem);
+  padding: 6px 6px 4px;
+  background: radial-gradient(circle, transparent 2.6px, var(--page-paper) 3.2px) -5px -5px / 10px 10px;
+  filter: drop-shadow(0 1px 1px rgb(var(--shadow-color) / 0.2));
+  transform: rotate(-2deg);
+}
+
+.stampArt {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.stampText {
+  padding-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-align: center;
+  color: color-mix(in srgb, var(--wa-sumi) 70%, var(--page-paper));
+}
+
+/* The cancellation lands half on the stamp, half on the card. */
+.postmark {
+  position: absolute;
+  z-index: 2;
+  top: 1.6rem;
+  left: calc(var(--pad) + clamp(3.9rem, 3rem + 2vw, 5.25rem) - 2.4rem);
+  width: clamp(6rem, 4.6rem + 3.6vw, 8rem);
+  color: var(--ink-3);
+  transform: rotate(-8deg);
+  opacity: 0.85;
+}
+
+.waves path,
+.ring,
+.ringInner {
+  fill: none;
+  stroke: currentColor;
+}
+
+.waves path {
+  stroke-width: 1.4;
+}
+
+.ring {
+  stroke-width: 1.6;
+}
+
+.ringInner {
+  stroke-width: 0.8;
+}
+
+.town,
+.date {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+}
+
+.date {
+  font-size: 8.5px;
+}
+
+/* 〒 □□□-□□□□ — the postcode boxes printed on every hagaki, left blank. */
+.postcode {
+  display: flex;
+  gap: 3px;
+  margin-left: auto;
+}
+
+.box {
+  width: 0.72rem;
+  height: 1rem;
+  border: 1px solid color-mix(in srgb, var(--wa-shu) 72%, transparent);
+}
+
+.box[data-gap] {
+  margin-left: 0.35rem;
+}
+
+/* --- Address half: the poem, 縦書き --------------------------------------- */
+.poem {
+  grid-area: poem;
+  display: flex;
+  justify-content: flex-end;
+  margin-block: 0;
+  margin-right: 0;
+  padding-block: var(--space-2) var(--space-5);
+}
+
+.poemText {
+  writing-mode: vertical-rl;
+  font-family: var(--font-jp);
+  font-size: clamp(1.45rem, 1.05rem + 1.1vw, 2.15rem);
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.12em;
+}
+
+/* Each phrase is a column, right to left, each set a little lower than the
+   last (chirashi-gaki, "scattered writing"). */
+.poemLine {
+  display: block;
+  white-space: nowrap;
+}
+
+.poemLine:nth-child(2) {
+  margin-inline-start: 1em;
+}
+
+.poemLine:nth-child(3) {
+  margin-inline-start: 2em;
+}
+
+/* --- Address half: the sender ------------------------------------------ */
+.from {
+  grid-area: from;
+  display: grid;
+  gap: 0.2rem;
+  align-self: end;
+  padding-top: var(--space-3);
+}
+
+.fromLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.poet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.6em;
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-lg);
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.poetJp {
+  font-family: var(--font-jp);
+  font-size: 0.72em;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+}
+
+.place {
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.today,
+.year {
+  color: var(--ink-3);
+}
+
+.today {
+  display: block;
+  font-size: var(--fs-xs);
+}
+
+.year {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.06em;
+}
+
+/* --- Phones: the address half on top, the message under it -------------- */
+@media (max-width: 680px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      'frank'
+      'poem'
+      'from'
+      'message'
+      'romaji';
+  }
+
+  .franking,
+  .poem,
+  .from {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .poem {
+    justify-content: center;
+    padding-block: var(--space-3) var(--space-4);
+  }
+
+  .from {
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .message {
+    padding-block: var(--space-5) var(--space-4);
+  }
+
+  .postmark {
+    left: calc(clamp(3.9rem, 3rem + 2vw, 5.25rem) - 2.4rem);
+    width: 6rem;
+  }
+}

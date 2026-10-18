@@ -1,0 +1,95 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.label {
+  font-size: var(--fs-sm);
+  font-weight: 560;
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-right: 2px;
+}
+
+.row + .row {
+  border-top: 1px dashed var(--line);
+}
+
+.bullet {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  margin-left: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  padding: 0 0.6rem;
+  border: 0;
+  background: transparent;
+  font-size: var(--fs-sm);
+}
+
+.input:focus {
+  outline: none;
+}
+
+.row:focus-within {
+  background: var(--accent-soft);
+}
+
+.add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  align-self: flex-start;
+  min-height: 36px;
+  padding: 0 0.6rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  font-weight: 560;
+  color: var(--ink-2);
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out);
+}
+
+.add:hover:not(:disabled) {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.add:disabled {
+  opacity: 0.6;
+}

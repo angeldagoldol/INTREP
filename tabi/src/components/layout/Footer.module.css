@@ -1,0 +1,433 @@
+/* data-theme="dark" on the element scopes the ink tokens to the footer, so it
+   reads as a sumi band in both themes. */
+.footer {
+  position: relative;
+  overflow: hidden;
+  padding-top: clamp(4.5rem, 3rem + 5vw, 8rem);
+  background: var(--wa-sumi);
+  color: var(--ink);
+}
+
+/* Seigaiha (青海波) wave edge where the paper meets the ink. */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background: var(--line-strong);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cg fill='none' stroke='black' stroke-width='1'%3E%3Cpath d='M1 14a13 13 0 0 1 26 0M5.5 14a8.5 8.5 0 0 1 17 0M10 14a4 4 0 0 1 8 0'/%3E%3C/g%3E%3C/svg%3E")
+    repeat-x 0 0 / 28px 14px;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cg fill='none' stroke='black' stroke-width='1'%3E%3Cpath d='M1 14a13 13 0 0 1 26 0M5.5 14a8.5 8.5 0 0 1 17 0M10 14a4 4 0 0 1 8 0'/%3E%3C/g%3E%3C/svg%3E")
+    repeat-x 0 0 / 28px 14px;
+  transform: scaleY(-1);
+  opacity: 0.6;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr) auto;
+  grid-template-areas: 'about columns proverb';
+  align-items: start;
+  gap: var(--space-8) var(--space-7);
+}
+
+/* --- About + letters ---------------------------------------------------- */
+.about {
+  grid-area: about;
+}
+
+.statement {
+  max-width: 11ch;
+  font-size: var(--fs-2xl);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.statement em {
+  color: var(--accent);
+}
+
+.blurb {
+  max-width: 38ch;
+  margin-top: var(--space-5);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.blurb [lang='ja'] {
+  font-family: var(--font-jp);
+  color: var(--ink);
+}
+
+.letters {
+  max-width: 30rem;
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+.lettersTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.lettersNote {
+  margin: 0.4rem 0 var(--space-4);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.creditsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.25rem 0.3rem 0.25rem 1.1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out);
+}
+
+.creditsJp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.creditsArrow {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  padding: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.creditsLink:hover {
+  border-color: var(--ink);
+  background: rgb(243 238 228 / 0.06);
+}
+
+.creditsLink:hover .creditsArrow {
+  transform: translateX(3px);
+}
+
+.livePhotos {
+  margin-top: var(--space-5);
+}
+
+/* --- Link columns ------------------------------------------------------- */
+.columns {
+  grid-area: columns;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+}
+
+.columnTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7em;
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.columnJp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: none;
+  color: var(--accent);
+}
+
+.links {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 40px;
+  padding-block: 0.55rem;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+.linkLabel {
+  position: relative;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+/* A brush tick slides in ahead of the hovered link. */
+.linkLabel::before {
+  content: '';
+  position: absolute;
+  top: 0.68em;
+  left: -12px;
+  width: 7px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--ink);
+}
+
+.link:hover .linkLabel,
+.link:focus-visible .linkLabel {
+  transform: translateX(12px);
+}
+
+.link:hover .linkLabel::before,
+.link:focus-visible .linkLabel::before {
+  transform: scaleX(1);
+}
+
+.linkJp {
+  flex: none;
+  font-family: var(--font-jp);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+/* --- Proverb (縦書き) ---------------------------------------------------- */
+.proverb {
+  grid-area: proverb;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.proverbJp {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--ink);
+}
+
+.proverbEn {
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  font-size: var(--fs-2xs);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+/* --- Now in Japan + small print ----------------------------------------- */
+.nowWrap {
+  margin-top: var(--space-9);
+}
+
+.now {
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-5);
+}
+
+.small {
+  max-width: 62ch;
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.small a {
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+}
+
+.small a:hover {
+  color: var(--ink);
+}
+
+/* Small print, appearance, back to top: the switch takes the middle. */
+.appearance {
+  margin-left: auto;
+}
+
+/* Phones: small print on its own line, then the switch and "Back to top". */
+@media (max-width: 599.98px) {
+  .appearance {
+    margin-left: 0;
+  }
+}
+
+.toTop {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 44px;
+  padding: 0.25rem 0.3rem 0.25rem 1.1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--ink);
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out);
+}
+
+.toTopJp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+.toTopIcon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.toTop:hover {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+
+.toTop:hover .toTopIcon {
+  transform: translateY(-3px);
+}
+
+.toTop:active .toTopIcon {
+  transform: translateY(0) scale(0.92);
+}
+
+/* --- Giant wordmark, cropped by the bottom edge -------------------------- */
+.wordmark {
+  overflow: hidden;
+  margin-top: var(--space-4);
+  pointer-events: none;
+  user-select: none;
+}
+
+.wordmarkInner {
+  display: flex;
+  align-items: flex-start;
+  height: clamp(5rem, 19vw, 19rem);
+}
+
+.giant {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(6.5rem, 25vw, 25rem);
+  font-weight: 300;
+  line-height: 0.8;
+  margin-right: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.25px color-mix(in srgb, var(--ink) 38%, transparent);
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 0,
+    'WONK' 0;
+}
+
+.giantJp {
+  margin-left: auto;
+  font-family: var(--font-jp);
+  font-size: clamp(5.5rem, 21vw, 21rem);
+  font-weight: 800;
+  line-height: 0.95;
+  color: var(--accent);
+  -webkit-text-stroke: 0;
+}
+
+/* --- Responsive --------------------------------------------------------- */
+@media (max-width: 1099.98px) {
+  .top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'about proverb'
+      'columns columns';
+  }
+}
+
+@media (max-width: 699.98px) {
+  .top {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'about'
+      'columns';
+    gap: var(--space-7);
+  }
+
+  .proverb {
+    display: none;
+  }
+
+  .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--space-5);
+  }
+
+  .columns > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  .linkJp {
+    display: none;
+  }
+
+  .nowWrap {
+    margin-top: var(--space-8);
+  }
+}

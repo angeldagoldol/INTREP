@@ -1,0 +1,234 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.big {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 60px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out);
+}
+
+.row:hover {
+  border-color: var(--line-strong);
+}
+
+.row[data-selected] {
+  border-color: var(--ink);
+  background: var(--bg-elevated);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.grip {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  width: 26px;
+  color: var(--ink-3);
+  cursor: grab;
+  touch-action: none;
+}
+
+.grip:active {
+  cursor: grabbing;
+}
+
+.grip:hover {
+  color: var(--ink);
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1.4rem auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  min-height: 58px;
+  padding: var(--space-2) var(--space-2) var(--space-2) 0;
+  text-align: left;
+}
+
+.main:focus-visible {
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+.number {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.row[data-selected] .number {
+  color: var(--accent);
+}
+
+.typeIcon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  color: var(--ink-2);
+}
+
+.row[data-selected] .typeIcon {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.heading {
+  overflow: hidden;
+  font-size: var(--fs-sm);
+  font-weight: 580;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.type {
+  overflow: hidden;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.type span {
+  font-family: var(--font-jp);
+}
+
+.actions {
+  display: flex;
+  padding-right: 4px;
+}
+
+/* With a mouse, the actions float over the row's end on hover or focus,
+   so titles keep the full width the rest of the time. */
+@media (hover: hover) {
+  .actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    padding-left: 2rem;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    background: linear-gradient(to right, transparent, var(--surface) 1.75rem);
+    opacity: 0;
+    transform: translateX(6px);
+    transition:
+      opacity var(--dur-2) var(--ease-out),
+      transform var(--dur-2) var(--ease-out);
+    pointer-events: none;
+  }
+
+  .row[data-selected] .actions {
+    background: linear-gradient(to right, transparent, var(--bg-elevated) 1.75rem);
+  }
+
+  .row:hover .actions,
+  .row:focus-within .actions {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Only the buttons take clicks; the fade behind them lets clicks reach the row. */
+  .row:hover .actions > *,
+  .row:focus-within .actions > * {
+    pointer-events: auto;
+  }
+
+  /* Compact Tab order: tabbing past another row's title leaves it readable,
+     since that row's actions are not tab stops (hover still shows them). */
+  .list[data-compact] .row:not([data-selected], :hover) .actions:not(:focus-within) {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+}
+
+/* Touch screens have no hover: the selected row keeps its actions and the
+   others show their full titles (one tap selects; the grip still drags). */
+@media (hover: none) {
+  .row:not([data-selected]) .actions {
+    display: none;
+  }
+}
+
+.hint {
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+/* A photo spread out of place: the row says so (and the note above the list offers to line it up). */
+.row[data-warning] {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+}
+
+.warn {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+}
+
+.spreadNote {
+  margin: 0;
+}

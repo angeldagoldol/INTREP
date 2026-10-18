@@ -1,0 +1,9 @@
+.vertical {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-jp);
+  letter-spacing: 0.18em;
+  line-height: 1.5;
+  font-feature-settings: 'vert', 'vpal';
+}

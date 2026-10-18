@@ -1,0 +1,187 @@
+{
+  "brochure": "japan-alps",
+  "photos": [
+    {
+      "id": "alps-shirakawago-ogimachi",
+      "use": "cover",
+      "candidates": [
+        "File:Shirakawa-go (2014-06-03).JPG",
+        "File:View of Shirakawa, Gifu, Japan from Ogimachi Castle Observation Deck 荻町城跡 展望台 (232).jpg",
+        "File:Shirakawa-go from Shiroyama.JPG"
+      ],
+      "alt": "Steep thatched gasshō-zukuri farmhouses of Ogimachi seen from above, among rice fields and forested mountains",
+      "caption": "Ogimachi, Shirakawa-gō, from the Shiroyama viewpoint",
+      "place": "Shirakawa-gō",
+      "focus": "50% 55%",
+      "query": "Shirakawa-go Ogimachi view from Shiroyama observation deck"
+    },
+    {
+      "id": "alps-kamikochi-hotaka",
+      "use": "wide",
+      "candidates": [
+        "File:150920 Kappa-bashi Kamikochi Japan02n.jpg",
+        "File:Kamikochi - Kamikochi6529.jpg",
+        "File:Kamikouchi.JPG"
+      ],
+      "alt": "Kappa Bridge crossing the clear Azusa river, with the jagged Hotaka peaks behind",
+      "caption": "Kappa Bridge and the Hotaka range, Kamikochi",
+      "place": "Kamikochi",
+      "focus": "50% 45%",
+      "query": "Kappa Bridge Kamikochi Hotaka"
+    },
+    {
+      "id": "alps-takayama-sanmachi",
+      "use": "wide",
+      "candidates": [
+        "File:Sanmachi Takayama07s3200.jpg",
+        "File:TakayamaStreet.JPG",
+        "File:Sake shop -Takayama.jpg"
+      ],
+      "alt": "A narrow street of dark wooden merchant houses with latticed fronts in Takayama’s old town",
+      "caption": "Sanmachi, Takayama’s old town",
+      "place": "Takayama",
+      "focus": "50% 50%",
+      "query": "Sanmachi Takayama old town street"
+    },
+    {
+      "id": "alps-takayama-jinya",
+      "use": "wide",
+      "candidates": [
+        "File:Entrance of Takayama Jinya House in a snowy day.JPG",
+        "File:2024-10-27 Takayama Jinya.jpg",
+        "File:Takayama Jinya Garden 2017.JPG"
+      ],
+      "alt": "The gate and grey-tiled roofs of the Takayama Jinya government house",
+      "caption": "Takayama Jinya",
+      "place": "Takayama Jinya",
+      "focus": "50% 50%",
+      "query": "Takayama Jinya front gate"
+    },
+    {
+      "id": "alps-shirakawago-gassho",
+      "use": "wide",
+      "candidates": [
+        "File:Gassho-zukuri farmhouse-02.jpg",
+        "File:Gassho-zukuri farmhouse-01.jpg",
+        "File:Shirakawa go , 白川郷 - panoramio (9).jpg"
+      ],
+      "alt": "A gasshō-zukuri farmhouse with a steep, thick thatched roof beside a small field",
+      "caption": "Gasshō-zukuri farmhouse, Ogimachi",
+      "place": "Shirakawa-gō",
+      "focus": "50% 45%",
+      "query": "Gassho-zukuri farmhouse Ogimachi Shirakawa-go"
+    },
+    {
+      "id": "alps-kamikochi-taisho-pond",
+      "use": "wide",
+      "candidates": [
+        "File:Taisho Pond 大正池 (227783081).jpeg",
+        "File:Kamikochi Taisho ike stand decayed Tree.jpg",
+        "File:20171028 Taishopond 6001 (37831371345).jpg"
+      ],
+      "alt": "Bare dead trees standing in the still water of Taishō Pond, with forested mountains behind",
+      "caption": "Taishō Pond, Kamikochi",
+      "place": "Kamikochi",
+      "focus": "50% 50%",
+      "query": "Taisho Pond Kamikochi"
+    },
+    {
+      "id": "alps-matsumoto-castle",
+      "use": "wide",
+      "candidates": [
+        "File:Matsumoto Castle05s5s4592.jpg",
+        "File:Matsumoto Castle 1-1.jpg",
+        "File:Keep of Matsumoto Castle.JPG"
+      ],
+      "alt": "The black, five-tiered keep of Matsumoto Castle reflected in its moat",
+      "caption": "Matsumoto Castle",
+      "place": "Matsumoto Castle",
+      "focus": "50% 45%",
+      "query": "Matsumoto Castle keep inner moat"
+    },
+    {
+      "id": "alps-spread",
+      "use": "spread",
+      "candidates": [
+        "File:251023 Hotaka mountain range as seen from Kappa Bridge.jpg",
+        "File:Japan Kamikouchi-Valley Panorama.jpg",
+        "File:Hotaka-dake.JPG"
+      ],
+      "alt": "The jagged, snow-streaked Hotaka peaks rising above the forested floor of the Kamikochi valley and the Azusa river",
+      "caption": "Clear morning in Kamikochi: the Hotaka range stands over the Azusa valley",
+      "place": "Kamikochi",
+      "focus": "50% 40%",
+      "query": "Hotaka mountains from Kamikochi"
+    },
+    {
+      "id": "alps-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Takayama festival Yatai Kaikan No,5.JPG",
+        "File:Jimma-tai detail, Hachiman shrine - Takayama Festival Float Exhibition Hall - Takayama, Gifu, Japan - DSC06587.jpg",
+        "File:JP-takayama-festival-floats.jpg",
+        "File:Hoju-tai detail, Hachiman shrine - Takayama Festival Float Exhibition Hall - Takayama, Gifu, Japan - DSC06585.jpg"
+      ],
+      "alt": "A tall Takayama festival float of carved, lacquered wood with gilded fittings and hanging brocade",
+      "caption": "Takayama Matsuri: a carved and lacquered yatai, one of the floats paraded through the old town each April and October",
+      "place": "Takayama",
+      "focus": "50% 50%",
+      "query": "Takayama Festival float yatai"
+    },
+    {
+      "id": "alps-nostalgia-furukawa",
+      "use": "any",
+      "candidates": [
+        "File:Hida Furukawa 20200620 P2 (cropped).jpg",
+        "File:Setogawa River flowing behind Enkoji Temple in Fukukawa, Hida, Gifu.JPG"
+      ],
+      "alt": "A narrow stone-lined canal running past white-walled storehouses and old wooden buildings",
+      "caption": "Hida-Furukawa — the Seto River canal and its white-walled storehouses, where carp swim from spring to autumn",
+      "place": "Hida-Furukawa, Gifu",
+      "focus": "50% 55%",
+      "query": "Hida Furukawa Setogawa canal white wall storehouses"
+    },
+    {
+      "id": "alps-nostalgia-nakamachi",
+      "use": "wide",
+      "candidates": [
+        "File:Nakamachi street Matsumoto Nagano pref Japan01s3.jpg",
+        "File:Nakamachi street Matsumoto Nagano pref Japan02s3.jpg",
+        "File:Nakamachi street Matsumoto Nagano pref Japan06n.jpg"
+      ],
+      "alt": "A quiet street of old two-storey storehouses with white plaster and black-and-white diagonal-tiled walls",
+      "caption": "Nakamachi, Matsumoto — a merchant street of kura storehouses with black-and-white namako walls",
+      "place": "Nakamachi, Matsumoto",
+      "focus": "50% 50%",
+      "query": "Nakamachi street Matsumoto kura storehouses"
+    },
+    {
+      "id": "alps-nostalgia-narai",
+      "use": "wide",
+      "candidates": [
+        "File:Nakasendo Narai-juku08n4272.jpg",
+        "File:220729 Nakasendo Narai-juku Shiojiri Nagano pref Japan03s5.jpg",
+        "File:Narai post town.JPG"
+      ],
+      "alt": "A long, straight street of dark two-storey wooden inns and shops with deep eaves",
+      "caption": "Narai-juku — a long street of wooden inns and shops on the old Nakasendō, in the Kiso Valley",
+      "place": "Narai-juku, Shiojiri",
+      "focus": "50% 50%",
+      "query": "Narai-juku Nakasendo townscape"
+    },
+    {
+      "id": "alps-nostalgia-tsumago",
+      "use": "wide",
+      "candidates": [
+        "File:Tsumago-juku 1.jpg",
+        "File:Tsumago-juku 3.jpg",
+        "File:Tsumago 2009 4.JPG"
+      ],
+      "alt": "A gently sloping street of old wooden houses with latticed fronts and low eaves",
+      "caption": "Tsumago-juku — a Nakasendō post town kept much as it looked in the Edo period",
+      "place": "Tsumago-juku, Nagiso",
+      "focus": "50% 50%",
+      "query": "Tsumago-juku Nakasendo street"
+    }
+  ]
+}

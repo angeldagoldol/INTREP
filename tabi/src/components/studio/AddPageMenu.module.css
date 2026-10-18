@@ -1,0 +1,107 @@
+.menu {
+  width: min(340px, calc(100vw - 24px));
+  padding: var(--space-2);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.head span[lang] {
+  font-family: var(--font-jp);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: none;
+  color: var(--accent);
+}
+
+.where {
+  padding: 0 var(--space-3) var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 52px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-align: left;
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--accent-soft);
+}
+
+.item:focus-visible {
+  outline-offset: -2px;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--accent);
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out);
+}
+
+.item:hover .icon,
+.item:focus-visible .icon {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.description {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.35;
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  white-space: nowrap;
+}

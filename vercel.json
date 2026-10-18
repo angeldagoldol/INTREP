@@ -1,9 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "node scripts/build-storefront.mjs",
+  "buildCommand": "node scripts/build-storefront.mjs && node scripts/build-tabi.mjs",
   "outputDirectory": "dist",
   "framework": null,
   "installCommand": "echo 'no dependencies needed to build the storefront'",
+  "redirects": [
+    { "source": "/tabi", "destination": "/tabi/", "permanent": false }
+  ],
   "headers": [
     {
       "source": "/(.*)",

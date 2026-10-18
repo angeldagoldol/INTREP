@@ -1,0 +1,191 @@
+{
+  "brochure": "mount-fuji-five-lakes",
+  "photos": [
+    {
+      "id": "fuji-chureito-pagoda",
+      "use": "cover",
+      "candidates": [
+        "File:Chureito Pagoda and Mount Fuji 20241022.jpg",
+        "File:Chūrei-tō Pagoda and Mount Fuji in Arakurayama Sengen Park in Fujiyoshida, Yamanashi, Japan, 2024 May.jpg",
+        "File:Mount Fuji with the Chūrei-tō (53076438973).jpg"
+      ],
+      "alt": "The red five-storey Chūreitō Pagoda on a wooded hillside, with snow-capped Mount Fuji rising behind it",
+      "caption": "Chūreitō Pagoda and Mount Fuji, Arakurayama Sengen Park",
+      "place": "Chūreitō Pagoda",
+      "focus": "50% 45%",
+      "query": "Chureito Pagoda Mount Fuji Arakurayama Sengen Park"
+    },
+    {
+      "id": "fuji-from-kawaguchiko",
+      "use": "wide",
+      "candidates": [
+        "File:Mount Fuji from Lake Kawaguchi s2.jpg",
+        "File:Mount Fuji @ Lake Kawaguchiko (10862992324).jpg",
+        "File:Mount Fuji from Lake Kawaguchi (2015-10-26).jpg"
+      ],
+      "alt": "Snow-capped Mount Fuji rising above the calm water of Lake Kawaguchi on a clear morning",
+      "caption": "Mount Fuji from Lake Kawaguchi",
+      "place": "Lake Kawaguchi",
+      "focus": "50% 40%",
+      "query": "Mount Fuji from Lake Kawaguchi"
+    },
+    {
+      "id": "fuji-kawaguchiko-tenjoyama",
+      "use": "wide",
+      "candidates": [
+        "File:170505 Kachikachiyama Ropeway Lake Kawaguchi Japan01s3.jpg",
+        "File:Mount Fuji as seen across lake Kawaguchi, with Fujikawaguchiko town in the foreground seen early in the evening. Honshu Island. Japan.jpg"
+      ],
+      "alt": "View from a hillside over Lake Kawaguchi and the town towards Mount Fuji",
+      "caption": "Lake Kawaguchi and Mount Fuji from Tenjō-yama",
+      "place": "Lake Kawaguchi",
+      "focus": "50% 45%",
+      "query": "Tenjosan Park Kachikachi-yama Lake Kawaguchi Mount Fuji"
+    },
+    {
+      "id": "fuji-chureito-sakura",
+      "use": "wide",
+      "candidates": [
+        "File:Chuurei-tou Fujiyoshida 17025277650 c59733d6ba o.jpg",
+        "File:Chureito Pagoda.jpg",
+        "File:Chureito Pagoda and Mount Fuji.jpg"
+      ],
+      "alt": "Cherry blossom framing the Chūreitō Pagoda, with Mount Fuji in the distance",
+      "caption": "Chūreitō Pagoda in cherry-blossom season, April",
+      "place": "Chūreitō Pagoda",
+      "focus": "50% 50%",
+      "query": "Chureito Pagoda cherry blossoms Mount Fuji"
+    },
+    {
+      "id": "fuji-oshino-hakkai",
+      "use": "wide",
+      "candidates": [
+        "File:Oshino-Hakkai-Nakaike.jpg",
+        "File:080103 hakkai fuji.jpg",
+        "File:Kagamiike Pond, Oshino Hakkai.JPG"
+      ],
+      "alt": "A clear spring-fed pond beside thatched-roof houses, with Mount Fuji behind",
+      "caption": "Oshino Hakkai",
+      "place": "Oshino Hakkai",
+      "focus": "50% 50%",
+      "query": "Oshino Hakkai Mount Fuji"
+    },
+    {
+      "id": "fuji-yoshida-trail",
+      "use": "wide",
+      "candidates": [
+        "File:Mt. Fuji Yoshida Trail Jun 21 621am.jpg",
+        "File:胸突江戸屋, 富士山登山(吉田ルート) Climb Mt.Fuji(Yoshida Trail).jpg",
+        "File:Climbers and mountain huts on Yoshida Route.jpg"
+      ],
+      "alt": "A zigzag trail of reddish volcanic gravel climbing the bare upper slopes of Mount Fuji",
+      "caption": "Switchbacks on the Yoshida trail",
+      "place": "Mount Fuji",
+      "focus": "50% 50%",
+      "query": "Yoshida Trail Mount Fuji"
+    },
+    {
+      "id": "fuji-goraiko",
+      "use": "wide",
+      "candidates": [
+        "File:Sunrise and Lake Yamanaka from Mount Fuji.jpg",
+        "File:Sea of clouds from Mount Fuji.jpg",
+        "File:Shadow of Mount Fuji.jpg"
+      ],
+      "alt": "The sun rising above a sea of clouds, seen from the summit of Mount Fuji",
+      "caption": "Goraikō: sunrise from the summit",
+      "place": "Mount Fuji",
+      "focus": "50% 55%",
+      "query": "sunrise from Mount Fuji summit sea of clouds"
+    },
+    {
+      "id": "fuji-hokusai-red-fuji",
+      "use": "any",
+      "candidates": [
+        "File:Katsushika Hokusai - Fine Wind, Clear Morning (Gaifū kaisei) - Google Art Project.jpg",
+        "File:「富嶽三十六景 凱風快晴」-South Wind, Clear Sky (Gaifū kaisei), also known as Red Fuji, from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei) MET DP141062.jpg",
+        "File:Red Fuji southern wind clear morning.jpg"
+      ],
+      "alt": "Hokusai’s woodblock print of a red Mount Fuji against a blue sky with rows of small clouds",
+      "caption": "Hokusai, “Fine Wind, Clear Morning” (Red Fuji)",
+      "place": "Mount Fuji",
+      "focus": "50% 50%",
+      "query": "Hokusai Fine Wind Clear Morning Red Fuji"
+    },
+    {
+      "id": "fuji-spread",
+      "use": "spread",
+      "candidates": [
+        "File:038 Mount Fuji and Aokigahara forest (Japan) at sunrise Photo by Giles Laurent.jpg",
+        "File:Mount Fuji and Fog over Lake Yamanaka.jpg",
+        "File:FujiSunriseKawaguchiko2025WP.jpg"
+      ],
+      "alt": "Snow-capped Mount Fuji catching the first light above the dark forests and lakes at its northern foot",
+      "caption": "Dawn over the Fuji Five Lakes: the summit lights up while the forests and water below are still in shadow",
+      "place": "Fuji Five Lakes",
+      "focus": "50% 45%",
+      "query": "Mount Fuji sunrise Fuji Five Lakes"
+    },
+    {
+      "id": "fuji-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Honcho Street with Mount Fuji in the evening, Fujiyoshida, 2016.jpg",
+        "File:Mount Fuji Fujiyoshida Japan Travel Photography (243668553).jpeg"
+      ],
+      "alt": "A straight street of low shops and signs in Fujiyoshida, with the snow-capped cone of Mount Fuji filling the sky at its end",
+      "caption": "Evening on Honchō-dōri, Fujiyoshida, where the old pilgrims’ town runs straight towards the mountain",
+      "place": "Fujiyoshida",
+      "focus": "50% 40%",
+      "query": "Honcho Street Fujiyoshida Mount Fuji"
+    },
+    {
+      "id": "fuji-nostalgia-shimoyoshida",
+      "use": "wide",
+      "candidates": [
+        "File:Street towards Fuji in Shimoyoshida 3 in Fujiyoshida, Yamanashi, Japan, 2024 May - 3.jpg"
+      ],
+      "alt": "A straight town street of low shops and signs, with snow-capped Mount Fuji at its end",
+      "caption": "Shimoyoshida, Fujiyoshida — an old silk-trading town whose Shōwa-era shop streets run towards the mountain",
+      "place": "Shimoyoshida, Fujiyoshida",
+      "focus": "50% 45%",
+      "query": "Street towards Fuji in Shimoyoshida Fujiyoshida"
+    },
+    {
+      "id": "fuji-nostalgia-togawa",
+      "use": "any",
+      "candidates": [
+        "File:The former-Togawa family house.JPG"
+      ],
+      "alt": "The front of an old wooden house set back from the street behind a small entrance",
+      "caption": "Former Togawa house, Kamiyoshida — an oshi’s inn of 1768 where Fuji pilgrims lodged",
+      "place": "Oshi House of the Former Togawa Family, Fujiyoshida",
+      "focus": "50% 50%",
+      "query": "Togawa Oshi House Fujiyoshida"
+    },
+    {
+      "id": "fuji-nostalgia-nakanochaya",
+      "use": "any",
+      "candidates": [
+        "File:Nakano-cyaya-teahouse and Mt. Fuji-Yoshidaguchi-mountain trail,Fujiyoshida-city,Japan.JPG"
+      ],
+      "alt": "A small old wooden teahouse beside a forest trail at the foot of Mount Fuji",
+      "caption": "Nakanochaya — a teahouse of more than 300 years on the old Yoshida trail, where pilgrims rested",
+      "place": "Nakanochaya, Yoshidaguchi trail",
+      "focus": "50% 50%",
+      "query": "Nakanochaya teahouse Yoshidaguchi trail Fujiyoshida"
+    },
+    {
+      "id": "fuji-nostalgia-nenba",
+      "use": "wide",
+      "candidates": [
+        "File:Iyashinosato village 06.jpg"
+      ],
+      "alt": "Steep thatched-roof farmhouses along a village lane among trees",
+      "caption": "Iyashi-no-Sato Nenba — thatched farmhouses rebuilt where a village was lost to a landslide in 1966",
+      "place": "Saiko Iyashi-no-Sato Nenba",
+      "focus": "50% 50%",
+      "query": "Iyashinosato Nenba Saiko thatched houses"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "brochure": "osaka-kuidaore",
+  "photos": [
+    {
+      "id": "osaka-dotonbori-night",
+      "use": "cover",
+      "candidates": [
+        "File:Dotonbori, Osaka, at night, November 2016.jpg"
+      ],
+      "alt": "The Dōtonbori canal at dusk, lined with giant illuminated signs including the Glico running man",
+      "caption": "Dōtonbori and the Glico sign at dusk",
+      "place": "Dōtonbori",
+      "focus": "50% 45%",
+      "query": "Dotonbori Osaka night Glico sign canal"
+    },
+    {
+      "id": "osaka-takoyaki",
+      "use": "wide",
+      "candidates": [],
+      "alt": "Round takoyaki in a tray, topped with sauce, mayonnaise and bonito flakes",
+      "caption": "Takoyaki, Osaka’s street snack",
+      "place": "Osaka",
+      "focus": "50% 50%",
+      "query": "Takoyaki Osaka"
+    },
+    {
+      "id": "osaka-dotonbori-canal",
+      "use": "wide",
+      "candidates": [],
+      "alt": "The Dōtonbori canal between rows of buildings covered in large shop signs, seen from a bridge",
+      "caption": "The Dōtonbori canal from Ebisu-bashi",
+      "place": "Dōtonbori",
+      "focus": "50% 50%",
+      "query": "Dotonbori canal Ebisubashi Osaka"
+    },
+    {
+      "id": "osaka-kuromon-market",
+      "use": "wide",
+      "candidates": [],
+      "alt": "A covered market street lined with seafood and produce stalls",
+      "caption": "Kuromon Market, Nippombashi",
+      "place": "Kuromon Market",
+      "focus": "50% 50%",
+      "query": "Kuromon Ichiba market Osaka"
+    },
+    {
+      "id": "osaka-shinsekai-tsutenkaku",
+      "use": "wide",
+      "candidates": [
+        "File:New Tsutenkaku in 201409 003.JPG"
+      ],
+      "alt": "Tsūtenkaku tower rising above a street of restaurant signs in Shinsekai",
+      "caption": "Tsūtenkaku over the streets of Shinsekai",
+      "place": "Shinsekai",
+      "focus": "50% 40%",
+      "query": "Tsutenkaku Shinsekai Osaka"
+    },
+    {
+      "id": "osaka-okonomiyaki",
+      "use": "any",
+      "candidates": [
+        "File:Okonomiyaki by S e i in Osaka.jpg",
+        "File:Okonomiyaki 2.jpg"
+      ],
+      "alt": "A thick savoury pancake on a hotplate, glazed with sauce and mayonnaise",
+      "caption": "Okonomiyaki on the hotplate",
+      "place": "Osaka",
+      "focus": "50% 50%",
+      "query": "Okonomiyaki Osaka"
+    },
+    {
+      "id": "osaka-kushikatsu",
+      "use": "any",
+      "candidates": [],
+      "alt": "Golden breaded skewers on a plate beside a tray of dipping sauce",
+      "caption": "Kushikatsu, fresh from the fryer",
+      "place": "Shinsekai",
+      "focus": "50% 50%",
+      "query": "Kushikatsu Shinsekai Osaka"
+    },
+    {
+      "id": "osaka-hozenji-fudo",
+      "use": "any",
+      "candidates": [],
+      "alt": "A stone Buddhist statue completely covered in green moss, surrounded by lanterns",
+      "caption": "Mizukake Fudō at Hōzen-ji, green with moss",
+      "place": "Hōzen-ji",
+      "focus": "50% 40%",
+      "query": "Hozenji Mizukake Fudo Osaka"
+    },
+    {
+      "id": "osaka-castle",
+      "use": "any",
+      "candidates": [
+        "File:Osaka Castle 02bs3200.jpg",
+        "File:Osaka Castle - 01.jpg"
+      ],
+      "alt": "The white and green main tower of Osaka Castle with gold ornaments, above its stone walls",
+      "caption": "The main tower of Osaka Castle",
+      "place": "Osaka Castle",
+      "focus": "50% 40%",
+      "query": "Osaka Castle main tower"
+    },
+    {
+      "id": "osaka-spread",
+      "use": "spread",
+      "candidates": [
+        "File:Osaka Castle Outer Moat and Osaka Business Park, November 2016.jpg"
+      ],
+      "alt": "A white castle turret on high stone walls above the wide outer moat of Osaka Castle, with the glass towers of Osaka Business Park rising behind",
+      "caption": "Old Osaka meets new — the Inui turret over the outer moat of Osaka Castle, with the Business Park skyline beyond, on an autumn afternoon",
+      "place": "Osaka Castle",
+      "focus": "50% 55%",
+      "query": "Osaka Castle outer moat Osaka Business Park"
+    },
+    {
+      "id": "osaka-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Illuminated Tennōji Park and Abeno Harukas, November 2015, Osaka.jpg"
+      ],
+      "alt": "The tall glass tower of Abeno Harukas rising over Tennōji Park, which is strung with coloured winter illuminations",
+      "caption": "Winter lights in Tennōji Park beneath Abeno Harukas, a short walk from the kushikatsu counters of Shinsekai",
+      "place": "Tennōji Park",
+      "focus": "50% 50%",
+      "query": "Tennoji Park illumination Abeno Harukas"
+    },
+    {
+      "id": "osaka-nostalgia-hozenji-yokocho",
+      "use": "any",
+      "candidates": [
+        "File:Hozenji Yokocho at night.jpg",
+        "File:Alleyway In Old Town Osaka (254929879).jpeg"
+      ],
+      "alt": "A narrow stone-paved alley lined with small wooden restaurant fronts and glowing lanterns in the evening",
+      "caption": "Hōzenji Yokochō — a lantern-lit, stone-paved lane of small restaurants beside Hōzen-ji",
+      "place": "Hōzenji Yokochō, Minami",
+      "focus": "50% 55%",
+      "query": "Hozenji Yokocho alley Osaka"
+    },
+    {
+      "id": "osaka-nostalgia-shinsekai",
+      "use": "any",
+      "candidates": [
+        "File:Tsutenkaku-Hondori Shopping Street and Tsutenkaku Tower at night 3.jpg",
+        "File:Tsutenkaku-Hondori Shopping Street at night.jpg",
+        "File:Shinsekai and Tsutenkaku at night 2019-04-12.jpg"
+      ],
+      "alt": "A shopping street of bright neon signs at night, with the lit-up Tsūtenkaku tower rising at its far end",
+      "caption": "Shinsekai — the neon of Tsūtenkaku Hondōri, the shop street below the tower of 1956",
+      "place": "Tsūtenkaku Hondōri, Shinsekai",
+      "focus": "50% 40%",
+      "query": "Tsutenkaku Hondori shopping street Shinsekai"
+    },
+    {
+      "id": "osaka-nostalgia-tenjinbashisuji",
+      "use": "wide",
+      "candidates": [
+        "File:Tenjinbashisuji Shopping Street - Jul 14, 2011.jpg",
+        "File:Tenjimbashi6 on Tenjimbashisuji-Mall.JPG",
+        "File:Tenjinbashi-suji Syotengai1.jpg"
+      ],
+      "alt": "A long covered shopping arcade lined with small shops and hanging signs, stretching into the distance",
+      "caption": "Tenjinbashi-suji — some 2.6 km of arcade, called Japan’s longest shopping street",
+      "place": "Tenjinbashi-suji Shopping Street, Kita",
+      "focus": "50% 50%",
+      "query": "Tenjinbashisuji shopping street Osaka"
+    },
+    {
+      "id": "osaka-nostalgia-hankai-tram",
+      "use": "wide",
+      "candidates": [
+        "File:View of Ebisucho Station (Hankai Line).jpg",
+        "File:Hankai Ebisucho Station.JPG",
+        "File:Ebisucho Station Home DSCN3438 20120922.JPG"
+      ],
+      "alt": "The small street-level tram station of the Hankai Line at Ebisuchō",
+      "caption": "Ebisuchō — the Hankai Tramway’s station on the edge of Shinsekai",
+      "place": "Ebisuchō Station (Hankai Tramway)",
+      "focus": "50% 55%",
+      "query": "Hankai Tramway Ebisucho tram"
+    }
+  ]
+}

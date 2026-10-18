@@ -1,0 +1,230 @@
+.shell {
+  min-height: 100dvh;
+  padding-bottom: var(--space-9);
+}
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  padding: var(--space-3) var(--gutter);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+}
+
+.brand span {
+  color: var(--accent);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.controls {
+  display: flex;
+  gap: var(--space-4);
+  margin-left: auto;
+}
+
+.section {
+  padding: var(--space-7) var(--gutter) 0;
+  scroll-margin-top: 80px;
+}
+
+.title {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--space-5);
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.sectionHead .title {
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.note {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+
+.artRows {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.artName {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.artName span {
+  font-family: var(--font-jp);
+  color: var(--accent);
+}
+
+.artGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-3);
+}
+
+.artTile {
+  margin: 0;
+}
+
+.artFrame {
+  overflow: hidden;
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-sm);
+}
+
+.artTile figcaption {
+  margin-top: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+.strip {
+  margin-bottom: var(--space-5);
+}
+
+.stripTitle {
+  margin-bottom: var(--space-2);
+  font-weight: 600;
+}
+
+.stripTitle span {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: var(--space-3);
+}
+
+.thumb {
+  box-shadow: var(--shadow-sm);
+}
+
+.emptyPage {
+  box-shadow: var(--shadow-md);
+}
+
+.large {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
+  gap: var(--space-6);
+}
+
+.largeItem {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+}
+
+.largePage {
+  box-shadow: var(--shadow-page);
+}
+
+@media (max-width: 640px) {
+  .thumbs {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  }
+
+  .emptyPage {
+    grid-column: span 2;
+  }
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: var(--space-5);
+}
+
+.photoTile {
+  margin: 0;
+}
+
+.photoBox {
+  height: 220px;
+  color: var(--ink-2);
+}
+
+.photoTile figcaption {
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+/* Reader-size review: pages at a fixed width, scrolling sideways per brochure. */
+.readerRow {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--page-w, 460px);
+  gap: var(--space-5);
+  overflow-x: auto;
+  padding: var(--space-2) 2px var(--space-5);
+  scroll-snap-type: x proximity;
+}
+
+.readerPage {
+  box-shadow: var(--shadow-page);
+  scroll-snap-align: start;
+}
+
+.audit {
+  display: grid;
+  gap: var(--space-2);
+  padding-left: 1.2em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+
+.audit strong {
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .readerRow {
+    grid-auto-columns: min(var(--page-w, 460px), calc(100vw - 2 * var(--gutter)));
+  }
+}

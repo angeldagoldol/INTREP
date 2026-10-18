@@ -1,0 +1,94 @@
+.reader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.book {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: min(64dvh, 640px);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  container-type: size;
+  overflow: hidden;
+}
+
+.spread {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100cqw, 100cqh * 2 / 1.414);
+  box-shadow: var(--shadow-page);
+}
+
+.book[data-single] .spread {
+  grid-template-columns: minmax(0, 1fr);
+  width: min(100cqw, 100cqh / 1.414);
+}
+
+/* The cover and the back cover sit alone: only the sheet casts a shadow. */
+.spread[data-half] {
+  box-shadow: none;
+}
+
+.spread[data-half] > .page {
+  box-shadow: var(--shadow-page);
+}
+
+.page {
+  position: relative;
+}
+
+.page[data-side='right'] {
+  grid-column: 2;
+}
+
+.page[data-side='left'] {
+  grid-column: 1;
+}
+
+.page[data-side='single'] {
+  grid-column: 1;
+}
+
+/* The fold between facing pages. */
+.page[data-side='left']::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 8%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(0 0 0 / 0.14));
+  mix-blend-mode: multiply;
+}
+
+.page[data-side='right']::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 8%;
+  pointer-events: none;
+  background: linear-gradient(-90deg, transparent, rgb(0 0 0 / 0.14));
+  mix-blend-mode: multiply;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.counter {
+  min-width: 11ch;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.counter span {
+  color: var(--ink-3);
+}

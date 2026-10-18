@@ -1,0 +1,707 @@
+/* The photo picker: a contact sheet on washi — hairline frames, mono captions,
+   a vermilion ring for the chosen print and a small 使用中 tab on the one in use. */
+
+/* Wider than the kit's large drawer (620px): four prints to a row on a laptop. */
+.drawer[role='dialog'][aria-modal] {
+  width: min(100%, 800px);
+}
+
+.sheet[role='dialog'][aria-modal] {
+  max-height: 94dvh;
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.tabs {
+  position: sticky;
+  top: calc(var(--space-5) * -1);
+  z-index: 2;
+  margin: calc(var(--space-5) * -1) calc(var(--space-5) * -1) 0;
+  padding: var(--space-2) var(--space-5) 0;
+  background: var(--bg-elevated);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+  outline: none;
+}
+
+/* --- Search and filters ---------------------------------------------------- */
+.tools {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: 0 var(--space-2) 0 var(--space-3);
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-pill);
+  background: var(--bg);
+  color: var(--ink-3);
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+
+.search:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--fs-sm);
+}
+
+.search input:focus {
+  outline: none;
+}
+
+.search input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.search input::placeholder {
+  color: var(--ink-3);
+}
+
+.clear {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--ink-2);
+}
+
+.clear:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.chips {
+  display: flex;
+  gap: var(--space-2);
+  margin-inline: calc(var(--space-5) * -1);
+  padding: 2px var(--space-5) 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* The row runs off the edge with a soft fade, like a strip of film. */
+  mask-image: linear-gradient(to right, transparent, #000 var(--space-5), #000 calc(100% - var(--space-7)), transparent);
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chips > * {
+  flex: none;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-3) 0;
+  border-block: 1px solid var(--line);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.summaryJp {
+  writing-mode: vertical-rl;
+  font-family: var(--font-jp);
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+
+/* --- Groups and tiles ---------------------------------------------------------- */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.group {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.groupTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  min-width: 0;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.groupJp {
+  flex: none;
+  font-family: var(--font-jp);
+  font-size: 0.9em;
+  color: var(--accent);
+}
+
+.groupCount {
+  margin-inline-start: auto;
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 156px), 1fr));
+  gap: var(--space-4) var(--space-3);
+  align-items: start;
+}
+
+.tile {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: inherit;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  box-shadow: 0 0 0 1px var(--line);
+  transition:
+    box-shadow var(--dur-2) var(--ease-out),
+    transform var(--dur-3) var(--ease-out);
+}
+
+.fill,
+.hold {
+  position: absolute;
+  inset: 0;
+}
+
+.hold {
+  display: block;
+  opacity: 0.6;
+}
+
+/* The art that stands in for photos not downloaded yet sits back a little, like a proof. */
+.tile[data-pending] .fill {
+  filter: saturate(0.82);
+}
+
+.tile:hover .frame {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px var(--ink-3),
+    var(--shadow-sm);
+}
+
+.tile[aria-selected='true'] .frame {
+  box-shadow:
+    0 0 0 2px var(--bg-elevated),
+    0 0 0 4px var(--accent);
+}
+
+.check {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.25);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--dur-2) var(--ease-out),
+    transform var(--dur-3) var(--ease-spring);
+}
+
+.check::after {
+  content: '';
+  width: 10px;
+  height: 5px;
+  margin-top: -2px;
+  border: solid var(--accent-ink);
+  border-width: 0 0 2px 2px;
+  transform: rotate(-45deg);
+}
+
+.tile[aria-selected='true'] .check {
+  opacity: 1;
+  transform: none;
+}
+
+.pending,
+.inUse {
+  position: absolute;
+  top: 7px;
+  max-width: calc(100% - 14px);
+  padding: 0.2rem 0.45rem;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pending {
+  left: 7px;
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  color: var(--ink-2);
+  box-shadow: 0 0 0 1px var(--line);
+  backdrop-filter: blur(4px);
+}
+
+/* The photo already on the page: a vermilion paper tab in the corner. */
+.inUse {
+  right: 7px;
+  padding: 0.25rem 0.4rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-jp);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: none;
+}
+
+.tileText {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.caption {
+  font-size: var(--fs-xs);
+  font-weight: 560;
+  line-height: 1.35;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.meta,
+.tileCredit {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  overflow-wrap: anywhere;
+}
+
+.tileCredit {
+  color: var(--ink-2);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  text-align: center;
+}
+
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* --- Footer: the selected print -------------------------------------------- */
+.footInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+  width: 100%;
+  min-width: 0;
+}
+
+.footHint {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.selected {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.selectedThumb {
+  position: relative;
+  flex: none;
+  width: 64px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.selectedThumb > * {
+  position: absolute;
+  inset: 0;
+}
+
+.selectedText {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.selectedCaption {
+  font-size: var(--fs-sm);
+  font-weight: 560;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.selectedMeta,
+.selectedCredit {
+  font-size: var(--fs-2xs);
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.selectedMeta[data-pending] {
+  color: var(--ink-2);
+}
+
+.footActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-inline-start: auto;
+}
+
+.danger {
+  color: var(--danger);
+}
+
+/* --- Upload ---------------------------------------------------------------- */
+.upload {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.drop {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-7) var(--space-5) var(--space-6);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 60%),
+    var(--surface);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    transform var(--dur-3) var(--ease-out);
+}
+
+.drop:hover {
+  border-color: var(--ink-3);
+}
+
+.drop:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.drop[data-drag] {
+  border-style: solid;
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+  transform: scale(1.01);
+}
+
+.drop[data-busy] {
+  cursor: progress;
+}
+
+/* A seal-red 写 ("copy, photograph") stamped above the call to drop. */
+.dropMark {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: var(--space-1);
+  border: 1.5px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+  font-family: var(--font-jp);
+  font-size: 1.45rem;
+  line-height: 1;
+  transform: rotate(-4deg);
+}
+
+.dropTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  line-height: 1.3;
+}
+
+.dropLink {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.dropSub {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+
+.spin {
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation-duration: 2.4s;
+  }
+
+  .tile:hover .frame,
+  .drop[data-drag] {
+    transform: none;
+  }
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--danger) 7%, var(--surface));
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.error svg {
+  flex: none;
+  margin-top: 0.2em;
+  color: var(--danger);
+}
+
+.prepare {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.proof {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.proof img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.proof figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+.proof figcaption span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--ink-2);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+@media (max-width: 480px) {
+  .formRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.prepareActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.formHint {
+  margin-top: calc(var(--space-2) * -1);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  text-align: right;
+}
+
+.meter {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.meterHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+
+.meterHead strong {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.bar {
+  position: relative;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.bar span {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform-origin: left center;
+  transition: transform var(--dur-4) var(--ease-out);
+}
+
+.meter[data-tight] .bar span {
+  background: var(--accent);
+}
+
+.meterNote {
+  font-size: var(--fs-2xs);
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.meter[data-tight] .meterNote {
+  color: var(--ink);
+}
+
+.editing {
+  display: grid;
+  gap: var(--space-3);
+  overflow: hidden;
+}
+
+.editingTitle {
+  font-size: var(--fs-md);
+}
+
+.mineEmpty {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+@media (max-width: 699.98px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

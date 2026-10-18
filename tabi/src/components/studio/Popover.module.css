@@ -1,0 +1,24 @@
+.wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--z-modal) + 2);
+  max-width: calc(100vw - 16px);
+}
+
+.panel {
+  max-height: min(70dvh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+  transform-origin: top left;
+  outline: none;
+}
+
+.wrap[data-side='top'] .panel {
+  transform-origin: bottom left;
+}

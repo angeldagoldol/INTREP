@@ -1,0 +1,68 @@
+/* A quiet pill in the hero's meta strip, set like the "Scroll 下へ" cue. */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  min-height: 44px;
+  padding: 0 1rem 0 0.4rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-2);
+  transition:
+    color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out);
+}
+
+.toggle:hover {
+  color: var(--ink);
+  background: var(--accent-soft);
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out);
+}
+
+.icon svg {
+  width: 13px;
+  height: 13px;
+  fill: currentColor;
+  stroke-width: 0;
+}
+
+/* Paused: the disc fills like a pressed key, so the state reads at a glance. */
+.toggle[data-paused] {
+  color: var(--ink);
+}
+
+.toggle[data-paused] .icon {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.jp {
+  font-family: var(--font-jp);
+  letter-spacing: 0.2em;
+  color: var(--ink-3);
+}
+
+/* Narrower meta strips: the English label alone, so the control and the
+   clock share a row. */
+@media (max-width: 1180px) {
+  .jp {
+    display: none;
+  }
+}

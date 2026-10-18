@@ -1,0 +1,131 @@
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: 48px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink-3);
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+
+.search:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--fs-base);
+}
+
+.input:focus {
+  outline: none;
+}
+
+.count {
+  margin: var(--space-3) 0 var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-5) var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  border-radius: var(--radius-sm);
+}
+
+.cover {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1.414;
+  overflow: hidden;
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 1px var(--line),
+    var(--shadow-sm);
+  transition:
+    transform var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
+}
+
+.cover svg {
+  width: 100%;
+  height: 100%;
+}
+
+.option:hover .cover,
+.option:focus-visible .cover {
+  transform: translateY(-4px) rotate(-1deg);
+  box-shadow:
+    0 0 0 1px var(--ink-3),
+    var(--shadow-lg);
+}
+
+.jp {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 0.35em 0.2em;
+  writing-mode: vertical-rl;
+  font-family: var(--font-jp);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.1;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-4);
+  color: var(--ink-2);
+  text-align: center;
+}
+
+.emptyJp {
+  font-family: var(--font-jp);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--line-strong);
+}

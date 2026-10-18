@@ -1,0 +1,139 @@
+.empty {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 34rem);
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-5) clamp(2rem, 1rem + 4vw, 5rem);
+  padding: clamp(2.5rem, 1.5rem + 4vw, 5rem) var(--space-5);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 15% 30%, var(--accent-soft), transparent 45%),
+    var(--bg-elevated);
+}
+
+.art {
+  width: 100%;
+  max-width: 15rem;
+}
+
+.copy {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.eyebrow [lang] {
+  font-family: var(--font-jp);
+  letter-spacing: 0.1em;
+  text-transform: none;
+  color: var(--accent);
+}
+
+.title {
+  font-size: var(--fs-2xl);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.text {
+  max-width: 46ch;
+  color: var(--ink-2);
+}
+
+.text strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.inlineIcon {
+  display: inline;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.12em;
+  color: var(--accent);
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.suggestion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 40px;
+  padding-inline: 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+
+.suggestion:hover {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.suggestion:hover .jp {
+  color: inherit;
+}
+
+.suggestion:active {
+  transform: scale(0.96);
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 720px) {
+  .empty {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .art {
+    max-width: 11rem;
+  }
+
+  .copy {
+    justify-items: center;
+  }
+
+  .suggestions,
+  .actions {
+    justify-content: center;
+  }
+}

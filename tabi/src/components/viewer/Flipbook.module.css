@@ -1,0 +1,395 @@
+/* ==========================================================================
+   Flipbook: a stack of two-faced leaves turning in 3D around the spine.
+   Colours on the book come from the brochure (--b-paper/--b-ink/--b-accent,
+   set inline); only shadows read the app's --shadow-color.
+   ========================================================================== */
+
+.book {
+  position: relative;
+  flex: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.book[data-zone='next'],
+.book[data-zone='prev'] {
+  cursor: pointer;
+}
+
+.book[data-zone='next'][data-corner='top'],
+.book[data-zone='next'][data-corner='bottom'],
+.book[data-zone='prev'][data-corner='top'],
+.book[data-zone='prev'][data-corner='bottom'] {
+  cursor: grab;
+}
+
+.book[data-dragging] {
+  cursor: grabbing;
+}
+
+/* --- The bed each side of the spine lies on -------------------------------- */
+.slot {
+  position: absolute;
+  top: 0;
+  width: var(--page-w);
+  height: 100%;
+  background: var(--b-paper);
+  box-shadow: var(--shadow-page);
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+  pointer-events: none;
+}
+
+.slot[data-half='left'] {
+  left: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.slot[data-half='right'] {
+  left: var(--page-w);
+  border-radius: 0 3px 3px 0;
+}
+
+.book[data-mode='single'] .slot[data-half='right'] {
+  left: 0;
+  border-radius: 2px 3px 3px 2px;
+}
+
+.slot[data-filled] {
+  opacity: 1;
+}
+
+/* A soft pool of shadow under each half that holds pages. */
+.slot::after {
+  content: '';
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  bottom: -7%;
+  z-index: -1;
+  height: 16%;
+  pointer-events: none;
+  background: radial-gradient(50% 50% at 50% 50%, rgb(var(--shadow-color) / 0.3), rgb(var(--shadow-color) / 0.1) 55%, transparent 72%);
+}
+
+/* Page-block edges: thicker the more leaves lie on that side. */
+.stack {
+  position: absolute;
+  top: 2px;
+  bottom: 1px;
+  width: var(--stack-max);
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgb(var(--shadow-color) / 0.1), transparent 12%, transparent 88%, rgb(var(--shadow-color) / 0.18)),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--b-paper) 78%, var(--b-ink)) 0 0.6px, var(--b-paper) 0.6px 1.8px);
+  box-shadow: var(--shadow-sm);
+  transform: scaleX(var(--depth, 0));
+  transition: transform 0.6s var(--ease-out);
+}
+
+.stack[data-half='right'] {
+  left: 100%;
+  transform-origin: 0 50%;
+  border-radius: 0 2px 2px 0;
+}
+
+.stack[data-half='left'] {
+  right: 100%;
+  transform-origin: 100% 50%;
+  border-radius: 2px 0 0 2px;
+}
+
+/* --- Leaves ------------------------------------------------------------- */
+.leaf {
+  position: absolute;
+  top: 0;
+  transform-origin: 0 50%;
+  transform-style: preserve-3d;
+}
+
+.leaf[data-moving] {
+  will-change: transform;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--b-paper);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.face[data-side='back'] {
+  transform: rotateY(180deg);
+}
+
+.content,
+.paper,
+.verso {
+  position: absolute;
+  inset: 0;
+}
+
+.paper {
+  background: var(--b-paper);
+}
+
+/* The back of a sheet in single-page mode. */
+.verso {
+  background:
+    linear-gradient(270deg, rgb(var(--shadow-color) / 0.14), transparent 14%),
+    color-mix(in srgb, var(--b-paper) 94%, var(--b-ink));
+}
+
+/* Lighting layers: painted above the page, opacity driven by the angle. */
+.gutter,
+.curl,
+.sheen,
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Binding crease on inner pages. */
+.gutter[data-side='front'] {
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.07) 2.5%, rgb(255 255 255 / 0.06) 6%, transparent 11%);
+}
+
+.gutter[data-side='back'] {
+  background: linear-gradient(270deg, rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.07) 2.5%, rgb(255 255 255 / 0.06) 6%, transparent 11%);
+}
+
+/* A rounded band near the outer edge sells the curl of a lifting page. */
+.curl[data-side='front'] {
+  background: linear-gradient(270deg, rgb(0 0 0 / 0.08), rgb(255 255 255 / 0.32) 3%, rgb(0 0 0 / 0.14) 11%, transparent 26%);
+}
+
+.curl[data-side='back'] {
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.08), rgb(255 255 255 / 0.28) 3%, rgb(0 0 0 / 0.12) 11%, transparent 26%);
+}
+
+.sheen[data-side='front'] {
+  background: linear-gradient(100deg, transparent 18%, rgb(255 253 246 / 0.6) 58%, transparent 92%);
+}
+
+.sheen[data-side='back'] {
+  background: linear-gradient(260deg, transparent 18%, rgb(255 253 246 / 0.5) 58%, transparent 92%);
+}
+
+.shade {
+  background: linear-gradient(90deg, rgb(28 20 12 / 0.5), rgb(28 20 12 / 0.92));
+}
+
+.face[data-side='back'] .shade {
+  background: linear-gradient(270deg, rgb(28 20 12 / 0.5), rgb(28 20 12 / 0.92));
+}
+
+/* --- Cast shadow on the page beneath a turning leaf --------------------- */
+.castClip {
+  position: absolute;
+  top: 0;
+  width: var(--page-w);
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.castClip[data-half='right'] {
+  left: var(--page-w);
+}
+
+.book[data-mode='single'] .castClip[data-half='right'] {
+  left: 0;
+}
+
+.castClip[data-half='left'] {
+  left: 0;
+}
+
+.castBand {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.castBand[data-half='right'] {
+  background: linear-gradient(90deg, rgb(var(--shadow-color) / 0.6), rgb(var(--shadow-color) / 0.22) 16%, transparent 58%);
+}
+
+.castBand[data-half='left'] {
+  background: linear-gradient(270deg, rgb(var(--shadow-color) / 0.6), rgb(var(--shadow-color) / 0.22) 16%, transparent 58%);
+}
+
+/* --- Spine -------------------------------------------------------------- */
+.spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: 500;
+  width: 1px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.22) 6%, rgb(0 0 0 / 0.22) 94%, transparent);
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.spine[data-open] {
+  opacity: 1;
+}
+
+/* --- Dog-ear hints ------------------------------------------------------ */
+.ear {
+  position: absolute;
+  z-index: 501;
+  width: clamp(44px, calc(var(--page-w) * 0.15), 72px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  transform: scale(0);
+  transition: transform 0.5s var(--ease-spring);
+}
+
+.ear[data-corner='rb'] {
+  right: 0;
+  bottom: 0;
+  transform-origin: 100% 100%;
+}
+
+.ear[data-corner='rt'] {
+  right: 0;
+  top: 0;
+  transform-origin: 100% 0;
+}
+
+.ear[data-corner='lb'] {
+  left: 0;
+  bottom: 0;
+  transform-origin: 0 100%;
+}
+
+.ear[data-corner='lt'] {
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+/* Triangles are drawn for the bottom-right corner, then mirrored. */
+.earUnder,
+.earFlap {
+  position: absolute;
+  inset: 0;
+}
+
+.ear[data-corner='rt'] > * {
+  transform: scaleY(-1);
+}
+
+.ear[data-corner='lb'] > * {
+  transform: scaleX(-1);
+}
+
+.ear[data-corner='lt'] > * {
+  transform: scale(-1, -1);
+}
+
+/* What the lifted corner uncovers: the next sheet, in its shade. */
+.earUnder {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  background: linear-gradient(315deg, color-mix(in srgb, var(--b-paper) 90%, var(--b-ink)), color-mix(in srgb, var(--b-paper) 76%, var(--b-ink)));
+}
+
+.earFlap {
+  filter: drop-shadow(-2px -2px 3px rgb(0 0 0 / 0.22));
+}
+
+.earFlap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  background: linear-gradient(315deg, color-mix(in srgb, var(--b-paper) 80%, var(--b-ink)) 0%, var(--b-paper) 38%, color-mix(in srgb, var(--b-paper) 70%, white) 100%);
+}
+
+.book[data-zone='next'] .ear[data-corner='rb'],
+.book[data-zone='prev'] .ear[data-corner='lb'] {
+  transform: scale(0.36);
+}
+
+.book[data-zone='next'][data-corner='bottom'] .ear[data-corner='rb'],
+.book[data-zone='next'][data-corner='top'] .ear[data-corner='rt'],
+.book[data-zone='prev'][data-corner='bottom'] .ear[data-corner='lb'],
+.book[data-zone='prev'][data-corner='top'] .ear[data-corner='lt'] {
+  transform: scale(1);
+}
+
+.book[data-dragging] .ear {
+  transform: scale(0);
+  transition-duration: 0.12s;
+}
+
+/* --- Endpaper (見返し) --------------------------------------------------- */
+.endpaper {
+  --ep-line: color-mix(in srgb, var(--b-accent) 13%, var(--b-paper));
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  container-type: inline-size;
+  background-color: var(--b-paper);
+  background-image:
+    radial-gradient(circle at 100% 150%, var(--b-paper) 24%, var(--ep-line) 24%, var(--ep-line) 28%, var(--b-paper) 28%, var(--b-paper) 36%, var(--ep-line) 36%, var(--ep-line) 40%, transparent 40%),
+    radial-gradient(circle at 0 150%, var(--b-paper) 24%, var(--ep-line) 24%, var(--ep-line) 28%, var(--b-paper) 28%, var(--b-paper) 36%, var(--ep-line) 36%, var(--ep-line) 40%, transparent 40%),
+    radial-gradient(circle at 50% 100%, var(--ep-line) 10%, var(--b-paper) 10%, var(--b-paper) 23%, var(--ep-line) 23%, var(--ep-line) 30%, var(--b-paper) 30%, var(--b-paper) 43%, var(--ep-line) 43%, var(--ep-line) 50%, var(--b-paper) 50%, var(--b-paper) 63%, var(--ep-line) 63%, var(--ep-line) 71%, transparent 71%),
+    radial-gradient(circle at 100% 50%, var(--ep-line) 5%, var(--b-paper) 5%, var(--b-paper) 15%, var(--ep-line) 15%, var(--ep-line) 20%, var(--b-paper) 20%, var(--b-paper) 29%, var(--ep-line) 29%, var(--ep-line) 34%, var(--b-paper) 34%, var(--b-paper) 44%, var(--ep-line) 44%, var(--ep-line) 49%, transparent 49%),
+    radial-gradient(circle at 0 50%, var(--ep-line) 5%, var(--b-paper) 5%, var(--b-paper) 15%, var(--ep-line) 15%, var(--ep-line) 20%, var(--b-paper) 20%, var(--b-paper) 29%, var(--ep-line) 29%, var(--ep-line) 34%, var(--b-paper) 34%, var(--b-paper) 44%, var(--ep-line) 44%, var(--ep-line) 49%, transparent 49%);
+  background-size: 12cqw 6cqw;
+}
+
+.endpaperCard {
+  display: grid;
+  justify-items: center;
+  gap: 5cqw;
+  padding: 7cqw 4.5cqw 5cqw;
+  border: 1px solid color-mix(in srgb, var(--b-ink) 16%, transparent);
+  border-radius: 999px;
+  background: var(--b-paper);
+  color: var(--b-ink);
+  box-shadow: 0 0 0 2.4cqw var(--b-paper);
+}
+
+.endpaperJp {
+  font-size: 4cqw;
+  letter-spacing: 0.5em;
+  color: color-mix(in srgb, var(--b-ink) 72%, var(--b-paper));
+}
+
+.endpaperSeal {
+  --hanko-ink: var(--b-accent);
+}
+
+/* --- Reduced-motion book ------------------------------------------------- */
+.flatSpread {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+.flatPage {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  background: var(--b-paper);
+  box-shadow: var(--shadow-page);
+}
+
+.flatPage[data-empty] {
+  visibility: hidden;
+}

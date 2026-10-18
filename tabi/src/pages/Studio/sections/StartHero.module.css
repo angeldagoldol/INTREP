@@ -1,0 +1,250 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: center;
+  gap: var(--space-8);
+  padding-top: clamp(2.5rem, 1rem + 5vw, 6rem);
+  padding-bottom: var(--space-8);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.title {
+  font-size: clamp(2.9rem, 1.3rem + 5.6vw, 7rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.accent {
+  font-style: italic;
+  color: var(--accent);
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 100,
+    'WONK' 1;
+}
+
+.lead {
+  max-width: 38rem;
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* --- Three steps on a hairline --------------------------------------------- */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: var(--space-4);
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-strong);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'no jp'
+    'title title'
+    'text text';
+  align-items: center;
+  align-content: start;
+  column-gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) 0 0;
+}
+
+.step + .step {
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--line);
+}
+
+.stepNo {
+  grid-area: no;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--accent);
+}
+
+.stepJp {
+  grid-area: jp;
+  font-family: var(--font-jp);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+
+.stepTitle {
+  grid-area: title;
+  margin-top: var(--space-3);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+
+.stepText {
+  grid-area: text;
+  margin-top: 2px;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* --- The proofs on the desk ---------------------------------------------- */
+.stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-5);
+  min-height: 460px;
+  padding: var(--space-6) var(--space-4);
+}
+
+.crop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--ink-3), var(--ink-3)) top left / 18px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) top left / 1px 18px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) top right / 18px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) top right / 1px 18px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) bottom left / 18px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) bottom left / 1px 18px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) bottom right / 18px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) bottom right / 1px 18px no-repeat;
+}
+
+.fan {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  min-height: 400px;
+}
+
+.sheet {
+  position: absolute;
+  width: min(62%, 220px);
+  aspect-ratio: 1 / 1.414;
+  overflow: hidden;
+  border-radius: 3px;
+  box-shadow: var(--shadow-page);
+  transform-origin: 50% 90%;
+}
+
+.sheet svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sheetPhoto {
+  position: absolute;
+  inset: 0;
+}
+
+.sheetJp {
+  position: absolute;
+  z-index: 1;
+  top: 10%;
+  right: 9%;
+  padding: 0.35em 0.2em;
+  font-family: var(--font-jp);
+  font-size: clamp(1rem, 0.6rem + 1vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  align-self: stretch;
+  justify-content: center;
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--line);
+}
+
+.make {
+  font-family: var(--font-jp);
+  font-size: clamp(4rem, 2rem + 5vw, 7.5rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.seal {
+  display: inline-flex;
+}
+
+.romaji {
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+@media (max-width: 1099.98px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  .stage {
+    min-height: 380px;
+    max-width: 560px;
+  }
+
+  .fan {
+    min-height: 340px;
+  }
+}
+
+@media (max-width: 699.98px) {
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .step,
+  .step + .step {
+    padding: var(--space-3) 0;
+    border-left: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stepText {
+    max-width: 30rem;
+  }
+
+  .stage {
+    min-height: 300px;
+    padding: var(--space-5) var(--space-2);
+  }
+
+  .fan {
+    min-height: 270px;
+  }
+
+  .sheet {
+    width: min(48%, 160px);
+  }
+
+  .make {
+    font-size: 3.6rem;
+  }
+
+  .side {
+    padding-left: var(--space-3);
+  }
+}

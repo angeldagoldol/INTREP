@@ -1,0 +1,260 @@
+.stage {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--line);
+}
+
+.where {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.folio {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+.of {
+  color: var(--ink-3);
+}
+
+.label {
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  text-overflow: ellipsis;
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.views {
+  flex: none;
+  width: 11.5rem;
+}
+
+/* --- The desk: a cutting mat with the page lying on it ------------------- */
+.desk {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4);
+  background-color: var(--bg-sunken);
+  background-image:
+    radial-gradient(120% 90% at 50% 45%, transparent 55%, color-mix(in srgb, var(--ink) 6%, transparent)),
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    28px 28px,
+    28px 28px;
+  background-position: center;
+  overflow: hidden;
+}
+
+.nav {
+  z-index: 2;
+  background: var(--bg-elevated);
+}
+
+.viewport {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+  perspective: 1600px;
+}
+
+.frame,
+.spread {
+  grid-area: 1 / 1;
+  transform-style: preserve-3d;
+}
+
+.frame {
+  position: relative;
+  width: min(100cqw, 100cqh / 1.414);
+  box-shadow: var(--shadow-page);
+}
+
+/* Crop marks around the sheet, like a proof on the light table. */
+.frame::before,
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--ink-3), var(--ink-3)) top left / 10px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) top left / 1px 10px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) top right / 10px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) top right / 1px 10px no-repeat;
+  opacity: 0.7;
+}
+
+.frame::after {
+  background:
+    linear-gradient(var(--ink-3), var(--ink-3)) bottom left / 10px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) bottom left / 1px 10px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) bottom right / 10px 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) bottom right / 1px 10px no-repeat;
+}
+
+.spread {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100cqw, 100cqh * 2 / 1.414);
+  box-shadow: var(--shadow-page);
+}
+
+.spreadPage {
+  position: relative;
+  display: block;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.spreadPage[data-side='right'],
+.spreadBlank[data-side='right'] {
+  grid-column: 2;
+}
+
+.spreadPage[data-side='left'],
+.spreadBlank[data-side='left'] {
+  grid-column: 1;
+}
+
+/* The cover and the back cover sit alone, as in the reader: only the sheet
+   casts a shadow, not the empty half beside it. */
+.spread[data-half] {
+  box-shadow: none;
+}
+
+.spread[data-half] > [data-side] {
+  box-shadow: var(--shadow-page);
+}
+
+.spreadPage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 0 var(--accent);
+  transition: box-shadow var(--dur-2) var(--ease-out);
+}
+
+.spreadPage:hover::after {
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.spreadPage[aria-current='page']::after {
+  box-shadow: inset 0 0 0 3px var(--accent);
+}
+
+.spreadPage:focus-visible {
+  outline-offset: 4px;
+}
+
+/* The fold: a soft shadow down the spine. */
+.gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 8%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(0 0 0 / 0.12) 48%, rgb(0 0 0 / 0.18) 50%, rgb(0 0 0 / 0.12) 52%, transparent);
+  mix-blend-mode: multiply;
+}
+
+/* --- Thumbnail strip ----------------------------------------------------- */
+.stripWrap {
+  position: relative;
+  border-top: 1px solid var(--line);
+  background: var(--bg-elevated);
+}
+
+.stripWrap::before,
+.stripWrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 28px;
+  pointer-events: none;
+}
+
+.stripWrap::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--bg-elevated), transparent);
+}
+
+.stripWrap::after {
+  right: 0;
+  background: linear-gradient(-90deg, var(--bg-elevated), transparent);
+}
+
+.strip {
+  position: relative;
+  display: flex;
+  justify-content: safe center;
+  gap: 4px;
+  padding: var(--space-3) var(--space-6) var(--space-2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 699.98px) {
+  .bar {
+    padding: var(--space-3) var(--gutter);
+  }
+
+  .label {
+    display: none;
+  }
+
+  .desk {
+    flex: none;
+    height: min(72dvh, 150vw);
+    padding: var(--space-5) var(--space-2);
+    gap: var(--space-1);
+  }
+
+  .strip {
+    padding-inline: var(--gutter);
+  }
+}

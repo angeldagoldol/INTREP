@@ -1,0 +1,174 @@
+.section {
+  padding-block: var(--section-y);
+  overflow: clip;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(2rem, 1rem + 5vw, 6.5rem);
+}
+
+.aside {
+  display: grid;
+  gap: clamp(1.75rem, 1rem + 2vw, 3rem);
+}
+
+/* --- Reader index -------------------------------------------------------- */
+.readers {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.reader {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 52px;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-3);
+  text-align: left;
+  transition: color var(--dur-3) var(--ease-out);
+}
+
+.reader:hover,
+.reader[aria-current] {
+  color: var(--ink);
+}
+
+.readerNum {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+.reader[aria-current] .readerNum {
+  color: var(--accent);
+}
+
+.readerJp {
+  margin-right: 0.75em;
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.reader:not([aria-current]) .readerJp {
+  color: inherit;
+}
+
+.readerName {
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-md);
+  letter-spacing: -0.01em;
+}
+
+.readerCity {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-sm);
+}
+
+.readerBar {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  overflow: hidden;
+}
+
+.readerFill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: 0 50%;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.counter {
+  margin-left: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.counter span {
+  color: var(--ink-3);
+}
+
+/* --- The deck ------------------------------------------------------------ */
+.stage {
+  position: relative;
+  display: grid;
+  padding: clamp(1rem, 0.5rem + 2vw, 2.5rem) clamp(0.5rem, 1.5vw, 1.5rem);
+}
+
+.behind,
+.deck {
+  grid-area: 1 / 1;
+}
+
+.behind {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.behind[data-depth='1'] {
+  transform: translate(14px, 12px) rotate(2.6deg);
+}
+
+.behind[data-depth='2'] {
+  transform: translate(-10px, 20px) rotate(-3.6deg);
+  background: var(--bg-sunken);
+}
+
+.deck {
+  position: relative;
+  z-index: 1;
+  display: grid;
+}
+
+.slot {
+  grid-area: 1 / 1;
+}
+
+/* Phones: heading, then the deck, then the controls under it. */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  .aside {
+    display: contents;
+  }
+
+  .readers {
+    display: none;
+  }
+
+  .stage {
+    order: 1;
+  }
+
+  .controls {
+    order: 2;
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "batchcomplete": true,
+  "continue": {
+    "gsroffset": 20,
+    "continue": "gsroffset||"
+  },
+  "query": {
+    "pages": [
+      {
+        "pageid": 9001,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera landscape.jpg",
+        "index": 1,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 6000000,
+            "width": 3000,
+            "height": 2000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Kiyomizu-dera_landscape.jpg/1920px-Kiyomizu-dera_landscape.jpg",
+            "thumbwidth": 1920,
+            "thumbheight": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Kiyomizu-dera_landscape.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/Kiyomizu-dera_landscape.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": {
+                "value": "Kiyomizu-dera landscape"
+              },
+              "Artist": {
+                "value": "<a href=\"https://commons.wikimedia.org/wiki/User:Example\">Example Photographer</a>"
+              },
+              "LicenseShortName": {
+                "value": "CC BY 2.0"
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by/2.0"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9002,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera portrait.jpg",
+        "index": 2,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 8640000,
+            "width": 2400,
+            "height": 3600,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Kiyomizu-dera_portrait.jpg/1920px-Kiyomizu-dera_portrait.jpg",
+            "thumbwidth": 1920,
+            "thumbheight": 2880,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Kiyomizu-dera_portrait.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/Kiyomizu-dera_portrait.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": {
+                "value": "Kiyomizu-dera portrait"
+              },
+              "Artist": {
+                "value": "<a href=\"https://commons.wikimedia.org/wiki/User:Example\">Example Photographer</a>"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-SA 4.0"
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-sa/4.0"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9003,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera panorama strip.jpg",
+        "index": 3,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 18000000,
+            "width": 9000,
+            "height": 2000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Kiyomizu-dera_panorama_strip.jpg/1920px-Kiyomizu-dera_panorama_strip.jpg",
+            "thumbwidth": 1920,
+            "thumbheight": 427,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Kiyomizu-dera_panorama_strip.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/Kiyomizu-dera_panorama_strip.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": {
+                "value": "Kiyomizu-dera panorama strip"
+              },
+              "Artist": {
+                "value": "<a href=\"https://commons.wikimedia.org/wiki/User:Example\">Example Photographer</a>"
+              },
+              "LicenseShortName": {
+                "value": "CC0"
+              },
+              "LicenseUrl": {
+                "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9004,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera noncommercial.jpg",
+        "index": 4,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 15000000,
+            "width": 5000,
+            "height": 3000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Kiyomizu-dera_noncommercial.jpg/1920px-Kiyomizu-dera_noncommercial.jpg",
+            "thumbwidth": 1920,
+            "thumbheight": 1152,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Kiyomizu-dera_noncommercial.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/Kiyomizu-dera_noncommercial.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": {
+                "value": "Kiyomizu-dera noncommercial"
+              },
+              "Artist": {
+                "value": "<a href=\"https://commons.wikimedia.org/wiki/User:Example\">Example Photographer</a>"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-NC 2.0"
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-nc/2.0"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9005,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera small.jpg",
+        "index": 5,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 960000,
+            "width": 1200,
+            "height": 800,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Kiyomizu-dera_small.jpg",
+            "thumbwidth": 1200,
+            "thumbheight": 800,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Kiyomizu-dera_small.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/Kiyomizu-dera_small.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": {
+                "value": "Kiyomizu-dera small"
+              },
+              "Artist": {
+                "value": "<a href=\"https://commons.wikimedia.org/wiki/User:Example\">Example Photographer</a>"
+              },
+              "LicenseShortName": {
+                "value": "CC0"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9006,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera big landscape.jpg",
+        "index": 6,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 9600000,
+            "width": 4000,
+            "height": 2400,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Kiyomizu-dera_big_landscape.jpg/1920px-Kiyomizu-dera_big_landscape.jpg",
+            "thumbwidth": 1920,
+            "thumbheight": 1152,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Kiyomizu-dera_big_landscape.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/Kiyomizu-dera_big_landscape.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": {
+                "value": "Kiyomizu-dera big landscape"
+              },
+              "Artist": {
+                "value": "<a href=\"https://commons.wikimedia.org/wiki/User:Example\">Example Photographer</a>"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-SA 3.0"
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-sa/3.0"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

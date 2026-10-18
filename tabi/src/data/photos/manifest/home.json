@@ -1,0 +1,325 @@
+{
+  "brochure": "home",
+  "photos": [
+    {
+      "id": "home-hero-fuji",
+      "use": "cover",
+      "candidates": [
+        "File:Lake Ashi & Mt Fuji & Hakone Shrine.jpg",
+        "File:Mount Fuji from Lake Ashi 20211202-2.jpg",
+        "File:View of Mount Fuji from Lake Ashi.jpg"
+      ],
+      "query": "Mount Fuji Lake Ashi Hakone",
+      "alt": "The cone of Mount Fuji rising beyond Lake Ashi and its wooded shores",
+      "caption": "Mount Fuji from Lake Ashi, Hakone",
+      "place": "Lake Ashi, Hakone",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "home-hero-torii",
+      "use": "cover",
+      "candidates": [
+        "File:Torii path with lantern at Fushimi Inari Taisha Shrine, Kyoto, Japan.jpg",
+        "File:Torii, Fushimi Inari-Taisha.jpg",
+        "File:FushimiInari Taisha Shrine-of-Torii.jpg"
+      ],
+      "query": "Fushimi Inari-taisha senbon torii",
+      "alt": "A tunnel of vermilion torii gates along a forest path",
+      "caption": "Senbon Torii at Fushimi Inari Taisha, Kyoto",
+      "place": "Fushimi Inari Taisha",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "home-hero-shibuya",
+      "use": "cover",
+      "candidates": [
+        "File:Shibuya Crossing.jpg",
+        "File:Shibuya Crossing at night (14738088849).jpg",
+        "File:Night in Shibuya.jpg"
+      ],
+      "query": "Shibuya Crossing at night",
+      "alt": "Crowds crossing a wide pedestrian scramble at night beneath glowing screens and signs",
+      "caption": "Shibuya Crossing at night, Tokyo",
+      "place": "Shibuya Crossing",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "home-season-spring",
+      "use": "cover",
+      "candidates": [
+        "File:Hirosaki Castle (Hirosaki, Japan).jpg",
+        "File:Cherry Blossoms in Hirosaki castle park - panoramio - MAKIKO OMOKAWA.jpg",
+        "File:Hirosaki-castle Aomori with Sakura blossoms.jpg"
+      ],
+      "query": "Hirosaki Castle cherry blossoms",
+      "alt": "A white-walled castle keep framed by cherry trees in full pink blossom",
+      "caption": "Hirosaki Castle in cherry-blossom season, Aomori",
+      "place": "Hirosaki Park, Hirosaki",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "home-season-summer",
+      "use": "cover",
+      "candidates": [
+        "File:Lavender fields, Furano (48254611081).jpg",
+        "File:Lavender fields in the Farm Tomita 20090806.jpg",
+        "File:Farm-Tomita.Irodori-no-Hatake01.JPG"
+      ],
+      "query": "Furano lavender field Farm Tomita",
+      "alt": "Rows of purple lavender in bloom running across a gentle hillside under a summer sky",
+      "caption": "Lavender fields in the Furano area, Hokkaidō, in summer",
+      "place": "Furano area, Hokkaidō",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "home-season-autumn",
+      "use": "cover",
+      "candidates": [
+        "File:Kiyomizu-dera, Kyoto, November 2016 -01.jpg",
+        "File:Kiyomizu-dera in Kyoto-r.jpg",
+        "File:Kyoto-Kiyomizudera, Japan.jpg"
+      ],
+      "query": "Kiyomizu-dera main hall autumn leaves",
+      "alt": "Kiyomizu-dera’s wooden main hall and stage on tall pillars above a hillside of red and orange maples",
+      "caption": "Kiyomizu-dera in autumn, Kyoto",
+      "place": "Kiyomizu-dera",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "home-season-winter",
+      "use": "cover",
+      "candidates": [
+        "File:Shirakawago.jpg",
+        "File:A world heritage SIRAKAWAGOU JPN 2010.jpg",
+        "File:Shirakawa Go (198622037).jpeg"
+      ],
+      "query": "Shirakawa-go Ogimachi winter snow gassho",
+      "alt": "Steep thatched-roof farmhouses deep in snow in a mountain village",
+      "caption": "Gasshō-zukuri farmhouses of Ogimachi, Shirakawa-gō, in winter",
+      "place": "Ogimachi, Shirakawa-gō",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "home-region-hokkaido",
+      "use": "wide",
+      "candidates": [
+        "File:140829 Ichiko of Shiretoko Goko Lakes Hokkaido Japan04s3.jpg",
+        "File:140829 Ichiko of Shiretoko Goko Lakes Hokkaido Japan01s5.jpg",
+        "File:140829 Yonko of Shiretoko Goko Lakes Hokkaido Japan01n.jpg"
+      ],
+      "query": "Shiretoko Goko Lakes",
+      "alt": "A still forest lake reflecting a range of mountains",
+      "caption": "Shiretoko Five Lakes and the Shiretoko range, eastern Hokkaidō",
+      "place": "Shiretoko Five Lakes, Shiretoko National Park",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "home-region-tohoku",
+      "use": "wide",
+      "candidates": [
+        "File:Yamadera Panorama 2011.jpg",
+        "File:Yamadera 2006 Midahora-01.jpg"
+      ],
+      "query": "Yamadera Risshaku-ji Godaido",
+      "alt": "Yamadera’s temple halls high on a forested mountainside above a green valley",
+      "caption": "Yamadera (Risshaku-ji), Yamagata",
+      "place": "Yamadera (Risshaku-ji)",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "home-region-kanto",
+      "use": "wide",
+      "candidates": [
+        "File:Five-storied Pagoda at Senso-ji.jpg",
+        "File:Pagode à 5 étages Senso-ji.jpg",
+        "File:Kaminarimon (outer gate), Sensoji Temple, Akakusa, Tokyo.jpg"
+      ],
+      "query": "Senso-ji five-storied pagoda Asakusa",
+      "alt": "Sensō-ji’s five-storey pagoda and vermilion temple buildings in Asakusa",
+      "caption": "Sensō-ji, Asakusa, Tokyo",
+      "place": "Sensō-ji, Asakusa",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "home-region-chubu",
+      "use": "wide",
+      "candidates": [
+        "File:Matsumoto Castle05s5s4592.jpg",
+        "File:Matsumoto Castle 1-1.jpg",
+        "File:Matsumoto-Castle-M7912.jpg"
+      ],
+      "query": "Matsumoto Castle keep moat",
+      "alt": "A black-and-white castle keep rising above a moat on stone walls",
+      "caption": "Matsumoto Castle, Nagano",
+      "place": "Matsumoto Castle",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "home-region-kansai",
+      "use": "wide",
+      "candidates": [
+        "File:Todai-ji.jpg",
+        "File:The Great Buddha Hall of Tōdai-ji, Nara, November 2016.jpg"
+      ],
+      "query": "Todaiji Daibutsuden Great Buddha Hall",
+      "alt": "The vast wooden Great Buddha Hall of Tōdai-ji with its sweeping, gold-tipped roof",
+      "caption": "The Great Buddha Hall (Daibutsuden), Tōdai-ji, Nara",
+      "place": "Tōdai-ji, Nara",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "home-region-chugoku",
+      "use": "wide",
+      "candidates": [
+        "File:20100723 Miyajima 4904.jpg",
+        "File:Torii and Itsukushima Shrine.jpg",
+        "File:Itsukushima Gate.jpg"
+      ],
+      "query": "Itsukushima Shrine floating torii Miyajima",
+      "alt": "A vermilion torii gate standing in the sea off a wooded island",
+      "caption": "The great torii of Itsukushima Shrine, Miyajima",
+      "place": "Itsukushima Shrine, Miyajima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "home-region-shikoku",
+      "use": "wide",
+      "candidates": [
+        "File:Kazura-bashi, Iya Valley 02.jpg",
+        "File:Kazurabashi IyaValley2.JPG",
+        "File:Iya waddle bridge(Kazurabashi) 01.jpg"
+      ],
+      "query": "Kazurabashi Iya Valley vine bridge",
+      "alt": "A suspension bridge woven from mountain vines spanning a clear river in a forested gorge",
+      "caption": "Kazurabashi vine bridge in the Iya Valley, Tokushima",
+      "place": "Iya Valley, Miyoshi",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "home-region-kyushu",
+      "use": "wide",
+      "candidates": [
+        "File:Sakurajima -城山展望台より.jpg",
+        "File:Kagoshima city and Sakurajima.jpg",
+        "File:Sakurajima at Sunset.jpg"
+      ],
+      "query": "Sakurajima from Shiroyama Kagoshima",
+      "alt": "A broad volcano rising beyond the waters of a wide bay",
+      "caption": "Sakurajima across Kagoshima Bay",
+      "place": "Sakurajima, Kagoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "home-cat-cities",
+      "use": "any",
+      "candidates": [
+        "File:Tokyo Skytree Japan.jpg",
+        "File:Tokyo Sky Tree 2012.JPG",
+        "File:Tokyo Skytree (158046265).jpeg"
+      ],
+      "query": "Tokyo Skytree",
+      "alt": "The slender lattice tower of Tokyo Skytree rising above the rooftops of Sumida",
+      "caption": "Tokyo Skytree, Sumida, Tokyo",
+      "place": "Tokyo Skytree",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "home-cat-heritage",
+      "use": "any",
+      "candidates": [
+        "File:Kinkaku-ji (Golden Pavillon).jpg",
+        "File:Kinkaku-ji (-Temple of the Golden Pavilion-) seen across Kyōko-chi (Mirror Pond). Kita-ku, Kyoto-2.jpg",
+        "File:Kinkaku, the Golden Pavilion of Kinkakuji, Kyoto, Japan.jpg"
+      ],
+      "query": "Kinkaku-ji Golden Pavilion Kyoko-chi pond",
+      "alt": "A gold-leafed pavilion reflected in a still pond ringed by pines",
+      "caption": "Kinkaku-ji, the Golden Pavilion, Kyoto",
+      "place": "Kinkaku-ji",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "home-cat-nature",
+      "use": "any",
+      "candidates": [
+        "File:Japan Kamikouchi-Valley Panorama.jpg",
+        "File:251023 Hotaka mountain range as seen from Kappa Bridge.jpg",
+        "File:150920 Kappa-bashi Kamikochi Japan02n.jpg"
+      ],
+      "query": "Kamikochi Kappa Bridge Hotaka mountains",
+      "alt": "A clear mountain river in a wooded valley beneath rocky alpine peaks",
+      "caption": "Kamikōchi and the Hotaka peaks, Northern Japan Alps",
+      "place": "Kamikōchi",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "home-cat-islands",
+      "use": "any",
+      "candidates": [
+        "File:Kabira Bay Ishigaki Island41s3s4500.jpg",
+        "File:Kabira Bay Ishigaki Island07o4592.jpg",
+        "File:Kabira Bay Ishigaki Island23n4500.jpg"
+      ],
+      "query": "Kabira Bay Ishigaki Island",
+      "alt": "Turquoise water and small green islets in a sheltered bay",
+      "caption": "Kabira Bay, Ishigaki Island, Okinawa",
+      "place": "Kabira Bay, Ishigaki",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "home-cat-food",
+      "use": "any",
+      "candidates": [
+        "File:Dotonbori, Osaka, at night, November 2016.jpg",
+        "File:Glico Man Neon Sign and Ebisubashi Bridge at night.jpg",
+        "File:Neon Signs in Dotonbori, Osaka 20190415 1.jpg"
+      ],
+      "query": "Dotonbori Ebisu Bridge neon night",
+      "alt": "A canal lined with giant illuminated signs and restaurant fronts",
+      "caption": "Dōtonbori, Osaka, at night",
+      "place": "Dōtonbori, Osaka",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "home-cat-onsen",
+      "use": "any",
+      "candidates": [
+        "File:Dogo-onsen Honkan.jpg",
+        "File:Dogo onsen honkan long exposure.jpg",
+        "File:Dogo Onsen Hot Spring, Matsuyama City, Ehime Prefecture, Japan - panoramio.jpg"
+      ],
+      "query": "Dogo Onsen Honkan main building",
+      "alt": "A many-roofed wooden bathhouse with a small turret on top",
+      "caption": "Dōgo Onsen Honkan, Matsuyama",
+      "place": "Dōgo Onsen, Matsuyama",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "home-cat-festivals",
+      "use": "any",
+      "candidates": [
+        "File:Gion-matsuri in Kyoto; July 2010 (14).jpg",
+        "File:Kyoto Gion Matsuri J09 049.jpg",
+        "File:Kyoto Gion Matsuri J09 060.jpg"
+      ],
+      "query": "Gion Matsuri yamahoko float",
+      "alt": "A towering wooden festival float hung with rich tapestries in a city street",
+      "caption": "A Gion Matsuri float, Kyoto, in July",
+      "place": "Gion Matsuri, Kyoto",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "home-cat-craft",
+      "use": "any",
+      "candidates": [
+        "File:Higashi Chaya district, Kanazawa (3810720612).jpg",
+        "File:Higashiyama Higashi Chaya District Kanazawa (29103739857).jpg",
+        "File:Higashi chaya gai005.jpg"
+      ],
+      "query": "Higashi Chaya district Kanazawa",
+      "alt": "A quiet street of two-storey wooden teahouses with fine latticed fronts",
+      "caption": "Higashi Chaya district, Kanazawa — the city of gold leaf",
+      "place": "Higashi Chaya, Kanazawa",
+      "focus": "50% 50%"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+/* Mirrors the reader's endpaper (viewer/Flipbook.module.css .endpaper), so
+   the Studio proof shows the same sheet the published flipbook will. */
+.endpaper {
+  --ep-line: color-mix(in srgb, var(--b-accent) 13%, var(--b-paper));
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1 / 1.414;
+  container-type: inline-size;
+  background-color: var(--b-paper);
+}
+
+/* On a pseudo-element so the cqw sizes resolve against this sheet, not the stage. */
+.endpaper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 100% 150%, var(--b-paper) 24%, var(--ep-line) 24%, var(--ep-line) 28%, var(--b-paper) 28%, var(--b-paper) 36%, var(--ep-line) 36%, var(--ep-line) 40%, transparent 40%),
+    radial-gradient(circle at 0 150%, var(--b-paper) 24%, var(--ep-line) 24%, var(--ep-line) 28%, var(--b-paper) 28%, var(--b-paper) 36%, var(--ep-line) 36%, var(--ep-line) 40%, transparent 40%),
+    radial-gradient(circle at 50% 100%, var(--ep-line) 10%, var(--b-paper) 10%, var(--b-paper) 23%, var(--ep-line) 23%, var(--ep-line) 30%, var(--b-paper) 30%, var(--b-paper) 43%, var(--ep-line) 43%, var(--ep-line) 50%, var(--b-paper) 50%, var(--b-paper) 63%, var(--ep-line) 63%, var(--ep-line) 71%, transparent 71%),
+    radial-gradient(circle at 100% 50%, var(--ep-line) 5%, var(--b-paper) 5%, var(--b-paper) 15%, var(--ep-line) 15%, var(--ep-line) 20%, var(--b-paper) 20%, var(--b-paper) 29%, var(--ep-line) 29%, var(--ep-line) 34%, var(--b-paper) 34%, var(--b-paper) 44%, var(--ep-line) 44%, var(--ep-line) 49%, transparent 49%),
+    radial-gradient(circle at 0 50%, var(--ep-line) 5%, var(--b-paper) 5%, var(--b-paper) 15%, var(--ep-line) 15%, var(--ep-line) 20%, var(--b-paper) 20%, var(--b-paper) 29%, var(--ep-line) 29%, var(--ep-line) 34%, var(--b-paper) 34%, var(--b-paper) 44%, var(--ep-line) 44%, var(--ep-line) 49%, transparent 49%);
+  /* The reader sizes its waves against the viewport (about a third of a page wide); here they scale with the sheet. */
+  background-size: 34cqw 17cqw;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 5cqw;
+  padding: 7cqw 4.5cqw 5cqw;
+  border: 1px solid color-mix(in srgb, var(--b-ink) 16%, transparent);
+  border-radius: 999px;
+  background: var(--b-paper);
+  color: var(--b-ink);
+  box-shadow: 0 0 0 2.4cqw var(--b-paper);
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: 4cqw;
+  letter-spacing: 0.5em;
+  color: color-mix(in srgb, var(--b-ink) 72%, var(--b-paper));
+}
+
+.seal {
+  --hanko-ink: var(--b-accent);
+  /* Scale the seal with the sheet (34px on the reader's ~490px page), so a
+     small proof doesn't get an oversized stamp. Beats Hanko's inline size. */
+  --hanko-size: 7cqw !important;
+}

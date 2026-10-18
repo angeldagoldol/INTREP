@@ -1,0 +1,90 @@
+.more {
+  padding-block: calc(var(--section-y) * 0.5) var(--section-y);
+}
+
+.layout {
+  display: grid;
+  gap: var(--space-7);
+}
+
+@media (min-width: 1100px) {
+  .layout {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 3fr);
+    gap: var(--space-8);
+    align-items: start;
+  }
+}
+
+.head {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--ink);
+}
+
+@media (min-width: 1100px) {
+  .head {
+    position: sticky;
+    top: calc(var(--nav-h) + var(--space-5));
+  }
+}
+
+.title {
+  margin-top: var(--space-2);
+  font-size: var(--fs-2xl);
+  line-height: 1;
+}
+
+.titleJp {
+  display: block;
+  margin-top: var(--space-3);
+  font-family: var(--font-jp);
+  font-size: 0.36em;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+}
+
+.lede {
+  max-width: 24rem;
+  color: var(--ink-2);
+}
+
+.all {
+  margin-top: var(--space-2);
+}
+
+/* Phones: a snap-scrolling strip that bleeds to the screen edges. */
+.grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(78%, 300px);
+  gap: var(--space-4);
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 0 var(--gutter) var(--space-3);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.grid::-webkit-scrollbar {
+  display: none;
+}
+
+.grid > li {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-7) var(--space-5);
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+}

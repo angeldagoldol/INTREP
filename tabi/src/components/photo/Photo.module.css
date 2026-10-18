@@ -1,0 +1,189 @@
+/* A photograph that fills its box. While it loads, the dominant colour and a
+   blurred 24px preview hold the space; then it sharpens in. Hosts tune it
+   with --photo-credit-size, --photo-radius and --photo-caption-color. */
+.photo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: var(--photo-ratio, auto);
+}
+
+.frame {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--photo-color, transparent);
+}
+
+.rounded .frame {
+  border-radius: var(--photo-radius, 8px);
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+}
+
+.fallback > * {
+  width: 100%;
+  height: 100%;
+}
+
+.lqip {
+  position: absolute;
+  inset: -6%;
+  background-position: var(--photo-focus, 50% 50%);
+  background-size: cover;
+  filter: blur(14px) saturate(1.1);
+  transition: opacity 600ms ease 250ms;
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--photo-focus, 50% 50%);
+  opacity: 0;
+  filter: blur(10px);
+  transform: scale(1.03);
+  transform-origin: var(--photo-focus, 50% 50%);
+  transition:
+    opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1400ms cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+[data-object-fit='contain'] .img {
+  object-fit: contain;
+}
+
+[data-state='loaded'] .img {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+[data-state='loaded'] .lqip,
+[data-object-fit='contain'] .lqip {
+  opacity: 0;
+}
+
+/* A slow drift for heroes, after the photo has arrived. */
+.kenBurns[data-state='loaded'] .img {
+  animation: photo-drift 26s ease-in-out 600ms infinite alternate both;
+}
+
+@keyframes photo-drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img,
+  .lqip {
+    transition: none;
+  }
+
+  .kenBurns[data-state='loaded'] .img {
+    animation: none;
+  }
+}
+
+.chip {
+  position: absolute;
+  top: var(--photo-chip-top, auto);
+  right: var(--photo-chip-right, 0.7em);
+  bottom: var(--photo-chip-bottom, 0.7em);
+  left: var(--photo-chip-left, auto);
+  z-index: 1;
+  max-width: min(calc(100% - 1.4em), 34em);
+  padding: 0.3em 0.7em 0.32em;
+  border-radius: 0.7em;
+  background: rgb(18 16 12 / 0.56);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: rgb(255 252 245 / 0.92);
+  font-family: var(--font-mono);
+  font-size: var(--photo-credit-size, 10px);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+.caption {
+  flex: none;
+  margin-top: 0.55em;
+  color: var(--photo-caption-color, currentColor);
+  font-family: var(--font-mono);
+  font-size: var(--photo-credit-size, 11px);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  opacity: 0.78;
+}
+
+/* Any credit line (<PhotoCredit>): it wraps rather than cutting anything
+   off, and the licence and the "Photo:" label never break inside. */
+.credit {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+/* The overlay chip keeps its inset from both edges; `.credit` above would
+   otherwise let a long author name run it edge to edge, clipping "Photo:". */
+.credit.chip {
+  max-width: min(calc(100% - 1.4em), 34em);
+}
+
+.creditLabel,
+.creditSep,
+.creditLicense {
+  white-space: nowrap;
+}
+
+.creditLabel {
+  margin-inline-end: 0.15em;
+  opacity: 0.75;
+}
+
+.credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+.credit a:hover {
+  text-decoration-color: currentColor;
+}
+
+.credit a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* On paper there is no fade: a photo that has arrived prints sharp, whatever
+   its loading state says (the art or preview under it shows if it has not). */
+@media print {
+  .img {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+}

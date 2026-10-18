@@ -1,0 +1,78 @@
+.stats {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 4.5cqw 0 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+}
+
+.item {
+  flex: 1 0 auto;
+  padding: calc(1.6cqw * var(--fit, 1)) 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30cqw;
+  align-items: center;
+  gap: 3cqw;
+  border-top: var(--hair) solid var(--b-rule);
+}
+
+.item:last-child {
+  border-bottom: var(--hair) solid var(--b-rule);
+}
+
+.value {
+  font-family: var(--b-font);
+  font-size: calc(var(--fs, 12cqw) * var(--fit, 1));
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  font-variant-numeric: lining-nums;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 0;
+  white-space: nowrap;
+  color: var(--b-ink);
+}
+
+/* A small raised qualifier before the figure: ~1,600, +7 yrs. */
+.affix {
+  margin-right: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 0.42em;
+  font-weight: 500;
+  letter-spacing: 0;
+  vertical-align: 0.95em;
+}
+
+.item:first-child .value {
+  color: var(--b-accent-text);
+}
+
+[data-typeface='mono'] .value {
+  letter-spacing: -0.08em;
+}
+
+.label {
+  display: flex;
+  gap: 1.6cqw;
+  align-items: baseline;
+  font-size: calc(2.2cqw * var(--fit, 1));
+  line-height: 1.4;
+  color: var(--b-body);
+}
+
+.index {
+  flex: none;
+  font-size: 1.8cqw;
+  color: var(--b-accent-text);
+}

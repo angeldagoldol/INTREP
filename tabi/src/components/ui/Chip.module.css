@@ -1,0 +1,70 @@
+.chip {
+  --chip-color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  height: 38px;
+  padding-inline: 0.95rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+
+.chip:hover {
+  border-color: var(--ink);
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.selected {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--chip-color);
+}
+
+.icon {
+  display: inline-grid;
+  color: var(--chip-color);
+}
+
+.selected .icon {
+  color: inherit;
+}
+
+.icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.count {
+  min-width: 1.5em;
+  padding: 0.1em 0.45em;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  text-align: center;
+}
+
+.selected .count {
+  background: rgb(255 255 255 / 0.16);
+}

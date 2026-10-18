@@ -1,0 +1,308 @@
+/* ==========================================================================
+   Base layer: reset, typography, global affordances, a handful of utilities.
+   Component styling lives next to each component in *.module.css files.
+   ========================================================================== */
+
+/* Fraunces macron vowels (ā ē ī ō ū). Google serves Fraunces split by
+   unicode-range; Chromium shapes ō with the latin file, decomposes it to
+   o + U+0304, and that file has no mark anchors, so the macron lands beside
+   the letter. A face holding only the precomposed vowels (Fraunces' own
+   latin-ext file), listed first in --font-display (tokens.css), keeps them
+   whole across the app. If the file ever fails to load, text simply falls
+   back to Fraunces. */
+@font-face {
+  font-family: 'Tabi Macrons';
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/fraunces/v38/6NUV8FyLNQOQZAnv9ZwGlOk8yA.woff2) format('woff2');
+  unicode-range: U+0100-0101, U+0112-0113, U+012A-012B, U+014C-014D, U+016A-016B;
+}
+
+@font-face {
+  font-family: 'Tabi Macrons';
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/fraunces/v38/6NUT8FyLNQOQZAnv9ZwNpOUkzO1A.woff2) format('woff2');
+  unicode-range: U+0100-0101, U+0112-0113, U+012A-012B, U+014C-014D, U+016A-016B;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-h) + 1rem);
+  hanging-punctuation: first last;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition:
+    background-color var(--dur-3) var(--ease-out),
+    color var(--dur-3) var(--ease-out);
+  overflow-x: clip;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit; /* the UA resets it, which would undo a heading's */
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+p,
+li,
+figcaption {
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+  word-spacing: var(--word-space-heading);
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 30,
+    'WONK' 0;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+em,
+i {
+  font-variation-settings: 'WONK' 1;
+}
+
+::selection {
+  background: var(--highlight);
+  color: #16140f;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Thin, quiet scrollbars that match the paper. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+/* --- Film grain: one fixed layer over the whole app ---------------------- */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 -0.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 1.2s steps(6) infinite;
+}
+
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* --- Utilities ---------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: calc(var(--container-narrow) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 400;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.045em;
+  word-spacing: var(--word-space-display);
+}
+
+.serif-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 100,
+    'WONK' 1;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* Japanese text set in mincho; use with lang="ja". */
+.jp {
+  font-family: var(--font-jp);
+  letter-spacing: 0.08em;
+  font-feature-settings: 'palt';
+}
+
+:lang(ja) {
+  font-feature-settings: 'palt';
+  line-break: strict;
+}
+
+.muted {
+  color: var(--ink-2);
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: calc(var(--z-toast) + 1);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 600;
+  transform: translateY(-160%);
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* --- Motion safety ------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .grain {
+    animation: none;
+  }
+}
+
+/* --- Print: brochures should print as clean pages ----------------------- */
+@media print {
+  /* Fixed-position chrome would otherwise repeat on every printed sheet. */
+  .grain,
+  .skip-link,
+  [data-print='hide'] {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+}

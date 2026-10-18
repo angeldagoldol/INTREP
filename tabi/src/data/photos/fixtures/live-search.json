@@ -1,0 +1,100 @@
+{
+  "batchcomplete": true,
+  "continue": { "gsroffset": 10, "continue": "gsroffset||" },
+  "query": {
+    "pages": [
+      {
+        "pageid": 9101,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera landscape.jpg",
+        "index": 1,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 3000,
+            "height": 2000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Kiyomizu-dera_landscape.jpg/1280px-Kiyomizu-dera_landscape.jpg",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Kiyomizu-dera_landscape.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kiyomizu-dera_landscape.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": { "value": "Kiyomizu-dera in autumn", "source": "mediawiki-metadata" },
+              "Artist": { "value": "<a href=\"https://www.flickr.com/people/example\">Flickr User</a>", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC BY 2.0", "source": "commons-desc-page" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by/2.0", "source": "commons-desc-page" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9102,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera portrait.jpg",
+        "index": 2,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 2400,
+            "height": 3600,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Kiyomizu-dera_portrait.jpg/1280px-Kiyomizu-dera_portrait.jpg",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Kiyomizu-dera_portrait.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kiyomizu-dera_portrait.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "Portrait Person", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC BY-SA 4.0", "source": "commons-desc-page" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by-sa/4.0", "source": "commons-desc-page" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9103,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera huge panorama.jpg",
+        "index": 3,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 12000,
+            "height": 3000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Kiyomizu-dera_huge_panorama.jpg/1280px-Kiyomizu-dera_huge_panorama.jpg",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Kiyomizu-dera_huge_panorama.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kiyomizu-dera_huge_panorama.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "Pano Maker", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC BY-SA 3.0", "source": "commons-desc-page" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by-sa/3.0", "source": "commons-desc-page" }
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 9104,
+        "ns": 6,
+        "title": "File:Kiyomizu-dera NC.jpg",
+        "index": 4,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 8000,
+            "height": 9000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Kiyomizu-dera_NC.jpg/1280px-Kiyomizu-dera_NC.jpg",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Kiyomizu-dera_NC.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kiyomizu-dera_NC.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "LicenseShortName": { "value": "CC BY-NC 2.0", "source": "commons-desc-page" },
+              "License": { "value": "cc-by-nc-2.0", "source": "commons-templates" }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

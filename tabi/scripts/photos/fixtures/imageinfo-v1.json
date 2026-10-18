@@ -1,0 +1,35 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "normalized": [{ "from": "File:example_lantern.jpg", "to": "File:Example lantern.jpg" }],
+    "pages": {
+      "-1": { "ns": 6, "title": "File:Missing lantern.jpg", "missing": "", "imagerepository": "" },
+      "-2": { "title": "File:Bad|title.jpg", "invalidreason": "The requested page title contains invalid characters: \"|\".", "invalid": "" },
+      "201": {
+        "pageid": 201,
+        "ns": 6,
+        "title": "File:Example lantern.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 1500000,
+            "width": 1800,
+            "height": 2700,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Example_lantern.jpg",
+            "thumbwidth": 1800,
+            "thumbheight": 2700,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Example_lantern.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Example_lantern.jpg",
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "Artist": { "value": "江戸 太郎 (<a href=\"/wiki/User_talk:Edo\" title=\"User talk:Edo\">talk</a>)", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC BY-SA 2.1 jp", "source": "commons-desc-page", "hidden": "" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by-sa/2.1/jp/deed.en", "source": "commons-desc-page", "hidden": "" },
+              "AttributionRequired": { "value": "true", "source": "commons-desc-page", "hidden": "" }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

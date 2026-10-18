@@ -1,0 +1,106 @@
+.head {
+  display: grid;
+  gap: clamp(1.75rem, 1rem + 2.4vw, 3.25rem);
+}
+
+/* "03 — FEATURED ─────────── 特集" */
+.running {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.num {
+  /* A touch of ink keeps this 12px figure at 4.5:1 on the Seasons tints too
+     (4.7:1 on summer's indigo wash, the darkest); in dark mode it lightens. */
+  color: color-mix(in srgb, var(--accent) 85%, var(--ink));
+}
+
+.num::after {
+  content: '—';
+  margin-left: var(--space-3);
+  color: var(--ink-3);
+}
+
+.label {
+  white-space: nowrap;
+}
+
+.line {
+  flex: 1;
+  min-width: var(--space-6);
+  height: 1px;
+  background: var(--line-strong);
+  transform-origin: 0 50%;
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.body {
+  display: grid;
+  gap: var(--space-5) var(--space-8);
+  align-items: end;
+}
+
+.split .body {
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+}
+
+.title {
+  font-family: var(--font-headline, var(--font-display));
+  max-width: 15ch;
+  font-size: clamp(2.35rem, 1.25rem + 3.9vw, 5.25rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+/* Section headlines keep their italic word in ink. The vermilion italic is
+   saved for the page's bookends (the hero's "folded", the Studio band's
+   "Japan"), so it lands as an accent rather than a template. */
+.title :global(.serif-italic) {
+  color: inherit;
+}
+
+.aside {
+  display: grid;
+  gap: var(--space-5);
+  justify-items: start;
+  padding-bottom: 0.35em;
+}
+
+.intro {
+  max-width: 40ch;
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (max-width: 860px) {
+  .split .body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aside {
+    padding-bottom: 0;
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "continue": { "iistart": "20200101000000", "continue": "||" },
+  "query": {
+    "pages": [
+      { "pageid": 9201, "ns": 6, "title": "File:Continued one.jpg", "imagerepository": "local" },
+      {
+        "pageid": 9202,
+        "ns": 6,
+        "title": "File:Continued two.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 3200,
+            "height": 2000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Continued_two.jpg/1280px-Continued_two.jpg",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Continued_two.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Continued_two.jpg",
+            "mime": "image/png",
+            "extmetadata": {
+              "Artist": { "value": "Two", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "CC BY 4.0", "source": "commons-desc-page" },
+              "LicenseUrl": { "value": "https://creativecommons.org/licenses/by/4.0", "source": "commons-desc-page" }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

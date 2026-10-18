@@ -1,0 +1,281 @@
+/* A magazine cover: photograph to the trim, type in the page's lightest ink
+   (--b-light) over a scrim of its darkest (--b-shade), so any theme reads. */
+.cover {
+  --cover-x: 7.5cqw;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--b-light);
+  /* Focus rings on the photo (the credit's links) in the light ink. */
+  --focus: var(--b-light);
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+/* Three soft scrims: the masthead, the vertical title's corner, and a foot
+   for the headline that leaves the upper half of the photograph clear.
+   Gradients only — the photograph stays sharp. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, color-mix(in srgb, var(--b-shade) 52%, transparent), transparent 22%),
+    radial-gradient(48% 40% at 100% 0%, color-mix(in srgb, var(--b-shade) 42%, transparent), transparent 72%),
+    radial-gradient(52% 26% at 0% 21%, color-mix(in srgb, var(--b-shade) 34%, transparent), transparent 76%),
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--b-shade) 94%, transparent) 0%,
+      color-mix(in srgb, var(--b-shade) 76%, transparent) 20%,
+      color-mix(in srgb, var(--b-shade) 36%, transparent) 40%,
+      transparent 57%
+    );
+}
+
+/* --- Masthead -------------------------------------------------------- */
+.masthead {
+  position: absolute;
+  top: 6.4cqw;
+  left: var(--cover-x);
+  right: 30cqw;
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  font-family: var(--font-mono);
+  font-size: 1.45cqw;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.org {
+  flex: none;
+}
+
+.mastRule {
+  flex: 0 1 8cqw;
+  min-width: 2cqw;
+  height: var(--hair);
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.edition {
+  letter-spacing: 0.2em;
+  opacity: 0.86;
+}
+
+/* --- Cover lines: the places inside ------------------------------------ */
+.lines {
+  position: absolute;
+  top: 15cqw;
+  left: var(--cover-x);
+  width: 44cqw;
+  max-height: 30cqw;
+  overflow: hidden;
+  text-shadow: 0 0.1cqw 1.8cqw color-mix(in srgb, var(--b-shade) 75%, transparent);
+}
+
+.linesHead {
+  display: flex;
+  align-items: baseline;
+  gap: 1.4cqw;
+  margin: 0 0 calc(1.6cqw * var(--fit, 1));
+  font-family: var(--font-mono);
+  font-size: calc(1.3cqw * var(--fit, 1));
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.86;
+}
+
+.linesHead [lang] {
+  font-family: var(--font-jp);
+  font-size: calc(1.7cqw * var(--fit, 1));
+  letter-spacing: 0.3em;
+  text-transform: none;
+}
+
+.linesList {
+  display: flex;
+  flex-direction: column;
+  gap: calc(1.1cqw * var(--fit, 1));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linesList li {
+  display: grid;
+  grid-template-columns: 4.6cqw minmax(0, 1fr);
+  align-items: baseline;
+  padding-top: calc(1.1cqw * var(--fit, 1));
+  border-top: var(--hair) solid color-mix(in srgb, var(--b-light) 34%, transparent);
+}
+
+.lineNum {
+  font-family: var(--font-mono);
+  font-size: calc(1.35cqw * var(--fit, 1));
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--b-light) 78%, var(--b-accent));
+}
+
+.lineName {
+  font-family: var(--b-font);
+  font-size: calc(2.45cqw * var(--fit, 1));
+  font-weight: 450;
+  line-height: 1.22;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+[data-typeface='serif'] .lineName {
+  font-style: italic;
+  font-variation-settings:
+    'opsz' 36,
+    'SOFT' 100,
+    'WONK' 1;
+}
+
+/* --- 縦書き title ----------------------------------------------------- */
+.jp {
+  position: absolute;
+  top: 5.6cqw;
+  right: 6.2cqw;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  gap: 1.6cqw;
+}
+
+.jpText {
+  font-size: var(--jp, 12cqw);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--b-light);
+  text-shadow: 0 0.2cqw 2.4cqw color-mix(in srgb, var(--b-shade) 55%, transparent);
+}
+
+/* The place's coordinates, a hairline column beside the title. */
+.coords {
+  margin-top: 0.6cqw;
+  padding-top: 2cqw;
+  border-top: 0.5cqw solid var(--b-accent);
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono);
+  font-size: 1.2cqw;
+  letter-spacing: 0.22em;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+/* --- Foot: eyebrow, headline, standfirst, seal ------------------------ */
+.foot {
+  position: absolute;
+  left: var(--cover-x);
+  right: var(--cover-x);
+  bottom: 7cqw;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 4cqw;
+  max-height: 72cqw;
+  overflow: hidden;
+}
+
+.copy {
+  min-width: 0;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1.6cqw;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: calc(1.55cqw * var(--fit, 1));
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: '';
+  flex: none;
+  width: 4.4cqw;
+  height: 0.45cqw;
+  background: var(--b-accent);
+}
+
+.title {
+  margin: calc(2.2cqw * var(--fit, 1)) 0 0;
+  font-family: var(--b-font);
+  font-size: calc(var(--fs, 11cqw) * var(--fit, 1));
+  font-weight: 420;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 40,
+    'WONK' 0;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  color: var(--b-light);
+  text-shadow: 0 0.2cqw 3cqw color-mix(in srgb, var(--b-shade) 40%, transparent);
+}
+
+[data-typeface='sans'] .title {
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  word-spacing: 0;
+}
+
+[data-typeface='mono'] .title {
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  word-spacing: 0;
+}
+
+.subtitle {
+  max-width: 60cqw;
+  margin: calc(2.6cqw * var(--fit, 1)) 0 0;
+  font-size: calc(2.3cqw * var(--fit, 1));
+  line-height: 1.5;
+  text-wrap: pretty;
+  color: color-mix(in srgb, var(--b-light) 86%, transparent);
+}
+
+.sealWrap {
+  padding-bottom: 0.6cqw;
+}
+
+/* A filled seal (白文印): paper-coloured characters cut from vermilion.
+   Two classes beat the Hanko primitive's own size and colour. */
+.foot .seal {
+  --hanko-size: 10.5cqw !important;
+  --hanko-ink: var(--b-accent);
+  background: var(--b-accent);
+  color: var(--b-on-accent);
+}
+
+/* --- Credit ----------------------------------------------------------- */
+.credit {
+  position: absolute;
+  left: var(--cover-x);
+  right: var(--cover-x);
+  bottom: 2.6cqw;
+  font-family: var(--font-mono);
+  font-size: 1.12cqw;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--b-light) 72%, transparent);
+}

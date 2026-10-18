@@ -1,0 +1,99 @@
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 0.92;
+  container-type: inline-size;
+}
+
+/* --- Rising sun + compass ring ------------------------------------------ */
+.sunWrap {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.sunDrift {
+  position: absolute;
+  left: -38cqi;
+  top: -38cqi;
+  width: 76cqi;
+  height: 76cqi;
+}
+
+.sun {
+  position: absolute;
+  inset: 7%;
+  border-radius: 50%;
+  background: var(--wa-shu);
+}
+
+.ring {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  color: var(--ink-3);
+  animation: ring-turn 220s linear infinite;
+}
+
+.ringLine {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.3;
+  opacity: 0.6;
+}
+
+.ticks line {
+  stroke: currentColor;
+  stroke-width: 0.35;
+}
+
+.ringText {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  font-size: 4.6px;
+  letter-spacing: 0.22em;
+}
+
+:global([data-motion='paused']) .ring {
+  animation-play-state: paused;
+}
+
+@keyframes ring-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Print crop marks -------------------------------------------------- */
+.crop {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--line-strong);
+  border-style: solid;
+  border-width: 0;
+}
+
+.crop[data-corner='tl'] { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+.crop[data-corner='tr'] { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+.crop[data-corner='bl'] { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+.crop[data-corner='br'] { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+
+/* --- The brochure -------------------------------------------------------- */
+.object {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-top: 12cqi;
+}
+
+@media (max-width: 960px) {
+  .object {
+    padding-top: 20cqi;
+  }
+}

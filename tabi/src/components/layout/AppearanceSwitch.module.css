@@ -1,0 +1,112 @@
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6em;
+  float: left; /* lets the legend sit inline with the track */
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.legendJp {
+  font-family: var(--font-jp);
+  letter-spacing: 0.12em;
+  text-transform: none;
+}
+
+.track {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+}
+
+.option {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 36px;
+  padding: 0 0.8rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--ink-2);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+.option:hover {
+  color: var(--ink);
+}
+
+.option[data-checked] {
+  color: var(--bg);
+}
+
+/* The radio itself is invisible but stays focusable (arrow keys, Tab). */
+.input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border-radius: inherit;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.option:has(.input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.thumb {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+@media (max-width: 479.98px) {
+  /* Icons only; the legend stays the group's accessible name. */
+  .legend,
+  .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .option {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+}

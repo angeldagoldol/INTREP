@@ -1,0 +1,160 @@
+/* Coordinates: two hairline boxes like a surveyor's ledger. */
+.coords {
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-3) var(--space-3) var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+}
+
+.coords[data-compact] {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0 0.35em;
+  margin-left: -0.35em;
+  font-size: var(--fs-sm);
+  font-weight: 560;
+  color: var(--ink);
+}
+
+.coords[data-compact] .legend {
+  margin-bottom: var(--space-2);
+}
+
+.legend svg {
+  color: var(--accent);
+}
+
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-3);
+  min-width: 0;
+}
+
+.box {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+
+.control:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.control[data-invalid] {
+  border-color: var(--danger);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 0 0 var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.unit {
+  flex: none;
+  padding: 0 var(--space-3) 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+/* --- Messages ------------------------------------------------------------ */
+.message {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.message:empty {
+  display: none;
+}
+
+.where {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+}
+
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45em;
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.note svg {
+  flex: none;
+  margin-top: 0.15em;
+}
+
+.message[data-tone='warning'] .note {
+  color: var(--ink);
+}
+
+.message[data-tone='warning'] .note svg {
+  color: var(--accent);
+}
+
+.message[data-tone='error'] .note {
+  color: var(--danger);
+}
+
+.tip {
+  width: 100%;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+@media (max-width: 340px) {
+  .inputs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

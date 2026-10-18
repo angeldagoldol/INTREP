@@ -1,0 +1,48 @@
+/* A colophon block: the lead-in beside one credit per line, mono and quiet. */
+.credits {
+  display: grid;
+  grid-template-columns: auto minmax(0, auto);
+  align-items: baseline;
+  gap: 0.15em 1em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+}
+
+.lead {
+  grid-row: 1;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.credit {
+  grid-column: 2;
+}
+
+/* The label ("Mount Fuji:") reads in ink, the credit stays quiet. */
+.credit > :first-child {
+  color: var(--ink-2);
+  opacity: 1;
+}
+
+.credit a:hover {
+  color: var(--ink);
+}
+
+/* Phones: the lead-in sits above the credits, so the names keep their room. */
+@media (max-width: 520px) {
+  .credits {
+    grid-template-columns: minmax(0, auto);
+  }
+
+  .lead {
+    grid-row: auto;
+  }
+
+  .credit {
+    grid-column: 1;
+  }
+}

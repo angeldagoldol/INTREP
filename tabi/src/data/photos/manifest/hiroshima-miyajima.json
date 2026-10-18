@@ -1,0 +1,189 @@
+{
+  "brochure": "hiroshima-miyajima",
+  "photos": [
+    {
+      "id": "miyajima-otorii",
+      "use": "cover",
+      "candidates": [
+        "File:Itsukushima Gate.jpg",
+        "File:Itsukushima torii distance.jpg"
+      ],
+      "alt": "The vermilion great torii of Itsukushima Shrine standing in the sea at high tide, with wooded hills behind",
+      "caption": "The great torii of Itsukushima Shrine at high tide",
+      "place": "Itsukushima Shrine, Miyajima",
+      "focus": "50% 50%",
+      "query": "Itsukushima Shrine great torii high tide"
+    },
+    {
+      "id": "hiroshima-cenotaph",
+      "use": "wide",
+      "candidates": [
+        "File:HiroshimaCenotaph7006.jpg",
+        "File:HiroshimaCenotaphMuseum6989.jpg"
+      ],
+      "alt": "The arched concrete Cenotaph in the Peace Memorial Park, framing the Flame of Peace and the Atomic Bomb Dome beyond",
+      "caption": "The Cenotaph for the A-bomb Victims, Peace Memorial Park",
+      "place": "Hiroshima Peace Memorial Park",
+      "focus": "50% 50%",
+      "query": "Hiroshima Peace Memorial Park Cenotaph"
+    },
+    {
+      "id": "hiroshima-atomic-bomb-dome",
+      "use": "wide",
+      "candidates": [
+        "File:A-Bomb Dome (14096320903).jpg",
+        "File:Hiroshima A-Bomb Dome.jpg"
+      ],
+      "alt": "The ruined brick and steel-framed dome of the former exhibition hall beside the Motoyasu River",
+      "caption": "The Atomic Bomb Dome on the Motoyasu River",
+      "place": "Atomic Bomb Dome, Hiroshima",
+      "focus": "50% 45%",
+      "query": "Atomic Bomb Dome Hiroshima Motoyasu River"
+    },
+    {
+      "id": "hiroshima-peace-museum",
+      "use": "wide",
+      "candidates": [
+        "File:HiroshimaCenotaphMuseum6989.jpg"
+      ],
+      "alt": "The long, low modernist main building of the Peace Memorial Museum, raised on concrete pillars",
+      "caption": "The Peace Memorial Museum’s main building by Kenzō Tange",
+      "place": "Hiroshima Peace Memorial Museum",
+      "focus": "50% 50%",
+      "query": "Hiroshima Peace Memorial Museum main building"
+    },
+    {
+      "id": "miyajima-itsukushima-shrine",
+      "use": "wide",
+      "candidates": [
+        "File:Torii and Itsukushima Shrine.jpg"
+      ],
+      "alt": "Vermilion shrine halls and open corridors standing on posts above the water",
+      "caption": "The halls of Itsukushima Shrine over the tide",
+      "place": "Itsukushima Shrine, Miyajima",
+      "focus": "50% 50%",
+      "query": "Itsukushima Shrine halls corridors"
+    },
+    {
+      "id": "miyajima-otorii-low-tide",
+      "use": "any",
+      "candidates": [
+        "File:20100723 Miyajima 4904.jpg"
+      ],
+      "alt": "The great torii standing on wet sand at low tide",
+      "caption": "The great torii at low tide",
+      "place": "Itsukushima Shrine, Miyajima",
+      "focus": "50% 50%",
+      "query": "Itsukushima torii low tide"
+    },
+    {
+      "id": "hiroshima-childrens-peace-monument",
+      "use": "any",
+      "candidates": [],
+      "alt": "A tall memorial topped by a bronze figure of a girl holding up a crane, with garlands of paper cranes nearby",
+      "caption": "Paper cranes at the Children’s Peace Monument",
+      "place": "Hiroshima Peace Memorial Park",
+      "focus": "50% 40%",
+      "query": "Children's Peace Monument Hiroshima"
+    },
+    {
+      "id": "miyajima-pagoda",
+      "use": "any",
+      "candidates": [],
+      "alt": "A vermilion five-storey pagoda on a hill among trees",
+      "caption": "The five-storey pagoda above the shrine",
+      "place": "Miyajima",
+      "focus": "50% 40%",
+      "query": "Itsukushima five-storied pagoda Miyajima"
+    },
+    {
+      "id": "miyajima-misen-view",
+      "use": "any",
+      "candidates": [
+        "File:Miyajima, Mount Misen, Japan5.jpg"
+      ],
+      "alt": "Wooded islands scattered across a calm sea, seen from a mountain summit",
+      "caption": "The Inland Sea from Mount Misen",
+      "place": "Mount Misen, Miyajima",
+      "focus": "50% 55%",
+      "query": "Mount Misen Miyajima view Seto Inland Sea"
+    },
+    {
+      "id": "hiroshima-spread",
+      "use": "spread",
+      "candidates": [
+        "File:Japan - Hiroshima, Itsukushima-jinja torii - may 2025.jpg",
+        "File:Itsukushima-jinja torii at sunset.jpg"
+      ],
+      "alt": "The vermilion great torii standing in the calm water off Miyajima, with the shoreline of Hiroshima stretching along the far side of the bay",
+      "caption": "Looking back to the mainland — the great torii of Itsukushima with Hiroshima across the bay, late spring",
+      "place": "Itsukushima Shrine, Miyajima",
+      "focus": "50% 50%",
+      "query": "Itsukushima torii Hiroshima bay view"
+    },
+    {
+      "id": "hiroshima-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Itsukushima-jinja torii at sunset, Miyajima, Japan, 20240816 1812 4144.jpg",
+        "File:Itsukushima-jinja torii at sunset.jpg"
+      ],
+      "alt": "The great torii of Itsukushima silhouetted against a glowing evening sky, reflected in the water around its posts",
+      "caption": "The great torii at sunset, as the tide comes in around its pillars on a summer evening",
+      "place": "Itsukushima Shrine, Miyajima",
+      "focus": "50% 50%",
+      "query": "Itsukushima torii sunset"
+    },
+    {
+      "id": "miyajima-nostalgia-machiya-dori",
+      "use": "wide",
+      "candidates": [
+        "File:Machiya street. Miyajima.jpg",
+        "File:Machiya-dori Street on Itsukushima Island.jpg"
+      ],
+      "alt": "A quiet lane between old two-storey wooden townhouses with tiled roofs on Miyajima",
+      "caption": "Machiya-dōri, Miyajima — the island’s old main street of long, narrow townhouses",
+      "place": "Machiya-dōri, Miyajima",
+      "focus": "50% 55%",
+      "query": "Machiya-dori Miyajima street"
+    },
+    {
+      "id": "hiroshima-nostalgia-takehara",
+      "use": "any",
+      "candidates": [
+        "File:Takehara Matsuzaka-tei 2013-08.JPG",
+        "File:Takehara Shorenji Temple 2013-08A.JPG"
+      ],
+      "alt": "Old wooden merchant houses with tiled roofs and latticed fronts in Takehara’s historic district",
+      "caption": "Takehara — the old town of salt and sake merchants known as the “Little Kyoto of Aki”",
+      "place": "Takehara Townscape Preservation District",
+      "focus": "50% 50%",
+      "query": "Takehara townscape preservation district Hiroshima"
+    },
+    {
+      "id": "hiroshima-nostalgia-onomichi",
+      "use": "any",
+      "candidates": [
+        "File:Tenneiji Onomichi01s3872.jpg",
+        "File:Tennei-ji Temple 天寧寺 - panoramio.jpg"
+      ],
+      "alt": "The wooden three-storey pagoda of Tennei-ji on a hillside above the rooftops of Onomichi",
+      "caption": "Onomichi — Tennei-ji’s three-storey pagoda on the temple-dotted slope of Mount Senkō-ji",
+      "place": "Tennei-ji, Onomichi",
+      "focus": "50% 45%",
+      "query": "Tenneiji pagoda Onomichi"
+    },
+    {
+      "id": "hiroshima-nostalgia-tomonoura",
+      "use": "wide",
+      "candidates": [
+        "File:Tomonoura08bs3200.jpg"
+      ],
+      "alt": "The old harbour of Tomonoura on the Seto Inland Sea, with traditional buildings along the water",
+      "caption": "Tomonoura, Fukuyama — an old Inland Sea port that still keeps its stone lantern of 1859",
+      "place": "Tomonoura, Fukuyama",
+      "focus": "50% 50%",
+      "query": "Tomonoura harbour joyato lantern"
+    }
+  ]
+}

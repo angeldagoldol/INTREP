@@ -1,0 +1,190 @@
+.bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 68px;
+  padding: var(--space-2) var(--tool-gutter);
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--bg-elevated);
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.seal {
+  flex: none;
+}
+
+.titleWrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.mode {
+  display: inline-flex;
+  gap: 0.6em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.mode span {
+  font-family: var(--font-jp);
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.title {
+  width: 100%;
+  min-width: 0;
+  max-width: 34rem;
+  height: 34px;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 1px dashed transparent;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  text-overflow: ellipsis;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+
+.title::placeholder {
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.title:hover {
+  border-bottom-color: var(--line-strong);
+}
+
+.title:focus {
+  outline: none;
+  border-bottom: 1px solid var(--ink);
+}
+
+.title:focus-visible {
+  box-shadow: 0 4px 0 -2px var(--accent-soft);
+}
+
+.status {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.group {
+  display: flex;
+  gap: 2px;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  margin-inline: var(--space-2);
+  background: var(--line-strong);
+}
+
+.preview {
+  margin-inline: var(--space-2) var(--space-1);
+}
+
+.danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--danger) 14%, transparent);
+  color: var(--danger);
+}
+
+/* --- Overflow menu (phones) --------------------------------------------- */
+.menu {
+  width: 230px;
+  padding: var(--space-2);
+}
+
+.menuList {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  list-style: none;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: 540;
+  text-align: left;
+}
+
+.menuItem:hover,
+.menuItem:focus-visible {
+  background: var(--accent-soft);
+}
+
+.menuItem:focus-visible {
+  outline-offset: -2px;
+}
+
+.menuItem[data-tone='danger'] {
+  color: var(--danger);
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+.actions .previewIcon {
+  display: none;
+}
+
+@media (max-width: 1279.98px) {
+  .actions .preview {
+    display: none;
+  }
+
+  .actions .previewIcon {
+    display: inline-grid;
+  }
+}
+
+.bar[data-layout='tablet'] .status,
+.bar[data-layout='phone'] .status {
+  justify-content: flex-start;
+}
+
+.bar[data-layout='phone'] {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--tool-gutter);
+}
+
+.bar[data-layout='phone'] .status {
+  display: none;
+}
+
+.bar[data-layout='phone'] .seal {
+  display: none;
+}
+
+.bar[data-layout='phone'] .title {
+  font-size: 1.2rem;
+}

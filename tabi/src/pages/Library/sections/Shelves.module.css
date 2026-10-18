@@ -1,0 +1,173 @@
+.section {
+  padding-top: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+
+/* --- Your brochures: a sideways-scrolling row aligned to the container -- */
+.scroller {
+  margin-top: var(--space-6);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: max(var(--gutter), calc((100% - var(--container)) / 2));
+  scrollbar-width: thin;
+}
+
+.track {
+  display: flex;
+  gap: clamp(1.25rem, 0.75rem + 1.6vw, 2.5rem);
+  width: max-content;
+  margin: 0;
+  padding: var(--space-3) max(var(--gutter), calc((100vw - var(--container)) / 2)) var(--space-5);
+  list-style: none;
+}
+
+.item {
+  flex: none;
+  width: clamp(13rem, 11rem + 6vw, 16.5rem);
+  scroll-snap-align: start;
+}
+
+/* --- Recently viewed: spines on a shelf ---------------------------------- */
+.shelf {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  align-items: end;
+  gap: var(--space-6) clamp(2rem, 1rem + 4vw, 6rem);
+  margin-top: var(--space-6);
+}
+
+.rack {
+  min-width: 0;
+}
+
+.spines {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-5) var(--space-3) 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  list-style: none;
+  scrollbar-width: none;
+}
+
+.spines::-webkit-scrollbar {
+  display: none;
+}
+
+.spines > li {
+  flex: none;
+}
+
+/* The plank the books stand on. */
+.plank {
+  display: block;
+  height: 12px;
+  border-top: 2px solid var(--ink);
+  border-radius: 0 0 2px 2px;
+  background: linear-gradient(var(--line-strong), transparent);
+}
+
+.latest {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+  max-width: 32rem;
+  margin-bottom: 12px;
+  padding: var(--space-3) 0 var(--space-3) clamp(1.5rem, 1rem + 2vw, 3rem);
+  border-left: 1px solid var(--line-strong);
+}
+
+.latestLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.latestTitle {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.latestJp {
+  margin-left: 0.4em;
+  font-family: var(--font-jp);
+  font-size: 0.55em;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.latestText {
+  max-width: 40ch;
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+@media (max-width: 860px) {
+  .shelf {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .latest {
+    margin-bottom: 0;
+    padding: 0;
+    border-left: 0;
+  }
+}
+
+/* Where the visitor left off: folio-style page count over a hairline. */
+.progress {
+  display: grid;
+  gap: 0.45rem;
+  width: min(100%, 15rem);
+  margin-bottom: var(--space-2);
+}
+
+.progressText {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.progressOf {
+  color: var(--ink-3);
+}
+
+.progressBar {
+  display: block;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.progressBar > span {
+  display: block;
+  width: var(--done, 0%);
+  height: 100%;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  animation: progress-in 0.9s var(--ease-out) 0.35s both;
+}
+
+@keyframes progress-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressBar > span {
+    animation: none;
+  }
+}

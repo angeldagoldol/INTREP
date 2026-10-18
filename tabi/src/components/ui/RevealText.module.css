@@ -1,0 +1,24 @@
+.reveal {
+  display: block;
+}
+
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Room for descenders and italic overhang inside the clip: an italic swash
+     ('folded' in Fraunces) inks ~0.17em past its advance on the right, and
+     J/p overhang a little on the left. Padding and margin cancel, so line
+     breaking and word spacing are unchanged. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+  padding-inline: 0.1em 0.24em;
+  margin-inline: -0.1em -0.24em;
+}
+
+/* No will-change: each word moves once, and a permanent hint would keep
+   every revealed word on its own compositing layer for the page's life. */
+.piece {
+  display: inline-block;
+  transform-origin: 0 100%;
+}

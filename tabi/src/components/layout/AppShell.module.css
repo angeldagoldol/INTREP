@@ -1,0 +1,26 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  /* Safety net against horizontal scroll on phones. `overflow-x: clip` on the
+     body is propagated to the viewport, where mobile browsers still let the
+     layout viewport grow to fit anything that pokes out (an entrance stamp
+     scaling from 2x, a tooltip at the edge). Clipping here really clips, and
+     unlike `hidden` it creates no scroll container, so position: sticky and
+     fixed UI keep working. */
+  overflow-x: clip;
+}
+
+/* Immersive reading (viewer): a slimmer bar. Pages read var(--nav-h). */
+.shell[data-immersive] {
+  --nav-h: 60px;
+}
+
+.main {
+  flex: 1;
+  min-height: calc(100dvh - var(--nav-h));
+}
+
+.main:focus {
+  outline: none;
+}

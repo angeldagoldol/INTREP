@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Tabi — Japan, folded into pages</title>
+    <meta name="description" content="Tabi is an online brochure system about Japan: real places, facts checked against official sources and credited photographs. Flip through brochures on Kyoto, Tokyo, Hokkaidō, Okinawa and more — or design your own." />
+    <meta name="theme-color" content="#f3eee4" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d0c0a" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content="Tabi 旅 — Japan, folded into pages" />
+    <meta property="og:description" content="Interactive brochures about real places in Japan, with checked facts, credited photographs and real page-turns." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Geist+Mono:wght@400..600&family=Geist:wght@300..800&family=Shippori+Mincho:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"
+    />
+    <script>
+      // Apply the saved theme before first paint so there is no light/dark flash.
+      (function () {
+        try {
+          var saved = JSON.parse(localStorage.getItem('tabi:theme') || '"system"');
+          var dark = saved === 'dark' || (saved !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <noscript>Tabi needs JavaScript to flip pages. Please enable it and reload.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

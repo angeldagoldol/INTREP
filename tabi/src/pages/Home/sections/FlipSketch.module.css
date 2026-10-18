@@ -1,0 +1,83 @@
+.sketch {
+  width: 100%;
+  padding: 4% 2%;
+}
+
+.book {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  perspective: 1800px;
+  border-radius: 4px;
+  box-shadow:
+    0 2px 4px rgb(var(--shadow-color) / 0.1),
+    0 30px 60px -20px rgb(var(--shadow-color) / 0.4);
+}
+
+.left,
+.right {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.left {
+  border-radius: 4px 0 0 4px;
+}
+
+.right {
+  border-radius: 0 4px 4px 0;
+}
+
+.leaf {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  transform-origin: 0 50%;
+  transform-style: preserve-3d;
+}
+
+.front,
+.back {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.front {
+  border-radius: 0 4px 4px 0;
+}
+
+.back {
+  border-radius: 4px 0 0 4px;
+  transform: rotateY(180deg);
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgb(20 12 6 / 0.85), rgb(20 12 6 / 0.15));
+}
+
+.blank {
+  width: 100%;
+  aspect-ratio: 1 / 1.414;
+  background: var(--page-paper);
+}
+
+/* The fold in the middle of the spread. */
+.gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 8%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(20 12 6 / 0.14) 48%, rgb(20 12 6 / 0.2) 50%, rgb(20 12 6 / 0.08) 52%, transparent);
+}

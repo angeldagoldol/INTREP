@@ -1,0 +1,73 @@
+.clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.live {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.live::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  animation: clock-ping 2.4s var(--ease-out) infinite;
+}
+
+.time {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.colon {
+  animation: clock-blink 2s steps(1) infinite;
+}
+
+/* Paused by the visitor: a steady dot and a steady colon. */
+:global([data-motion='paused']) .live::after,
+:global([data-motion='paused']) .colon {
+  animation: none;
+}
+
+.zone {
+  text-decoration: none;
+  cursor: help;
+}
+
+@keyframes clock-ping {
+  from {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  to {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+/* Ends visible, so the single reduced-motion iteration leaves it on. */
+@keyframes clock-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}

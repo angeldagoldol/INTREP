@@ -1,0 +1,149 @@
+.rail {
+  position: relative;
+  min-width: 0;
+}
+
+/* Fade the strip's ends into the bar. */
+.rail::before,
+.rail::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 28px;
+  pointer-events: none;
+}
+
+.rail::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--bg-elevated), transparent);
+}
+
+.rail::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--bg-elevated), transparent);
+}
+
+.list {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 28px 4px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Centred while the strip fits; auto margins collapse once it scrolls. */
+.item:first-child {
+  margin-left: auto;
+}
+
+.item:last-child {
+  margin-right: auto;
+}
+
+.item {
+  flex: none;
+}
+
+.thumb {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 6px 8px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-3);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+
+.pages {
+  --mini-w: 40px;
+  display: flex;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
+}
+
+/* A lone cover or back cover keeps the width of a spread, like the book. */
+.pages[data-lone-left] {
+  margin-left: var(--mini-w);
+}
+
+.pages[data-lone-right] {
+  margin-right: var(--mini-w);
+}
+
+/* Hovered here, or pointed at on the scrubber (data-preview). */
+.thumb[data-preview] {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.thumb[data-preview] .pages {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+@media (hover: hover) {
+  .thumb:hover {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+
+  .thumb:hover .pages {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.thumb[aria-current='true'] {
+  color: var(--ink);
+}
+
+.thumb[aria-current='true'] .pages {
+  box-shadow: 0 0 0 2px var(--bg-elevated), 0 0 0 3.5px var(--accent), var(--shadow-md);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.marker {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 14px;
+  height: 2px;
+  margin-left: -7px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.thumb[aria-current='true'] .marker {
+  transform: scaleX(1);
+}
+
+@media (max-width: 599.98px) {
+  .pages {
+    --mini-w: 30px;
+  }
+
+  .thumb {
+    padding: 4px 5px 6px;
+    gap: 4px;
+  }
+}

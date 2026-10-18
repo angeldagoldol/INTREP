@@ -1,0 +1,63 @@
+.head {
+  display: grid;
+  grid-template-columns: auto auto minmax(2rem, 1fr) auto;
+  grid-template-areas:
+    'index title rule jp'
+    '. note note note';
+  align-items: baseline;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  margin-bottom: var(--space-6);
+}
+
+.index {
+  grid-area: index;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--accent);
+}
+
+.title {
+  grid-area: title;
+  font-size: var(--fs-2xl);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.rule {
+  grid-area: rule;
+  align-self: center;
+  height: 1px;
+  background: var(--line-strong);
+  transform-origin: left center;
+}
+
+.jp {
+  grid-area: jp;
+  font-family: var(--font-jp);
+  font-size: var(--fs-md);
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+}
+
+.note {
+  grid-area: note;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+@media (max-width: 699.98px) {
+  .head {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'index title jp'
+      '. note note';
+  }
+
+  .rule {
+    display: none;
+  }
+}

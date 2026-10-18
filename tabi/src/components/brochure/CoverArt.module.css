@@ -1,0 +1,101 @@
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Idle motion runs only on .animated artwork; every value comes from the
+   per-node CSS vars written by the generators (--dx, --dy, --dur, --ox…). */
+.animated .slide {
+  animation: art-slide var(--dur, 20s) linear var(--delay, 0s) infinite;
+}
+
+.animated .drift {
+  animation: art-drift var(--dur, 20s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+.animated .float {
+  animation: art-float var(--dur, 10s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+.animated .spin {
+  transform-box: view-box;
+  transform-origin: var(--ox, 150px) var(--oy, 212px);
+  animation: art-spin var(--dur, 120s) linear var(--delay, 0s) infinite;
+}
+
+.animated .breathe {
+  transform-box: view-box;
+  transform-origin: var(--ox, 150px) var(--oy, 212px);
+  animation: art-breathe var(--dur, 8s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+.animated .sway {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: art-sway var(--dur, 10s) ease-in-out var(--delay, 0s) infinite;
+}
+
+.animated .pulse {
+  animation: art-pulse var(--dur, 6s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+.animated[data-paused] * {
+  animation-play-state: paused;
+}
+
+@keyframes art-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--dx, 30px));
+  }
+}
+
+@keyframes art-drift {
+  to {
+    transform: translate(var(--dx, 12px), var(--dy, 0px));
+  }
+}
+
+@keyframes art-float {
+  to {
+    transform: translateY(var(--dy, -6px));
+  }
+}
+
+@keyframes art-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes art-breathe {
+  to {
+    transform: scale(var(--s, 1.03));
+  }
+}
+
+@keyframes art-sway {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(var(--dx, 12px), var(--dy, 16px)) rotate(var(--rot, 60deg));
+  }
+}
+
+@keyframes art-pulse {
+  to {
+    opacity: var(--to, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated * {
+    animation: none !important;
+  }
+}

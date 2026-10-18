@@ -1,0 +1,117 @@
+[
+  {
+    "name": "home",
+    "brochure": "home",
+    "photos": [
+      {
+        "id": "home-hero",
+        "use": "cover",
+        "candidates": [
+          "File:Hero first.jpg",
+          "File:Hero second.jpg"
+        ],
+        "query": "Mount Fuji Lake Ashi"
+      },
+      {
+        "id": "home-region",
+        "use": "any",
+        "candidates": [
+          "File:Region.jpg"
+        ],
+        "query": "Kansai"
+      }
+    ]
+  },
+  {
+    "name": "kyoto-thousand-gates",
+    "brochure": "kyoto-thousand-gates",
+    "photos": [
+      {
+        "id": "kyoto-cover",
+        "use": "cover",
+        "candidates": [
+          "File:Kyoto cover.jpg"
+        ],
+        "query": "Fushimi Inari"
+      },
+      {
+        "id": "kyoto-temple",
+        "use": "wide",
+        "candidates": [
+          "File:Kiyomizu-dera big landscape.jpg"
+        ],
+        "query": "Kiyomizu-dera"
+      },
+      {
+        "id": "kyoto-search-only",
+        "use": "wide",
+        "query": "Kiyomizu-dera"
+      },
+      {
+        "id": "kyoto-chosen",
+        "use": "any",
+        "file": "File:Chosen_pick.jpg",
+        "candidates": [
+          "File:Backup pick.jpg"
+        ],
+        "query": "Gion"
+      },
+      {
+        "id": "kyoto-gallery-1",
+        "use": "any",
+        "candidates": [
+          "File:Gallery 1.jpg"
+        ],
+        "query": "Gion lanterns"
+      },
+      {
+        "id": "home-hero",
+        "use": "cover",
+        "candidates": [
+          "File:Listed twice.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "nostalgic-japan",
+    "brochure": "nostalgic-japan",
+    "photos": [
+      {
+        "id": "nostalgic-street",
+        "use": "wide",
+        "candidates": [
+          "File:Old street.jpg"
+        ],
+        "query": "Old street"
+      }
+    ]
+  },
+  {
+    "name": "osaka-kuidaore",
+    "brochure": "osaka-kuidaore",
+    "photos": [
+      {
+        "id": "osaka-takoyaki",
+        "use": "wide",
+        "query": "Takoyaki Osaka"
+      },
+      {
+        "id": "osaka-market",
+        "use": "wide",
+        "candidates": [
+          "File:Market.jpg"
+        ],
+        "query": "Kuromon"
+      },
+      {
+        "id": "osaka-night",
+        "use": "full",
+        "candidates": [
+          "File:Osaka night.jpg"
+        ],
+        "query": "Dotonbori"
+      }
+    ]
+  }
+]

@@ -1,0 +1,191 @@
+.menu {
+  --menu-r: 150vmax;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: auto;
+  background:
+    radial-gradient(circle at 100% 100%, var(--accent-soft), transparent 55%),
+    var(--bg);
+  clip-path: circle(var(--menu-r) at calc(100% - var(--gutter) - 22px) calc(var(--nav-h) / 2));
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-height: 100%;
+  padding: calc(var(--nav-h) + var(--space-5)) var(--gutter) calc(var(--space-5) + env(safe-area-inset-bottom));
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.item {
+  border-bottom: 1px solid var(--line);
+}
+
+.link {
+  display: block;
+  padding-block: 0.9rem;
+  color: var(--ink);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.label {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 1.2rem + 7vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 50;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.link:active .label {
+  transform: translateX(6px);
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+}
+
+.link[aria-current='page'] .label {
+  font-style: italic;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 100,
+    'WONK' 1;
+}
+
+.link[aria-current='page'] .label::after {
+  content: '';
+  display: inline-block;
+  width: 0.16em;
+  height: 0.16em;
+  margin-left: 0.14em;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: 0.12em;
+}
+
+/* --- Season note + vertical 旅 ------------------------------------------ */
+.middle {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--space-4);
+}
+
+.notes {
+  display: grid;
+  gap: var(--space-5);
+  padding-bottom: var(--space-2);
+}
+
+.now {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.nowLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.season {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  line-height: 1.2;
+}
+
+.seasonJp {
+  font-family: var(--font-jp);
+  color: var(--accent);
+}
+
+.note {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.appearance {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.kanji {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.kanjiMain {
+  font-size: clamp(7rem, 24vh, 12rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  color: transparent;
+  -webkit-text-stroke: 1.25px var(--ink);
+  opacity: 0.85;
+}
+
+.kanjiRuby {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+}
+
+@media (max-height: 560px) {
+  .middle {
+    grid-template-columns: 1fr;
+  }
+
+  .kanji {
+    display: none;
+  }
+}

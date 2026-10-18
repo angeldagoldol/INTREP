@@ -1,0 +1,164 @@
+.page {
+  display: grid;
+  align-content: center;
+  min-height: calc(100dvh - var(--nav-h));
+  padding-block: clamp(2.5rem, 1rem + 6vw, 6rem);
+}
+
+/* The whole shell failed: no navbar above, so the page brings its own mast. */
+.page[data-standalone] {
+  align-content: start;
+  gap: clamp(2rem, 1rem + 6vw, 6rem);
+  min-height: 100dvh;
+  padding-top: var(--space-5);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+  align-items: center;
+  gap: clamp(2rem, 1rem + 5vw, 6rem);
+}
+
+/* --- The torn sheet ------------------------------------------------------ */
+.art {
+  position: relative;
+  isolation: isolate;
+  justify-self: center;
+  width: min(100%, 300px);
+}
+
+/* Contact shadow under the sheet (a filter would composite against the
+   grain and show as a faint box in dark mode). */
+.art::after {
+  content: '';
+  position: absolute;
+  inset: auto 8% 1% 6%;
+  z-index: -1;
+  height: 14%;
+  background: radial-gradient(closest-side, rgb(var(--shadow-color) / 0.2), transparent);
+}
+
+.sheet {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.half {
+  fill: var(--bg-elevated);
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+/* Washi tears into fibres, not a clean cut. */
+.fibre {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 2.4;
+  stroke-dasharray: 0.6 2.2;
+  stroke-linecap: round;
+}
+
+.rule {
+  stroke: var(--line);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+
+.ruleAccent {
+  stroke: var(--accent);
+  stroke-width: 4;
+}
+
+.folio {
+  fill: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+
+.seal {
+  position: absolute;
+  top: 30%;
+  right: 6%;
+  transform: rotate(-9deg);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+
+/* --- Copy ---------------------------------------------------------------- */
+.copy {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+  min-width: 0;
+  max-width: 38rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.title em {
+  color: var(--accent);
+}
+
+.lede {
+  max-width: 46ch;
+  font-size: var(--fs-md);
+  color: var(--ink-2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.details {
+  max-width: 100%;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.details summary {
+  width: max-content;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.code {
+  display: block;
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 759.98px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .art {
+    width: min(62vw, 220px);
+  }
+
+  .actions > * {
+    flex: 1 1 auto;
+  }
+}

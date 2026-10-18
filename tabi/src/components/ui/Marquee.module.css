@@ -1,0 +1,56 @@
+.marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.fade {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--duration) linear infinite;
+}
+
+.marquee[data-reverse] .track {
+  animation-direction: reverse;
+}
+
+.marquee[data-paused] .track,
+.pausable:hover .track,
+.pausable:focus-within .track {
+  animation-play-state: paused;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: var(--gap);
+  padding-right: var(--gap);
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Reduced motion: a still strip the visitor scrolls through by hand. The
+   host must give the marquee a definite width (in a grid, a minmax(0, 1fr)
+   column) or it grows to the track and there is nothing to scroll. */
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+  .marquee {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+  .group[aria-hidden='true'] {
+    display: none;
+  }
+}

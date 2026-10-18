@@ -1,0 +1,270 @@
+.section {
+  padding-block: var(--section-y);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 1rem + 5vw, 6.5rem);
+}
+
+/* --- Sticky story column ------------------------------------------------- */
+.aside {
+  position: relative;
+}
+
+.sticky {
+  position: sticky;
+  top: calc(var(--nav-h) + var(--space-6));
+  display: grid;
+  gap: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+}
+
+.now {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  height: clamp(5.5rem, 3.5rem + 5vw, 8.5rem);
+}
+
+.bigNum {
+  font-family: var(--font-headline, var(--font-display));
+  font-size: clamp(5.5rem, 3.5rem + 5.5vw, 9.5rem);
+  font-weight: 300;
+  line-height: 0.82;
+  letter-spacing: -0.06em;
+  color: var(--accent);
+  font-variant-numeric: lining-nums;
+}
+
+.bigJp {
+  padding-top: 0.3rem;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+
+.tocWrap {
+  position: relative;
+  padding-left: var(--space-5);
+}
+
+.meter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.meterFill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: 50% 0;
+}
+
+.toc {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tocItem {
+  border-bottom: 1px solid var(--line);
+}
+
+.tocItem:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.tocButton {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 60px;
+  padding-block: var(--space-4);
+  color: var(--ink-3);
+  text-align: left;
+  transition: color var(--dur-3) var(--ease-out);
+}
+
+.tocButton:hover,
+.tocItem[data-active] .tocButton {
+  color: var(--ink);
+}
+
+.tocNum {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+}
+
+.tocItem[data-active] .tocNum {
+  color: var(--accent);
+}
+
+.tocTitle {
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-lg);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.tocJp {
+  margin-left: auto;
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.18em;
+}
+
+.tocReveal {
+  overflow: hidden;
+}
+
+.tocText {
+  max-width: 40ch;
+  padding: 0 0 var(--space-5) calc(var(--space-4) + 1.6em);
+  color: var(--ink-2);
+}
+
+/* --- Illustrated steps --------------------------------------------------- */
+.steps {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  align-items: center;
+  min-height: min(88vh, 54rem);
+  padding-block: var(--space-6);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-5);
+  margin: 0;
+  padding: clamp(1rem, 0.6rem + 1.4vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-sm);
+}
+
+.sketch {
+  display: grid;
+  place-items: center;
+  min-height: clamp(18rem, 12rem + 16vw, 27rem);
+  padding: clamp(1.25rem, 0.5rem + 3vw, 3.5rem);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle, var(--line) 1px, transparent 1.5px) 0 0 / 18px 18px,
+    var(--bg-sunken);
+  transition:
+    opacity var(--dur-4) var(--ease-out),
+    transform var(--dur-4) var(--ease-out);
+}
+
+.sketch > * {
+  max-width: 34rem;
+}
+
+.step:not([data-active]) .sketch {
+  opacity: 0.55;
+  transform: scale(0.975);
+}
+
+.caption {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
+  padding-inline: var(--space-2);
+}
+
+.capNum {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--accent);
+}
+
+.capTitle {
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-lg);
+  font-weight: 450;
+  line-height: 1.1;
+}
+
+.capJp {
+  margin-inline: 0.2em;
+  font-family: var(--font-jp);
+  font-size: 0.75em;
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+}
+
+.capRomaji {
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-sm);
+  font-style: italic;
+  color: var(--ink-3);
+}
+
+/* On desktop the sticky column shows the text; keep it for screen readers. */
+.capText {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* --- Tablet & phone: plain stacked steps --------------------------------- */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  .sticky {
+    position: static;
+  }
+
+  .now,
+  .tocWrap {
+    display: none;
+  }
+
+  .step {
+    min-height: 0;
+    padding-block: var(--space-3);
+  }
+
+  .step:not([data-active]) .sketch {
+    opacity: 1;
+    transform: none;
+  }
+
+  .capText {
+    position: static;
+    grid-column: 2;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    color: var(--ink-2);
+  }
+}

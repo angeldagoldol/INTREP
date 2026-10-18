@@ -1,0 +1,215 @@
+{
+  "brochure": "kyoto-thousand-gates",
+  "photos": [
+    {
+      "id": "kyoto-senbon-torii",
+      "use": "cover",
+      "candidates": [
+        "File:Torii path with lantern at Fushimi Inari Taisha Shrine, Kyoto, Japan.jpg",
+        "File:Fushimi Inari-taisha senbon-torii, August 2019.jpg",
+        "File:FushimiInari Taisha Shrine-of-Torii.jpg",
+        "File:Kyoto Schrein Fushimi-Inari-taisha Torii 10.jpg"
+      ],
+      "alt": "A tunnel of vermilion torii gates curving along a forest path",
+      "caption": "Senbon Torii at Fushimi Inari Taisha",
+      "place": "Fushimi Inari Taisha",
+      "focus": "50% 50%",
+      "query": "Fushimi Inari-taisha senbon torii"
+    },
+    {
+      "id": "kyoto-yasaka-pagoda",
+      "use": "wide",
+      "candidates": [
+        "File:Yasaka-dori early morning with street lanterns and the Tower of Yasaka (Hokan-ji Temple), Kyoto, Japan.jpg",
+        "File:Yasakanoto Hokanji-temple Kyoto.jpg",
+        "File:Pagode in Yasaka - Pagoda in Yasaka (3774886132).jpg"
+      ],
+      "alt": "A five-storey wooden pagoda rising above a sloping street of old wooden houses and lanterns",
+      "caption": "Yasaka Pagoda (Hōkan-ji) above Yasaka-dōri, Higashiyama, early morning",
+      "place": "Hōkan-ji, Higashiyama",
+      "focus": "50% 40%",
+      "query": "Yasaka pagoda Hokan-ji Kyoto"
+    },
+    {
+      "id": "kyoto-inari-romon",
+      "use": "wide",
+      "candidates": [
+        "File:Fushimi Inari Taisha Romon.jpg",
+        "File:Fushimi Inari - front torii.jpg"
+      ],
+      "alt": "The vermilion two-storey Rōmon gate of Fushimi Inari Taisha at the top of a flight of stone steps",
+      "caption": "The Rōmon gate, Fushimi Inari Taisha",
+      "place": "Fushimi Inari Taisha",
+      "focus": "50% 45%",
+      "query": "Fushimi Inari-taisha Romon gate"
+    },
+    {
+      "id": "kyoto-kiyomizu-dera",
+      "use": "wide",
+      "candidates": [
+        "File:Kiyomizu-dera, Kyoto, November 2016 -01.jpg",
+        "File:Kiyomizu-dera, Kyoto, November 2016 -02.jpg",
+        "File:Kiyomizudera autumn.jpg"
+      ],
+      "alt": "Kiyomizu-dera’s wooden main hall and stage on tall pillars above a hillside of red and orange maples",
+      "caption": "Kiyomizu-dera’s Main Hall and stage in autumn",
+      "place": "Kiyomizu-dera",
+      "focus": "50% 50%",
+      "query": "Kiyomizu-dera main hall autumn"
+    },
+    {
+      "id": "kyoto-arashiyama-bamboo",
+      "use": "wide",
+      "candidates": [
+        "File:Arashiyama-Bamboo-Grove-Sunset.jpg",
+        "File:2021 Sagano Bamboo forest in Arashiyama, Kyoto, Japan.jpg",
+        "File:Arashiyama Bamboo Grove, Kyoto 2015-10-17.jpg"
+      ],
+      "alt": "A path between dense walls of tall green bamboo stems",
+      "caption": "The bamboo grove at Arashiyama",
+      "place": "Arashiyama Bamboo Grove",
+      "focus": "50% 60%",
+      "query": "Arashiyama bamboo grove Sagano"
+    },
+    {
+      "id": "kyoto-kinkakuji",
+      "use": "any",
+      "candidates": [
+        "File:Water reflection of Kinkaku-ji Temple with blue sky and white clouds, Kyoto, Japan.jpg",
+        "File:Water reflection of Kinkaku-ji Temple a sunny day, Kyoto, Japan.jpg",
+        "File:Water reflection of Kinkaku-ji Temple with a tree on a rock in the pond, Kyoto, Japan.jpg",
+        "File:Kinkaku-ji (-Temple of the Golden Pavilion-) seen across Kyōko-chi (Mirror Pond). Kita-ku, Kyoto-2.jpg"
+      ],
+      "alt": "A gold-leafed three-storey pavilion reflected in a still pond framed by pines",
+      "caption": "Kinkaku-ji across the Kyōko-chi mirror pond",
+      "place": "Kinkaku-ji",
+      "focus": "50% 45%",
+      "query": "Kinkaku-ji Golden Pavilion reflection"
+    },
+    {
+      "id": "kyoto-tenryuji-garden",
+      "use": "any",
+      "candidates": [
+        "File:Tenryu-ji, Sogenchi Teien (Garden) -2 (November 2008) - panoramio.jpg",
+        "File:Tenryuji Kyoto21s4592.jpg",
+        "File:Tenryuji, Kyoto- DSC06041.JPG",
+        "File:Tenryuji Kyoto23s4592.jpg"
+      ],
+      "alt": "A pond garden with rocks, clipped shrubs and wooded hills behind it",
+      "caption": "Sōgen pond garden, Tenryū-ji",
+      "place": "Tenryū-ji",
+      "focus": "50% 50%",
+      "query": "Tenryu-ji Sogen pond garden"
+    },
+    {
+      "id": "kyoto-gion-street",
+      "use": "any",
+      "candidates": [
+        "File:Wooden and bamboo facades of dwellings with sudare in a cobbled street of Gion, perspective effect with vanishing point, Kyoto, Japan.jpg",
+        "File:Facade of a dwelling with sudare, wooden balustrades and yellow lamp, Shinbashi-dori, Gion, Kyoto, Japan.jpg",
+        "File:150124 Gion Kyoto Japan01s3.jpg"
+      ],
+      "alt": "A narrow cobbled street lined with dark wooden town houses and bamboo blinds",
+      "caption": "Wooden town houses in Gion",
+      "place": "Gion",
+      "focus": "50% 50%",
+      "query": "Gion Kyoto Shinbashi wooden houses"
+    },
+    {
+      "id": "kyoto-togetsukyo",
+      "use": "any",
+      "candidates": [
+        "File:Arashiyama Togetsukyo-bridge.jpg",
+        "File:Katsura River and Togetsukyo.jpg",
+        "File:Togetsu-kyo bridge at dusk, Kyoto, Japan.jpg",
+        "File:Togetsukyo Bridge in Arashiyama, Kyoto.jpg"
+      ],
+      "alt": "A long low bridge across a wide river with forested mountains behind",
+      "caption": "Togetsukyō Bridge over the Katsura River, Arashiyama",
+      "place": "Togetsukyō, Arashiyama",
+      "focus": "50% 55%",
+      "query": "Togetsukyo bridge Arashiyama"
+    },
+    {
+      "id": "kyoto-spread",
+      "use": "spread",
+      "candidates": [
+        "File:View of Kyoto skyline from Kiyomizu-dera.jpg",
+        "File:Kiyomizu Panoramic View (2616057363).jpg",
+        "File:Kiyomizu Dera Temple Kyoto Skyline (219542405).jpeg"
+      ],
+      "alt": "Low rooftops of Kyoto spreading across the valley towards distant hills, with Kyoto Tower rising from the city, seen from the wooded slopes of Kiyomizu-dera",
+      "caption": "The old capital from the hillside at Kiyomizu-dera — Kyoto laid out beneath the Higashiyama hills",
+      "place": "Kiyomizu-dera, Higashiyama",
+      "focus": "50% 55%",
+      "query": "Kyoto skyline from Kiyomizu-dera"
+    },
+    {
+      "id": "kyoto-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Bamboo Grove, Arashiyama, Kyoto, Japan.jpg",
+        "File:Arashiyama Bamboo Grove (44050138950).jpg"
+      ],
+      "alt": "Tall green bamboo stems rising on both sides of a narrow path and closing into a canopy overhead",
+      "caption": "Arashiyama’s bamboo grove in the quiet of early morning, before the first visitors arrive",
+      "place": "Arashiyama Bamboo Grove",
+      "focus": "50% 50%",
+      "query": "Arashiyama bamboo grove path"
+    },
+    {
+      "id": "kyoto-nostalgia-ninenzaka",
+      "use": "wide",
+      "candidates": [
+        "File:Ninenzaka-kyoto.JPG",
+        "File:Sannenzaka street, Kyoto (3811257874).jpg",
+        "File:Gion - Nineizaka (Ninenzaka), Kyoto, Japan (48923272228).jpg"
+      ],
+      "alt": "A stone-paved lane sloping between old two-storey wooden shop houses with tiled roofs",
+      "caption": "Ninenzaka & Sannenzaka — stone-paved slopes of wooden shops below Kiyomizu-dera",
+      "place": "Ninenzaka & Sannenzaka, Higashiyama",
+      "focus": "50% 55%",
+      "query": "Ninenzaka Sannenzaka Kyoto street"
+    },
+    {
+      "id": "kyoto-nostalgia-shirakawa",
+      "use": "any",
+      "candidates": [
+        "File:Next to the Gion Tatsumi Bridge (44600422074).jpg",
+        "File:Shirakara Canal, Gion, Kyoto.jpg"
+      ],
+      "alt": "A shallow canal lined with willows and the wooden backs of old teahouses",
+      "caption": "Gion Shirakawa — willows and old teahouses along the canal by Tatsumi Bridge",
+      "place": "Shirakawa, Gion",
+      "focus": "50% 50%",
+      "query": "Gion Shirakawa Tatsumi bridge"
+    },
+    {
+      "id": "kyoto-nostalgia-pontocho",
+      "use": "any",
+      "candidates": [
+        "File:Pontocho Alley, Kyoto - Flickr - Sergiy Galyonkin.jpg",
+        "File:Pontocho Alley, Kyoto (53589184823).jpg",
+        "File:Pontocho, Kyoto (3810354565).jpg"
+      ],
+      "alt": "A narrow paved alley between wooden restaurant fronts hung with lanterns and noren curtains",
+      "caption": "Pontochō — a narrow lane of traditional restaurants beside the Kamo River",
+      "place": "Pontochō",
+      "focus": "50% 50%",
+      "query": "Pontocho alley Kyoto"
+    },
+    {
+      "id": "kyoto-nostalgia-fushimi",
+      "use": "wide",
+      "candidates": [
+        "File:Gekkeikan Okura Sake Museum02s4592.jpg",
+        "File:Gekkeikan Okura Sake Museum03st3200.jpg"
+      ],
+      "alt": "Old sake-brewery buildings with dark timber, white plaster walls and tiled roofs on a quiet street",
+      "caption": "Fushimi — Gekkeikan’s old sake brewery, now the Okura Sake Museum",
+      "place": "Gekkeikan Okura Sake Museum, Fushimi",
+      "focus": "50% 50%",
+      "query": "Gekkeikan Okura Sake Museum Fushimi"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+.carousel {
+  position: relative;
+}
+
+/* Clips sideways only, so card shadows and hover lifts still breathe. */
+.viewport {
+  overflow-x: clip;
+  overflow-y: visible;
+  padding-block: var(--space-3) var(--space-5);
+}
+
+/* First slide lines up with the page container; the shelf bleeds right. */
+.track {
+  --slide-w: clamp(16.5rem, 12rem + 11vw, 22.5rem);
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: clamp(1rem, 0.5rem + 1.5vw, 2rem);
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  padding-inline: max(var(--gutter), calc((100% - var(--container)) / 2));
+  list-style: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.track[data-draggable] {
+  cursor: grab;
+}
+
+.track[data-draggable]:active {
+  cursor: grabbing;
+}
+
+.slide {
+  display: flex;
+  flex: none;
+  width: var(--slide-w);
+}
+
+.slide > * {
+  flex: 1;
+  min-width: 0;
+}
+
+/* --- "Make your own" card ------------------------------------------------ */
+.own {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  min-height: 100%;
+  padding: var(--space-6);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(circle at 100% 0%, var(--accent-soft), transparent 55%),
+    var(--surface-2);
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    border-color var(--dur-3) var(--ease-out),
+    transform var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
+}
+
+.own:hover {
+  border-color: var(--accent);
+  border-style: solid;
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.ownTitle {
+  margin-top: auto;
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-xl);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.ownTitle em {
+  color: var(--accent);
+}
+
+.ownText {
+  max-width: 26ch;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.ownCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.ownCta svg {
+  width: 1.1em;
+  height: 1.1em;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.own:hover .ownCta svg {
+  transform: translate(2px, -2px);
+}
+
+/* --- Controls ------------------------------------------------------------ */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-top: var(--space-3);
+}
+
+.progress {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 560px;
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.count span {
+  color: var(--ink-3);
+}
+
+.rule {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform-origin: 0 50%;
+}
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.hint svg {
+  width: 14px;
+  height: 14px;
+}
+
+.buttons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+@media (max-width: 640px) {
+  .track {
+    --slide-w: min(78vw, 20rem);
+  }
+
+  .own {
+    padding: var(--space-5);
+  }
+}

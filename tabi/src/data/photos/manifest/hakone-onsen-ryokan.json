@@ -1,0 +1,188 @@
+{
+  "brochure": "hakone-onsen-ryokan",
+  "photos": [
+    {
+      "id": "hakone-heiwa-torii",
+      "use": "cover",
+      "candidates": [
+        "File:Hakone-jinja torii - Hakone, Japan - DSC05478.jpg",
+        "File:Hakone-jinja torii and pirate ship.jpg",
+        "File:Hakone Shrine, Hakone, Kanagawa Prefecture, November 2016.jpg"
+      ],
+      "alt": "The vermilion Peace Torii of Hakone Shrine standing at the water's edge of Lake Ashi, framed by forest",
+      "caption": "Heiwa-no-Torii, Hakone Shrine, Lake Ashi",
+      "place": "Hakone Shrine",
+      "focus": "50% 50%",
+      "query": "Heiwa no Torii Hakone Shrine Lake Ashi"
+    },
+    {
+      "id": "hakone-lake-ashi-fuji",
+      "use": "wide",
+      "candidates": [
+        "File:Lake Ashi & Mt Fuji & Hakone Shrine.jpg",
+        "File:View of Mount Fuji from Lake Ashi.jpg",
+        "File:LakeAshi and MtFuji Hakone.JPG",
+        "File:Mt. Fuji from Hakone.jpg"
+      ],
+      "alt": "Mount Fuji rising beyond the forested shores of Lake Ashi under a clear sky",
+      "caption": "Mount Fuji from Lake Ashi",
+      "place": "Lake Ashi",
+      "focus": "50% 40%",
+      "query": "Mount Fuji from Lake Ashi"
+    },
+    {
+      "id": "hakone-owakudani",
+      "use": "wide",
+      "candidates": [
+        "File:A view of Owakudani - a volcanic valley with active sulphur vents and hot springs in Hakone, Japan.jpg",
+        "File:View of Owakudani Valley from Hakone Cable Car.JPG",
+        "File:Great Boiling valley owakudani.jpg"
+      ],
+      "alt": "Steam rising from sulphur vents on the bare, yellow-grey slopes of Ōwakudani",
+      "caption": "Ōwakudani, the Great Boiling Valley",
+      "place": "Ōwakudani",
+      "focus": "50% 50%",
+      "query": "Owakudani Hakone volcanic valley"
+    },
+    {
+      "id": "hakone-lake-ashi-cruise",
+      "use": "wide",
+      "candidates": [
+        "File:Hakone-jinja torii and pirate ship.jpg",
+        "File:Hakone Sightseeing Cruise, Vasa 01.jpg",
+        "File:Lake Ashi-pirate ship.jpg",
+        "File:Hakone pirate ship.jpg"
+      ],
+      "alt": "A galleon-style sightseeing ship on Lake Ashi passing the lakeside torii of Hakone Shrine",
+      "caption": "Sightseeing ship and Peace Torii on Lake Ashi",
+      "place": "Lake Ashi",
+      "focus": "50% 55%",
+      "query": "Hakone Sightseeing Cruise pirate ship Lake Ashi"
+    },
+    {
+      "id": "hakone-open-air-museum",
+      "use": "wide",
+      "candidates": [
+        "File:220622 Hakone Open-air Museum Japan02s3.jpg",
+        "File:The Hakone Open-Air Museum - panoramio.jpg",
+        "File:Hakone Open Air Museum (6969727342).jpg"
+      ],
+      "alt": "Bronze sculptures on green lawns ringed by wooded hills at the Hakone Open-Air Museum",
+      "caption": "The Hakone Open-Air Museum",
+      "place": "Hakone Open-Air Museum",
+      "focus": "50% 50%",
+      "query": "Hakone Open-air Museum"
+    },
+    {
+      "id": "hakone-tozan-railway",
+      "use": "any",
+      "candidates": [
+        "File:Tozan ALLEGRA Miyanoshita 80permillage.jpg",
+        "File:Hakone Tozan Railway.jpg",
+        "File:Hakone-Tozan-Linie Triebwagen.JPG"
+      ],
+      "alt": "A red Hakone Tozan mountain train climbing a steep, wooded track",
+      "caption": "Hakone Tozan Railway near Miyanoshita",
+      "place": "Hakone Tozan Railway",
+      "focus": "50% 50%",
+      "query": "Hakone Tozan Railway train"
+    },
+    {
+      "id": "hakone-ropeway",
+      "use": "any",
+      "candidates": [
+        "File:Hakone Ropeway @ From Sounzan to Owakudani @ Hakone (10621102274).jpg",
+        "File:Owakudani's cable car, Japan; October 2017.jpg",
+        "File:Owakudani Tram-23.jpg",
+        "File:Hakone Ropeway 1.jpg"
+      ],
+      "alt": "A Hakone Ropeway gondola hanging above the volcanic slopes of Ōwakudani",
+      "caption": "Hakone Ropeway above Ōwakudani",
+      "place": "Hakone Ropeway",
+      "focus": "50% 45%",
+      "query": "Hakone Ropeway Owakudani gondola"
+    },
+    {
+      "id": "hakone-checkpoint",
+      "use": "any",
+      "candidates": [
+        "File:Hakone Checkpoint and Lake Ashi.jpg",
+        "File:Hakone Sekisho.jpg",
+        "File:Hakone Checkpoint, May 2017.jpg"
+      ],
+      "alt": "The rebuilt wooden gates and guardhouses of the Hakone Checkpoint beside Lake Ashi",
+      "caption": "Hakone Checkpoint (Hakone Sekisho), Lake Ashi",
+      "place": "Hakone Checkpoint",
+      "focus": "50% 50%",
+      "query": "Hakone Sekisho checkpoint"
+    },
+    {
+      "id": "hakone-spread",
+      "use": "spread",
+      "candidates": [
+        "File:A view of Lake Ashi with Peace Torii gate, Hakone, Japan1.jpg",
+        "File:A view of Lake Ashi, Hakone, Japan.jpg",
+        "File:Lake Ashi from Mt.Komagatake 02.jpg",
+        "File:161223 Lake Ashi Hakone Japan04n.jpg"
+      ],
+      "alt": "The calm blue water of Lake Ashi stretching between forested volcanic ridges under an open sky",
+      "caption": "Lake Ashi, the caldera lake at the heart of Hakone, held between wooded ridges",
+      "place": "Lake Ashi",
+      "focus": "50% 50%",
+      "query": "Lake Ashi Hakone view"
+    },
+    {
+      "id": "hakone-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Shrine - Hakone-jinja - Hakone, Japan - DSC05748.jpg",
+        "File:Shrine - Hakone-jinja - Hakone, Japan - DSC05766.jpg",
+        "File:Shrine - Hakone-jinja - Hakone, Japan - DSC05754.jpg",
+        "File:Hakone Shrine 1st Torii Gate.jpg"
+      ],
+      "alt": "A vermilion torii in the grounds of Hakone Shrine, framed by tall old trees",
+      "caption": "Beneath the vermilion gates of Hakone Shrine, in the cedar woods above Lake Ashi",
+      "place": "Hakone Shrine",
+      "focus": "50% 45%",
+      "query": "Hakone Shrine torii"
+    },
+    {
+      "id": "hakone-nostalgia-cedar-avenue",
+      "use": "any",
+      "candidates": [
+        "File:Ancient Cedar Avenue, Hakone old road - Hakone, Japan - DSC05952.jpg",
+        "File:Ancient Cedar Avenue, Hakone old road - Hakone, Japan - DSC05938.jpg"
+      ],
+      "alt": "A path running between the massive trunks of ancient cedar trees on the old Tōkaidō in Hakone",
+      "caption": "Ancient Cedar Avenue — towering cedars on the old Tōkaidō in Hakone",
+      "place": "Hakone old road (old Tōkaidō)",
+      "focus": "50% 50%",
+      "query": "Ancient Cedar Avenue Hakone old road"
+    },
+    {
+      "id": "hakone-nostalgia-amazake-chaya",
+      "use": "any",
+      "candidates": [
+        "File:Amazake-cyaya 01.jpg"
+      ],
+      "alt": "A traditional thatched-roof teahouse among trees beside the old Tōkaidō in Hakone",
+      "caption": "Amazake-chaya — a thatched teahouse on the old Tōkaidō, still serving sweet amazake",
+      "place": "Amazake-chaya, Hakone",
+      "focus": "50% 50%",
+      "query": "Amasake Chaya Hakone"
+    },
+    {
+      "id": "hakone-nostalgia-fujiya-hotel",
+      "use": "any",
+      "candidates": [
+        "File:Fujiya Hotel Hana-goten.JPG",
+        "File:Happiness Hill - Fujiya Hotel - Hakone, Japan - DSC06142.jpg"
+      ],
+      "alt": "Historic wooden buildings of the Fujiya Hotel with traditional Japanese roofs at Miyanoshita",
+      "caption": "Fujiya Hotel, Miyanoshita — a classic hotel that opened in 1878",
+      "place": "Fujiya Hotel, Miyanoshita",
+      "focus": "50% 45%",
+      "query": "Fujiya Hotel Hakone"
+    }
+  ]
+}

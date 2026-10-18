@@ -1,0 +1,104 @@
+/* Typographic primitives shared by every page block. All sizes are in cqw
+   (1% of the page width) so a page scales from thumbnail to reader. */
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 1.3cqw;
+  margin: 0 0 2.2cqw;
+  font-family: var(--font-mono);
+  font-size: 1.75cqw;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--b-accent-text);
+}
+
+.kicker::before {
+  content: '';
+  flex: none;
+  width: 1cqw;
+  height: 1cqw;
+  border-radius: 50%;
+  background: var(--b-accent);
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--b-font);
+  font-size: var(--fs, 7cqw);
+  font-weight: 450;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 30,
+    'WONK' 0;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  color: var(--b-ink);
+}
+
+/* The opened word gaps of h1–h6 (base.css) are for the serif's narrow
+   space; Geist's space is wide enough, and a monospace one is a full cell. */
+[data-typeface='sans'] .heading {
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  word-spacing: 0;
+}
+
+[data-typeface='mono'] .heading {
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  word-spacing: 0;
+  line-height: 1.06;
+}
+
+.lede {
+  margin: 2.4cqw 0 0;
+  max-width: 64cqw;
+  font-size: 2.45cqw;
+  line-height: 1.55;
+  color: var(--b-body);
+}
+
+.rule {
+  height: var(--hair);
+  background: var(--b-rule);
+  transform-origin: left center;
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-feature-settings: 'palt';
+}
+
+/* Multi-line clamp; set --lines inline. */
+.clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--lines, 3);
+  line-clamp: var(--lines, 3);
+  overflow: hidden;
+}
+
+/* Heading + optional lede at the top of an interior page. */
+.header {
+  flex: none;
+}
+
+/* A huge pale kanji behind a page's content (数 on figures, 円 on prices). */
+.watermark {
+  position: absolute;
+  right: -6cqw;
+  bottom: -4cqw;
+  z-index: -1;
+  font-family: var(--font-jp);
+  font-size: 64cqw;
+  line-height: 1;
+  color: var(--b-accent2);
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
+}

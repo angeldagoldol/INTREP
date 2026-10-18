@@ -1,0 +1,41 @@
+.dice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  flex: none;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 0.6rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 540;
+  white-space: nowrap;
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+
+.withLabel {
+  padding: 0 1rem 0 0.75rem;
+}
+
+.dice:hover {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.dice:active {
+  transform: scale(0.95);
+}
+
+.die {
+  display: inline-grid;
+  place-items: center;
+}

@@ -1,0 +1,203 @@
+{
+  "brochure": "hokkaido-powder-snow",
+  "photos": [
+    {
+      "id": "hokkaido-tancho-dance",
+      "use": "cover",
+      "candidates": [
+        "File:Grus japonensis -Hokkaido, Japan -two flying-8.jpg",
+        "File:Grus japonensis -Hokkaido, Japan -several-8.jpg",
+        "File:Grus japonensis -Hokkaido, Japan -several-8 (1).jpg",
+        "File:Grus japonensis Tsurui Tsurumidai.jpg",
+        "File:丹頂鶴 Red-crowned Crane - panoramio.jpg"
+      ],
+      "alt": "Red-crowned cranes with wings raised over a snowy field",
+      "caption": "Red-crowned cranes (tanchō) in the snow near Tsurui, eastern Hokkaidō",
+      "place": "Tsurui, Kushiro area",
+      "focus": "50% 45%",
+      "query": "Grus japonensis Tsurui Hokkaido snow"
+    },
+    {
+      "id": "hokkaido-yotei-niseko",
+      "use": "wide",
+      "candidates": [
+        "File:Yotei-zan-from-hirafu.jpg",
+        "File:Mt Youtei Hokkaido Japan.jpg",
+        "File:Mt-yotei.jpg",
+        "File:Mt YOTEI 8.JPG"
+      ],
+      "alt": "A snow-covered volcanic cone rising above white fields and birch forest",
+      "caption": "Mount Yōtei from Niseko in winter",
+      "place": "Niseko",
+      "focus": "50% 40%",
+      "query": "Mount Yotei Niseko Hirafu snow"
+    },
+    {
+      "id": "hokkaido-sapporo-snow-festival",
+      "use": "wide",
+      "candidates": [
+        "File:Odori Park Sapporo Snow Festival 2007.JPG",
+        "File:Navy Misawa snow team at 64th annual Sapporo Snow Festival 130207-N-ZI955-107.jpg"
+      ],
+      "alt": "Large snow sculptures lining a long, snowy city park",
+      "caption": "Ōdōri Park during the Sapporo Snow Festival",
+      "place": "Ōdōri Park, Sapporo",
+      "focus": "50% 50%",
+      "query": "Sapporo Snow Festival Odori Park"
+    },
+    {
+      "id": "hokkaido-otaru-canal",
+      "use": "wide",
+      "candidates": [
+        "File:小樽運河-雪景.jpg",
+        "File:Otaru Canal.jpg",
+        "File:Otaru-Unga.jpg",
+        "File:Otaru Canal 2009.jpg"
+      ],
+      "alt": "A snowy canal lined with stone warehouses and old-style street lamps at dusk",
+      "caption": "Otaru Canal in winter",
+      "place": "Otaru Canal",
+      "focus": "50% 55%",
+      "query": "Otaru Canal snow"
+    },
+    {
+      "id": "hokkaido-abashiri-drift-ice",
+      "use": "wide",
+      "candidates": [
+        "File:AuroraII02.JPG",
+        "File:Aurora01.JPG"
+      ],
+      "alt": "A sightseeing icebreaker pushing through white floes of sea ice",
+      "caption": "The icebreaker Aurora in the drift ice off Abashiri",
+      "place": "Abashiri, Sea of Okhotsk",
+      "focus": "50% 55%",
+      "query": "Abashiri drift ice icebreaker Aurora"
+    },
+    {
+      "id": "hokkaido-susukino-ice",
+      "use": "any",
+      "candidates": [
+        "File:Sapporo Muji to Hoppu Beer Ice Sculpture.JPG"
+      ],
+      "alt": "Clear carved ice sculptures lit against the night",
+      "caption": "Carved ice at the Susukino site, Sapporo Snow Festival",
+      "place": "Susukino, Sapporo",
+      "focus": "50% 50%",
+      "query": "Susukino Ice World ice sculpture Sapporo"
+    },
+    {
+      "id": "hokkaido-upopoy",
+      "use": "any",
+      "candidates": [
+        "File:UPOPOY 202608.jpg"
+      ],
+      "alt": "A low modern museum building beside a lake",
+      "caption": "The National Ainu Museum at Upopoy, Lake Poroto",
+      "place": "Upopoy, Shiraoi",
+      "focus": "50% 50%",
+      "query": "Upopoy National Ainu Museum Shiraoi"
+    },
+    {
+      "id": "hokkaido-shiretoko-drift-ice",
+      "use": "any",
+      "candidates": [
+        "File:Hokkaido-Drift ice, Shiretoko Peninsula-xl.jpg",
+        "File:Utoro.jpg"
+      ],
+      "alt": "Sea ice packed along a shore below snow-covered mountains",
+      "caption": "Drift ice along the Shiretoko Peninsula",
+      "place": "Shiretoko Peninsula",
+      "focus": "50% 55%",
+      "query": "Shiretoko drift ice"
+    },
+    {
+      "id": "hokkaido-otaru-snow-light",
+      "use": "any",
+      "candidates": [],
+      "alt": "Rows of small candle-lit snow lanterns beside a canal at night",
+      "caption": "Snow lanterns on the Otaru Snow Light Path, February",
+      "place": "Otaru Canal",
+      "focus": "50% 60%",
+      "query": "Otaru Snow Light Path Festival"
+    },
+    {
+      "id": "hokkaido-spread",
+      "use": "spread",
+      "candidates": [
+        "File:Sapporo Snow Festival Odori-Site At Night Panorama 1.jpg",
+        "File:SAPPORO SNOW FESTIVAL 2011 観光大国宣言！北海道 - panoramio.jpg"
+      ],
+      "alt": "Floodlit snow sculptures lining the length of a city park at night, with office towers behind",
+      "caption": "Ōdōri Park after dark during the Sapporo Snow Festival, its sculptures lit block after block through the city centre",
+      "place": "Ōdōri Park, Sapporo",
+      "focus": "50% 50%",
+      "query": "Sapporo Snow Festival Odori night panorama"
+    },
+    {
+      "id": "hokkaido-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Hokkaido Jingu, small torii with heavy snow.jpg",
+        "File:Hokkaido Jingu, stream during the winter with heavy snow.jpg"
+      ],
+      "alt": "A small shrine gate half-buried in deep fresh snow among dark trees",
+      "caption": "A small torii under a heavy fall of snow at Hokkaidō Jingū, in the woods of Maruyama Park, Sapporo",
+      "place": "Hokkaidō Jingū, Sapporo",
+      "focus": "50% 45%",
+      "query": "Hokkaido Jingu torii snow"
+    },
+    {
+      "id": "hokkaido-nostalgia-hachimanzaka",
+      "use": "wide",
+      "candidates": [
+        "File:Hachimanzaka Hakodate Hokkaido pref Japan01n.jpg"
+      ],
+      "alt": "A broad stone-paved street sloping straight down between trees towards the harbour and the sea",
+      "caption": "Hachiman-zaka, Hakodate — a stone-paved slope running straight down to the harbour",
+      "place": "Hachiman-zaka, Motomachi, Hakodate",
+      "focus": "50% 55%",
+      "query": "Hachimanzaka Hakodate slope"
+    },
+    {
+      "id": "hokkaido-nostalgia-sakaimachi",
+      "use": "any",
+      "candidates": [
+        "File:Sakaimachi street Otaru Hokkaido16n.jpg",
+        "File:Sakaimachi street Otaru Hokkaido09n.jpg",
+        "File:Sakaimachi street Otaru Hokkaido04bs3.jpg"
+      ],
+      "alt": "A street of old stone and timber shopfronts with tiled roofs and shop signs",
+      "caption": "Sakaimachi-dōri, Otaru — old stone warehouses and merchant houses, now glass and music-box shops",
+      "place": "Sakaimachi-dōri, Otaru",
+      "focus": "50% 50%",
+      "query": "Sakaimachi street Otaru"
+    },
+    {
+      "id": "hokkaido-nostalgia-kanemori",
+      "use": "wide",
+      "candidates": [
+        "File:Kanemori Red Brick Warehouse Hakodate Hokkaido pref Japan01n.jpg",
+        "File:Kanemori Red Brick Warehouse Hakodate Hokkaido pref Japan04n.jpg",
+        "File:Kanemori Red Brick Warehouse Hakodate Hokkaido pref Japan12s5.jpg"
+      ],
+      "alt": "A row of long red-brick warehouses with tiled roofs beside the water, a wooded hill behind",
+      "caption": "Kanemori Red Brick Warehouses, Hakodate — harbour warehouses rebuilt in 1909, now shops and halls",
+      "place": "Kanemori Red Brick Warehouses, Hakodate",
+      "focus": "50% 55%",
+      "query": "Kanemori Red Brick Warehouse Hakodate"
+    },
+    {
+      "id": "hokkaido-nostalgia-kaitaku",
+      "use": "any",
+      "candidates": [
+        "File:220722 Historical Village of Hokkaido Sapporo Hokkaido Japan01s5.jpg",
+        "File:北海道開拓の村(Historical Village of Hokkaido) - panoramio (4).jpg"
+      ],
+      "alt": "Old wooden and Western-style buildings preserved at an open-air museum",
+      "caption": "Historical Village of Hokkaido, Sapporo — an open-air museum of buildings from the Meiji to early Shōwa eras",
+      "place": "Historical Village of Hokkaido, Sapporo",
+      "focus": "50% 50%",
+      "query": "Historical Village of Hokkaido"
+    }
+  ]
+}

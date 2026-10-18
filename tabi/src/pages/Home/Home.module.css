@@ -1,0 +1,6 @@
+.home {
+  /* --font-display already leads with 'Tabi Macrons' (base.css), so
+     "Kantō" and "fūrin" keep their macrons. */
+  --font-headline: var(--font-display);
+  position: relative;
+}

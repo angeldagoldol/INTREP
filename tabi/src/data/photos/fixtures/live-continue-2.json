@@ -1,0 +1,30 @@
+{
+  "batchcomplete": true,
+  "query": {
+    "pages": [
+      {
+        "pageid": 9201,
+        "ns": 6,
+        "title": "File:Continued one.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "width": 2000,
+            "height": 3000,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Continued_one.jpg/1280px-Continued_one.jpg",
+            "thumbwidth": 1280,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Continued_one.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Continued_one.jpg",
+            "mime": "image/webp",
+            "extmetadata": {
+              "Artist": { "value": "One", "source": "commons-desc-page" },
+              "LicenseShortName": { "value": "Public domain", "source": "commons-desc-page" },
+              "License": { "value": "pd", "source": "commons-templates" }
+            }
+          }
+        ]
+      },
+      { "pageid": 9202, "ns": 6, "title": "File:Continued two.jpg", "imagerepository": "local" }
+    ]
+  }
+}

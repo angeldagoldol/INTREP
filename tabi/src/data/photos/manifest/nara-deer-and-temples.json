@@ -1,0 +1,195 @@
+{
+  "brochure": "nara-deer-and-temples",
+  "photos": [
+    {
+      "id": "nara-deer",
+      "use": "cover",
+      "candidates": [
+        "File:Sika deer in Nara Park, November 2016.jpg",
+        "File:Sika deer at Hokke-dō, Todaiji in Nara, Japan 2.jpg",
+        "File:Sika deer in Nara 05.jpg"
+      ],
+      "alt": "A sika deer standing in Nara Park, looking towards the camera",
+      "caption": "A sika deer in Nara Park",
+      "place": "Nara Park",
+      "focus": "50% 40%",
+      "query": "Sika deer Nara Park"
+    },
+    {
+      "id": "nara-park",
+      "use": "wide",
+      "candidates": [
+        "File:003 Nara deer in Japan - deer of Nara Park under autumn leaves.jpg",
+        "File:Sika Deer in Nara Park, Japan.jpg",
+        "File:Japan 070416 Nara 01.jpg",
+        "File:A pair of deer in Nara Park, Japan.jpg"
+      ],
+      "alt": "Deer resting on open parkland under trees",
+      "caption": "Deer at rest in Nara Park",
+      "place": "Nara Park",
+      "focus": "50% 55%",
+      "query": "Nara Park deer"
+    },
+    {
+      "id": "nara-todaiji-daibutsuden",
+      "use": "wide",
+      "candidates": [
+        "File:Daibutsu-den in Todaiji Nara01bs3200.jpg",
+        "File:Tōdai-ji Great Buddha Hall-2.jpg",
+        "File:Todaiji Daibutsuden.JPG",
+        "File:Todai-ji.jpg"
+      ],
+      "alt": "The huge wooden Great Buddha Hall of Tōdai-ji with its sweeping tiled roof and golden roof ornaments",
+      "caption": "The Great Buddha Hall (Daibutsu-den), Tōdai-ji",
+      "place": "Tōdai-ji",
+      "focus": "50% 50%",
+      "query": "Todai-ji Daibutsuden Great Buddha Hall"
+    },
+    {
+      "id": "nara-kasuga-lanterns",
+      "use": "wide",
+      "candidates": [
+        "File:Stone Lanterns lead to The Kasuga Shrine, Nara, Japan.jpg",
+        "File:Mossy ishidourou at Kasuga Taisha.JPG",
+        "File:Lanterns at Kasuga Taisha.JPG"
+      ],
+      "alt": "Rows of moss-covered stone lanterns lining a path through the forest",
+      "caption": "Stone lanterns on the approach to Kasuga Taisha",
+      "place": "Kasuga Taisha",
+      "focus": "50% 55%",
+      "query": "Kasuga-taisha stone lanterns"
+    },
+    {
+      "id": "nara-kofukuji-chukondo",
+      "use": "wide",
+      "candidates": [
+        "File:181029 Chū-kondō of Kōfuku-ji.jpg",
+        "File:Kofukuji Central Golden Hall.jpg",
+        "File:Kofukuji Chukondo.jpg",
+        "File:Central Golden Hall (中金堂, Chū-kondō) in Nara, Japan.jpg"
+      ],
+      "alt": "A broad two-roofed temple hall with vermilion pillars on a gravel courtyard",
+      "caption": "The Central Golden Hall of Kōfuku-ji, rebuilt in 2018",
+      "place": "Kōfuku-ji",
+      "focus": "50% 50%",
+      "query": "Kofuku-ji Central Golden Hall Chukondo"
+    },
+    {
+      "id": "nara-daibutsu",
+      "use": "any",
+      "candidates": [
+        "File:Daibutsu Grand bouddha - Tōdai-ji - Nara.jpg",
+        "File:Daibutsu, le grand Bouddha (Todai-ji, Nara) (42196822114).jpg",
+        "File:20100716 Nara Todaiji Daibutsu 2292.jpg"
+      ],
+      "alt": "The colossal seated bronze Buddha of Tōdai-ji with a gilded halo behind it",
+      "caption": "The Great Buddha of Tōdai-ji",
+      "place": "Tōdai-ji",
+      "focus": "50% 35%",
+      "query": "Todai-ji Daibutsu Great Buddha"
+    },
+    {
+      "id": "nara-nandaimon-guardian",
+      "use": "any",
+      "candidates": [
+        "File:Nio guardians by Unkei in Nara.jpg",
+        "File:Nio Ungyo at Todaiji Nandaimon.jpg"
+      ],
+      "alt": "A towering carved wooden guardian figure in a fierce pose inside a temple gate",
+      "caption": "A guardian king by Unkei and Kaikei, Nandai-mon",
+      "place": "Nandai-mon, Tōdai-ji",
+      "focus": "50% 30%",
+      "query": "Nio Nandaimon Todaiji"
+    },
+    {
+      "id": "nara-ukimido",
+      "use": "any",
+      "candidates": [
+        "File:Nara-kōen (6156063660).jpg",
+        "File:Nara Japan 2.jpg"
+      ],
+      "alt": "A small hexagonal wooden pavilion standing over a pond on a short bridge",
+      "caption": "Ukimidō pavilion on Sagi-ike pond, Nara Park",
+      "place": "Ukimidō, Nara Park",
+      "focus": "50% 50%",
+      "query": "Ukimido Nara Park"
+    },
+    {
+      "id": "nara-naramachi",
+      "use": "any",
+      "candidates": [
+        "File:Street in Naramachi area (6156072416).jpg",
+        "File:Naramachii01n3200.jpg",
+        "File:Naramachi NigiwainoIe Nara.jpg"
+      ],
+      "alt": "A quiet lane of old wooden town houses with latticed fronts",
+      "caption": "Latticed town houses in Naramachi",
+      "place": "Naramachi",
+      "focus": "50% 50%",
+      "query": "Naramachi street"
+    },
+    {
+      "id": "nara-spread",
+      "use": "spread",
+      "candidates": [
+        "File:Nara Park from Nara prefectural government office 20141002.jpg",
+        "File:Nara Park, November 2016.jpg"
+      ],
+      "alt": "A wide view over the green canopy of Nara Park, temple roofs rising from the trees and low wooded hills along the horizon",
+      "caption": "Nara Park from above — temple roofs and forest running east towards Mount Wakakusa",
+      "place": "Nara Park",
+      "focus": "50% 50%",
+      "query": "Nara Park panorama"
+    },
+    {
+      "id": "nara-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:The 5 Storey Pagoda at Kofukuji Temple.jpg",
+        "File:Gojunoto Kofukuji-temple.jpg",
+        "File:Five-storied Pagoda, Kofuku-ji - Nara, Japan - DSC07497.jpg"
+      ],
+      "alt": "A five-storey wooden pagoda with tiered dark roofs tapering to a bronze spire against the sky",
+      "caption": "Kōfuku-ji’s Five-storey Pagoda, rebuilt in 1426, rising above the trees of Nara Park",
+      "place": "Kōfuku-ji",
+      "focus": "50% 40%",
+      "query": "Kofuku-ji five-storied pagoda"
+    },
+    {
+      "id": "nara-nostalgia-shiryokan",
+      "use": "any",
+      "candidates": [
+        "File:Naramachi-shiryokan Nara02n3200.jpg"
+      ],
+      "alt": "The old wooden front of a small museum on a narrow street in Naramachi",
+      "caption": "Naramachi Shiryōkan — a free museum of old shop signs and red cloth monkeys",
+      "place": "Naramachi Shiryōkan, Naramachi",
+      "focus": "50% 50%",
+      "query": "Naramachi Shiryokan Nara"
+    },
+    {
+      "id": "nara-nostalgia-karakuri",
+      "use": "any",
+      "candidates": [
+        "File:Naramachi Karakuri Omocha Kan 20141001.jpg"
+      ],
+      "alt": "A traditional wooden town house with a tiled roof on a quiet Naramachi street",
+      "caption": "Karakuri Omochakan, Naramachi — replica Edo-period toys in an old town house",
+      "place": "Naramachi Karakuri Omochakan",
+      "focus": "50% 50%",
+      "query": "Naramachi Karakuri Omocha Kan"
+    },
+    {
+      "id": "nara-nostalgia-imaicho",
+      "use": "wide",
+      "candidates": [
+        "File:Imaicho Kashihara.jpg"
+      ],
+      "alt": "A quiet street of old wooden merchant houses with dark lattices and tiled roofs",
+      "caption": "Imai-chō, Kashihara — an Edo-period merchant town that grew around Shōnen-ji",
+      "place": "Imai-chō, Kashihara",
+      "focus": "50% 50%",
+      "query": "Imaicho Kashihara townscape"
+    }
+  ]
+}
